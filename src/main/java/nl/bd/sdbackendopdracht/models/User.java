@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.Period;
 
 @Entity
+@Table(name = "Users")
 public class User {
 
     @Id
@@ -20,6 +21,7 @@ public class User {
     @Column
     private String lastName;
     @Column
+    @Enumerated(EnumType.STRING)
     private RoleEnums roleEnums;
     @Column
     private String email;

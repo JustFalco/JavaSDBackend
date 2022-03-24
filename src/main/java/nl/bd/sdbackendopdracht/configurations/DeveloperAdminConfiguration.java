@@ -1,7 +1,6 @@
 package nl.bd.sdbackendopdracht.configurations;
 
 import nl.bd.sdbackendopdracht.enums.RoleEnums;
-import nl.bd.sdbackendopdracht.models.Student;
 import nl.bd.sdbackendopdracht.models.User;
 import nl.bd.sdbackendopdracht.repos.DeveloperRepo;
 import org.springframework.boot.CommandLineRunner;
@@ -23,7 +22,7 @@ public class DeveloperAdminConfiguration {
                         "Admin",
                         "Falco",
                         "Wolkorte",
-                        RoleEnums.ROLE_ADMIN,
+                        RoleEnums.ROLE_DEVELOPER,
                         "Falco@wolkorte.nl",
                         LocalDate.now(),
                         LocalDate.now(),

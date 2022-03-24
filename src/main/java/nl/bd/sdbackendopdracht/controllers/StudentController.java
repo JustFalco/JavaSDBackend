@@ -27,5 +27,6 @@ public class StudentController {
     @PostMapping(value = "/addNewStudent")
     public void registerNewStudent(@RequestBody Student student){
         studentService.addNewStudent(student);
+
     }
 }
