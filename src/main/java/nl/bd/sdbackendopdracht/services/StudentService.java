@@ -1,43 +1,66 @@
 package nl.bd.sdbackendopdracht.services;
 
-import nl.bd.sdbackendopdracht.enums.RoleEnums;
-import nl.bd.sdbackendopdracht.exeptions.EmailAlreadyExistsExeption;
-import nl.bd.sdbackendopdracht.models.Student;
-import nl.bd.sdbackendopdracht.models.User;
-import nl.bd.sdbackendopdracht.repos.DeveloperRepo;
-import nl.bd.sdbackendopdracht.repos.StudentRepo;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import nl.bd.sdbackendopdracht.repositories.UserRepository;
+import nl.bd.sdbackendopdracht.security.enums.RoleEnums;
+import nl.bd.sdbackendopdracht.security.exeptions.EmailAlreadyExistsExeption;
+import nl.bd.sdbackendopdracht.models.datamodels.Student;
+import nl.bd.sdbackendopdracht.models.datamodels.User;
+import nl.bd.sdbackendopdracht.models.StudentRegistrationRequest;
+import nl.bd.sdbackendopdracht.repositories.DeveloperRepository;
+import nl.bd.sdbackendopdracht.repositories.StudentRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class StudentService {
+@AllArgsConstructor
+public class StudentService implements UserDetailsService {
 
-    private final StudentRepo studentRepo;
-    private final DeveloperRepo developerRepo;
-
-    @Autowired
-    public StudentService(StudentRepo studentRepo, DeveloperRepo developerRepo) {
-        this.studentRepo = studentRepo;
-        this.developerRepo = developerRepo;
-    }
+    private final StudentRepository studentRepository;
+    private final DeveloperRepository developerRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserRepository userRepository;
 
     public List<User> getStudents(){
-        return developerRepo.findAll();
+        return developerRepository.findAll();
     }
 
-    public void addNewStudent(Student student){
-        Optional<Student> studentByEmail = studentRepo.findStudentByEmail(student.getEmail());
+    public String registerStudent(StudentRegistrationRequest request){
+        boolean isValidEmail = studentRepository.findStudentByEmail(request.getEmail()).isPresent();
 
-        if(studentByEmail.isPresent()){
-            throw new EmailAlreadyExistsExeption("Email: " + student.getEmail() + "  already exists");
-        }else{
-            student.setRoleEnums(RoleEnums.ROLE_STUDENT);
-            studentRepo.save(student);
-
+        if(isValidEmail){
+            throw new EmailAlreadyExistsExeption("Email: " + request.getEmail() + "  already exists");
         }
 
+        String encodedPassword = bCryptPasswordEncoder.encode(request.getPassword());
+        Student student = new Student(
+                request.getFirstName(),
+                request.getMiddleName(),
+                request.getLastName(),
+                RoleEnums.STUDENT,
+                request.getEmail(),
+                LocalDate.now(),  //TODO fix this shit
+                request.getDateOfBirth(),
+                encodedPassword,
+                request.getStudentNumber(),
+                request.getStudentYear(),
+                true
+        );
+
+        studentRepository.save(student);
+
+        return "Student saved!";
+
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User does not exists"));
     }
 }

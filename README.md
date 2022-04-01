@@ -1,15 +1,15 @@
-#Project Progen API documentation
+# Project Progen API documentation
 Project progen is an API that allows schools to manage their students, teachers, courses and much more. 
 
-##About
+## About
 
-##Endpoints
+## Endpoints
 
-##Roles and permissions
-###STUDENT
+## Roles and permissions
+### STUDENT
 
-###TEACHER
+### TEACHER
 
-###ADMINISTRATOR
+### ADMINISTRATOR
 
-###DEVELOPER
+### DEVELOPER

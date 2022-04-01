@@ -1,4 +1,4 @@
-package nl.bd.sdbackendopdracht.models;
+package nl.bd.sdbackendopdracht.models.datamodels;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -79,5 +79,16 @@ public class Task {
 
     public void setTimeOfTaskPublication(LocalDateTime timeOfTaskPublication) {
         this.timeOfTaskPublication = timeOfTaskPublication;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "Id=" + Id +
+                ", taskName='" + taskName + '\'' +
+                ", taksDescription='" + taksDescription + '\'' +
+                ", taksDeadline=" + taksDeadline +
+                ", timeOfTaskPublication=" + timeOfTaskPublication +
+                '}';
     }
 }
