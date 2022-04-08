@@ -32,14 +32,14 @@ public class StudentMarks {
     private LocalDate testDate;
 
     @ManyToOne
-    private Student markBelongsToStudent;
+    private User markBelongsToStudent;
     @OneToOne
-    private Teacher submittedByTeacher;
+    private User submittedByTeacher;
 
     @OneToOne
     private Task markBelongsToTask;
 
-    public StudentMarks(LocalDateTime insertionDate, String description, float cijfer, int weight, LocalDate testDate, Student markBelongsToStudent, Teacher submittedByTeacher) {
+    public StudentMarks(LocalDateTime insertionDate, String description, float cijfer, int weight, LocalDate testDate, User markBelongsToStudent, User submittedByTeacher) {
         this.insertionDate = insertionDate;
         this.description = description;
         this.cijfer = cijfer;

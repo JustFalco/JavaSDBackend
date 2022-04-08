@@ -1,7 +1,9 @@
 package nl.bd.sdbackendopdracht.models.datamodels;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import nl.bd.sdbackendopdracht.security.enums.RoleEnums;
+import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,16 +11,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode
+@Builder
+@ToString
 public class User implements UserDetails {
 
     @Id
@@ -31,45 +33,38 @@ public class User implements UserDetails {
             generator = "user_sequencegenerator",
             strategy = GenerationType.SEQUENCE
     )
-    private Long id;
-
-    @Column
+    private Long userId;
     private String firstName;
-    @Column
     private String middleName;
-    @Column
     private String lastName;
-    @Column
     @Enumerated(EnumType.STRING)
     private RoleEnums roleEnums;
-    @Column
+    @Column(
+            nullable = false
+    )
     private String email;
-    @Column
     private LocalDate dateOfCreation;
-    @Column
     private LocalDate dateOfBirth;
-    @Column
     private String password;
-
+    private int workerNumber;
+    private Boolean isActiveWorker;
+    private int studentNumber;
+    private int year;
+    private Boolean isActiveStudent;
+    private int teacherNumber;
+    private Boolean isActiveTeacher;
     @Transient
     private Integer age;
-
     private Boolean locked = false;
     private Boolean enabled = true;
-
     @ManyToOne
     private School school;
 
-    public User(String firstName, String middleName, String lastName, RoleEnums roleEnums, String email, LocalDate dateOfCreation, LocalDate dateOfBirth, String password) {
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.roleEnums = roleEnums;
-        this.email = email;
-        this.dateOfCreation = dateOfCreation;
-        this.dateOfBirth = dateOfBirth;
-        this.password = password;
-    }
+    @JsonIgnore
+    @ManyToMany(mappedBy = "taskHasUsers")
+    @Builder.Default
+    @ToString.Exclude
+    private Set<Task> userHasTasks = new HashSet<>();
 
     public Integer getAge() {
         return Period.between(this.dateOfBirth, LocalDate.now()).getYears();
@@ -80,8 +75,6 @@ public class User implements UserDetails {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(this.roleEnums.name());
         return Collections.singletonList(authority);
     }
-
-
 
     @Override
     public String getUsername() {
@@ -108,21 +101,5 @@ public class User implements UserDetails {
         return this.enabled;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", middleName='" + middleName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", roleEnums=" + roleEnums +
-                ", email='" + email + '\'' +
-                ", dateOfCreation=" + dateOfCreation +
-                ", dateOfBirth=" + dateOfBirth +
-                ", password='" + password + '\'' +
-                ", age=" + age +
-                ", locked=" + locked +
-                ", enabled=" + enabled +
-                '}';
-    }
+
 }

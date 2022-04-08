@@ -1,14 +1,14 @@
 package nl.bd.sdbackendopdracht.services;
 
 import lombok.AllArgsConstructor;
+import nl.bd.sdbackendopdracht.models.SchoolRegistrationRequest;
+import nl.bd.sdbackendopdracht.models.datamodels.School;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
 import nl.bd.sdbackendopdracht.security.enums.RoleEnums;
 import nl.bd.sdbackendopdracht.security.exeptions.EmailAlreadyExistsExeption;
-import nl.bd.sdbackendopdracht.models.datamodels.Student;
 import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.models.StudentRegistrationRequest;
-import nl.bd.sdbackendopdracht.repositories.DeveloperRepository;
-import nl.bd.sdbackendopdracht.repositories.StudentRepository;
+import nl.bd.sdbackendopdracht.security.exeptions.UserNotFoundExeption;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,38 +22,39 @@ import java.util.List;
 @AllArgsConstructor
 public class StudentService implements UserDetailsService {
 
-    private final StudentRepository studentRepository;
-    private final DeveloperRepository developerRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
 
     public List<User> getStudents(){
-        return developerRepository.findAll();
+        return userRepository.findAll();
     }
 
+
     public String registerStudent(StudentRegistrationRequest request){
-        boolean isValidEmail = studentRepository.findStudentByEmail(request.getEmail()).isPresent();
+        boolean isValidEmail = userRepository.findUserByEmail(request.getEmail()).isPresent();
 
         if(isValidEmail){
             throw new EmailAlreadyExistsExeption("Email: " + request.getEmail() + "  already exists");
         }
 
         String encodedPassword = bCryptPasswordEncoder.encode(request.getPassword());
-        Student student = new Student(
-                request.getFirstName(),
-                request.getMiddleName(),
-                request.getLastName(),
-                RoleEnums.STUDENT,
-                request.getEmail(),
-                LocalDate.now(),  //TODO fix this shit
-                request.getDateOfBirth(),
-                encodedPassword,
-                request.getStudentNumber(),
-                request.getStudentYear(),
-                true
-        );
+        User student = User.builder()
+                .firstName(request.getFirstName())
+                .middleName(request.getMiddleName())
+                .lastName(request.getLastName())
+                .roleEnums(RoleEnums.STUDENT)
+                .email(request.getEmail())
+                .dateOfBirth(request.getDateOfBirth())
+                .dateOfCreation(LocalDate.now())
+                .password(encodedPassword)
+                .studentNumber(request.getStudentNumber())
+                .year(request.getStudentYear())
+                .locked(false)
+                .enabled(true)
+                .build();
 
-        studentRepository.save(student);
+
+        userRepository.save(student);
 
         return "Student saved!";
 
@@ -63,4 +64,11 @@ public class StudentService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User does not exists"));
     }
+
+
+    public User getPersonalUserDetails(String email) {
+        return userRepository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundExeption("User with email " + email + " does not exists!"));
+    }
+
+
 }

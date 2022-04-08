@@ -33,9 +33,9 @@ Project progen is an API that allows schools to manage their students, teachers,
 - /api/v*/teacher/course
 - /api/v*/teacher/course/{courseId}
 - /api/v*/teacher/course/{courseId}/view_course_students
-- /api/v*/teacher
-- /api/v*/teacher
-- /api/v*/teacher
+- /api/v*/teacher/{teacherId}/get_user_details
+- /api/v*/administrator
+- /api/v*/administrator
 - 
 
 ## Roles and permissions

@@ -10,9 +10,9 @@ public class Absence {
     private Long absenceId;
 
     @ManyToOne
-    private Student absentStudent;
+    private User absentStudent;
     @ManyToOne
-    private Administrator submittedByAdministrator;
+    private User submittedByAdministrator;
 
     @Enumerated(value = EnumType.STRING)
     private AbsenceTypes absenceType;

@@ -1,7 +1,6 @@
 package nl.bd.sdbackendopdracht.security.config;
 
 import lombok.AllArgsConstructor;
-import nl.bd.sdbackendopdracht.services.AdministratorService;
 import nl.bd.sdbackendopdracht.services.StudentService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +20,6 @@ import static nl.bd.sdbackendopdracht.security.enums.RoleEnums.STUDENT;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final StudentService studentService;
-    private final AdministratorService administratorService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
@@ -31,6 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/v*/registration/**", "/").permitAll()
                 .antMatchers("/api/v*/student/**").hasAnyAuthority(STUDENT.name(), DEVELOPER.name())
+                .antMatchers("api/v1/task/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="../static/css/index.css" th:href="@{/css/index.css}" rel="stylesheet">
+</head>
+<body>
+    <h1>Welkom bij project Progen!</h1>
+
+    <form th:action="@{/login}" method="get">
+        <button>Login</button>
+    </form>
+    <form th:action="@{/api/v1/registration/register_school}" method="get">
+        <button>Registreer school</button>
+    </form>
+</body>
+</html>

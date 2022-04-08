@@ -1,11 +1,23 @@
 package nl.bd.sdbackendopdracht.models.datamodels;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "Tasks")
+@Table(name = "tasks")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
 public class Task {
     @Id
     @SequenceGenerator(
@@ -16,80 +28,22 @@ public class Task {
             generator = "task_id_generator",
             strategy = GenerationType.SEQUENCE
     )
-    private int Id;
+    private int taskId;
     private String taskName;
     private String taksDescription;
     //TODO nieuwe feature waarmee je bijlagen toe kan voegen
     private LocalDateTime taksDeadline;
     private LocalDateTime timeOfTaskPublication;
 
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "user_has_task",
+            joinColumns = @JoinColumn(name = "userId"),
+            inverseJoinColumns = @JoinColumn(name = "taskId"))
+    @Builder.Default private Set<User> taskHasUsers = new HashSet<>();
 
-    public Task() {
-    }
-
-    public Task(int id, String taskName, String taksDescription, LocalDateTime taksDeadline, LocalDateTime timeOfTaskPublication) {
-        Id = id;
-        this.taskName = taskName;
-        this.taksDescription = taksDescription;
-        this.taksDeadline = taksDeadline;
-        this.timeOfTaskPublication = timeOfTaskPublication;
-    }
-
-    public Task(String taskName, String taksDescription, LocalDateTime taksDeadline, LocalDateTime timeOfTaskPublication) {
-        this.taskName = taskName;
-        this.taksDescription = taksDescription;
-        this.taksDeadline = taksDeadline;
-        this.timeOfTaskPublication = timeOfTaskPublication;
-    }
-
-    public int getId() {
-        return Id;
-    }
-
-    public void setId(int id) {
-        Id = id;
-    }
-
-    public String getTaskName() {
-        return taskName;
-    }
-
-    public void setTaskName(String taskName) {
-        this.taskName = taskName;
-    }
-
-    public String getTaksDescription() {
-        return taksDescription;
-    }
-
-    public void setTaksDescription(String taksDescription) {
-        this.taksDescription = taksDescription;
-    }
-
-    public LocalDateTime getTaksDeadline() {
-        return taksDeadline;
-    }
-
-    public void setTaksDeadline(LocalDateTime taksDeadline) {
-        this.taksDeadline = taksDeadline;
-    }
-
-    public LocalDateTime getTimeOfTaskPublication() {
-        return timeOfTaskPublication;
-    }
-
-    public void setTimeOfTaskPublication(LocalDateTime timeOfTaskPublication) {
-        this.timeOfTaskPublication = timeOfTaskPublication;
-    }
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "Id=" + Id +
-                ", taskName='" + taskName + '\'' +
-                ", taksDescription='" + taksDescription + '\'' +
-                ", taksDeadline=" + taksDeadline +
-                ", timeOfTaskPublication=" + timeOfTaskPublication +
-                '}';
+    public void addUser(User user) {
+        this.taskHasUsers.add(user);
     }
 }

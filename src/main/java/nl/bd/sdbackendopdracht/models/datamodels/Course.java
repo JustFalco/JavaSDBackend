@@ -33,5 +33,5 @@ public class Course {
     private School belongsToSchool;
 
     @ManyToOne
-    private Teacher teacherGivesCourse;
+    private User teacherGivesCourse;
 }

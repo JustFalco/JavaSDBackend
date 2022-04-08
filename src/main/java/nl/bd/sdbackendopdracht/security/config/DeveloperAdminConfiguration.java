@@ -1,9 +1,9 @@
 package nl.bd.sdbackendopdracht.security.config;
 
 import lombok.AllArgsConstructor;
+import nl.bd.sdbackendopdracht.repositories.UserRepository;
 import nl.bd.sdbackendopdracht.security.enums.RoleEnums;
 import nl.bd.sdbackendopdracht.models.datamodels.User;
-import nl.bd.sdbackendopdracht.repositories.DeveloperRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,24 +20,23 @@ public class DeveloperAdminConfiguration {
 
     @Bean
     CommandLineRunner commandLineRunner(
-            DeveloperRepository developerRepository
+            UserRepository userRepository
     ){
         return args -> {
-            if(developerRepository.findByAdminRoleEnum().isEmpty()){
-                User admin = new User(
-                        "Admin",
-                        "",
-                        "",
-                        RoleEnums.DEVELOPER,
-                        "falco@wolkorte.nl",
-                        LocalDate.now(),
-                        LocalDate.of(2001, Month.OCTOBER, 29),
-                        bCryptPasswordEncoder.encode("Falco567")
+            if(userRepository.findByAdminRoleEnum(RoleEnums.DEVELOPER).isEmpty()){
+                User admin = User.builder()
+                        .firstName("Admin")
+                        .email("falco@wolkorte.nl")
+                        .locked(false)
+                        .enabled(true)
+                        .password(bCryptPasswordEncoder.encode("Falco567"))
+                        .roleEnums(RoleEnums.DEVELOPER)
+                        .dateOfCreation(LocalDate.now())
+                        .dateOfBirth(LocalDate.of(2001, Month.OCTOBER, 29))
+                        .build();
 
-                );
 
-
-                developerRepository.save(admin);
+                userRepository.save(admin);
             }
 
         };

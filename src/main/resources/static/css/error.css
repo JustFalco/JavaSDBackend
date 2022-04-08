@@ -1,0 +1,11 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    text-align: center;
+    align-content: center;
+    justify-content: center;
+    margin-top: 20vh;
+}
