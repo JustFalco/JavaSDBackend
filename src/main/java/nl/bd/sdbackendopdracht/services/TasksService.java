@@ -2,6 +2,7 @@ package nl.bd.sdbackendopdracht.services;
 
 import lombok.AllArgsConstructor;
 import nl.bd.sdbackendopdracht.models.TaskRegistrationRequest;
+import nl.bd.sdbackendopdracht.models.datamodels.Course;
 import nl.bd.sdbackendopdracht.models.datamodels.Task;
 import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.repositories.CourseRepository;
@@ -55,9 +56,13 @@ public class TasksService implements UserDetailsService {
         return taskRepository.save(taskFromDatabase);
     }
 
-    public Set<Task> giveTaskToCourseClass(Long courseId){
+    public void giveTaskToCourseClass(Long courseId, Long taskId){
+        //TODO validation
+        Course couseToGiveTaskTo = courseRepository.getById(courseId);
 
-        return null;
+        for(User user : couseToGiveTaskTo.getStudentsFollowingCourse()){
+            giveTaskToUser(taskId, user.getUserId());
+        }
     }
 
     public List<Task> getAllTasks(){
