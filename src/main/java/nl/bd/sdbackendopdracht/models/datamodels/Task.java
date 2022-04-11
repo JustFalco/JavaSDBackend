@@ -35,13 +35,14 @@ public class Task {
     private LocalDateTime taksDeadline;
     private LocalDateTime timeOfTaskPublication;
 
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "user_has_task",
             joinColumns = @JoinColumn(name = "userId"),
             inverseJoinColumns = @JoinColumn(name = "taskId"))
     @Builder.Default private Set<User> taskHasUsers = new HashSet<>();
+
 
     public void addUser(User user) {
         this.taskHasUsers.add(user);

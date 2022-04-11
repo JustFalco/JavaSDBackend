@@ -18,7 +18,7 @@ public class RegistrationController {
 
     @PostMapping(value = "/student_registration")
     public String registerStudent(@RequestBody StudentRegistrationRequest request){
-        return studentService.registerStudent(request);
+        return registrationService.registerStudent(request);
     }
 
 }

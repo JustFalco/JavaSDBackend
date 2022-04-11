@@ -3,6 +3,7 @@ package nl.bd.sdbackendopdracht.controllers;
 import lombok.AllArgsConstructor;
 import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.services.StudentService;
+import nl.bd.sdbackendopdracht.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,7 +17,7 @@ import java.util.List;
 public class StudentController {
 
     private final StudentService studentService;
-
+    private final UserService userService;
     @GetMapping(value = "/get_all_students")
     public List<User> getStudents(){
         return studentService.getStudents();
@@ -24,6 +25,6 @@ public class StudentController {
 
     @GetMapping(value = "/get_personal_details")
     public User personalDetails(Authentication authentication){
-        return studentService.getPersonalUserDetails(authentication.getName());
+        return userService.getPersonalUserDetails(authentication.getName());
     }
 }

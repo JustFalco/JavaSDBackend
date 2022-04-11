@@ -1,10 +1,13 @@
 package nl.bd.sdbackendopdracht.models.datamodels;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -34,4 +37,13 @@ public class Course {
 
     @ManyToOne
     private User teacherGivesCourse;
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "student_follows_course",
+            joinColumns = @JoinColumn(name = "userId"),
+            inverseJoinColumns = @JoinColumn(name = "taskId"))
+    @Builder.Default private Set<User> studentsFollowingCourse = new HashSet<>();
+
 }

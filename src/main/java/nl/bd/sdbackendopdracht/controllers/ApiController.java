@@ -6,11 +6,11 @@ import nl.bd.sdbackendopdracht.models.datamodels.Task;
 import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.services.StudentService;
 import nl.bd.sdbackendopdracht.services.TasksService;
+import nl.bd.sdbackendopdracht.services.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping(path = "api/v1")
@@ -18,7 +18,7 @@ import java.util.Set;
 public class ApiController {
 
     private final TasksService tasksService;
-
+    private final UserService userService;
 //    @GetMapping
 //    public Set<Task> getAllStudentTasks(){
 //        return tasksService.getAllTasksFromStudent("falco.wolkorte2910@gmail.com");
@@ -34,7 +34,7 @@ public class ApiController {
             @RequestBody TaskRegistrationRequest request,
             @PathVariable Long userId
     ){
-        return tasksService.giveTaskToUser(request, userId);
+        return tasksService.createTask(request, userId);
     }
 
     private final StudentService studentService;
@@ -46,6 +46,6 @@ public class ApiController {
 
     @GetMapping(value = "/get_personal_details")
     public User personalDetails(Authentication authentication){
-        return studentService.getPersonalUserDetails(authentication.getName());
+        return userService.getPersonalUserDetails(authentication.getName());
     }
 }

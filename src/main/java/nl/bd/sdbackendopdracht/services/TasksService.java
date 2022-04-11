@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import nl.bd.sdbackendopdracht.models.TaskRegistrationRequest;
 import nl.bd.sdbackendopdracht.models.datamodels.Task;
 import nl.bd.sdbackendopdracht.models.datamodels.User;
+import nl.bd.sdbackendopdracht.repositories.CourseRepository;
 import nl.bd.sdbackendopdracht.repositories.TaskRepository;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
 import nl.bd.sdbackendopdracht.security.exeptions.TaskNotFoundExeption;
@@ -23,14 +24,14 @@ public class TasksService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;
-
+    private final CourseRepository courseRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User does not exists"));
     }
 
-    public Task giveTaskToUser(TaskRegistrationRequest request, Long userId){
+    public Task createTask(TaskRegistrationRequest request, Long userId){
         User user = userRepository.getById(userId);
         Task task = Task.builder()
                 .taskName(request.getTaskName())
@@ -44,7 +45,18 @@ public class TasksService implements UserDetailsService {
         return taskRepository.save(task);
     }
 
-    public Set<Task> giveTaskToCourseClass(){
+    public Task giveTaskToUser(Long taskId, Long userId){
+        //TODO validation
+        Task taskFromDatabase = taskRepository.getById(taskId);
+        //TODO validation
+        User userToBeAddedToTask = userRepository.getById(userId);
+
+        taskFromDatabase.addUser(userToBeAddedToTask);
+        return taskRepository.save(taskFromDatabase);
+    }
+
+    public Set<Task> giveTaskToCourseClass(Long courseId){
+
         return null;
     }
 

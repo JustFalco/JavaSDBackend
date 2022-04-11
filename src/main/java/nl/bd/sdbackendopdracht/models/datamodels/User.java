@@ -66,6 +66,12 @@ public class User implements UserDetails {
     @ToString.Exclude
     private Set<Task> userHasTasks = new HashSet<>();
 
+    @JsonIgnore
+    @ManyToMany(mappedBy = "studentsFollowingCourse")
+    @Builder.Default
+    @ToString.Exclude
+    private Set<Course> coursesBelongingToStudent = new HashSet<>();
+
     public Integer getAge() {
         return Period.between(this.dateOfBirth, LocalDate.now()).getYears();
     }
