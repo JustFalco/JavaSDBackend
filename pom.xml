@@ -82,6 +82,12 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
+<!--        For random string generator-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>1.9</version>
+        </dependency>
         <!--        <dependency>-->
 <!--            <groupId>org.springframework.security</groupId>-->
 <!--            <artifactId>spring-security-test</artifactId>-->

@@ -11,8 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import static nl.bd.sdbackendopdracht.security.enums.RoleEnums.DEVELOPER;
-import static nl.bd.sdbackendopdracht.security.enums.RoleEnums.STUDENT;
+import static nl.bd.sdbackendopdracht.security.enums.RoleEnums.*;
 
 @Configuration
 @EnableWebSecurity
@@ -30,6 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v*/registration/**", "/").permitAll()
                 .antMatchers("/api/v*/student/**").hasAnyAuthority(STUDENT.name(), DEVELOPER.name())
                 .antMatchers("api/v1/task/**").permitAll()
+                .antMatchers("/dashboard/*").hasAnyAuthority(STUDENT.name(), DEVELOPER.name(), TEACHER.name(), ADMINISTRATOR.name())
                 .anyRequest()
                 .authenticated()
                 .and()

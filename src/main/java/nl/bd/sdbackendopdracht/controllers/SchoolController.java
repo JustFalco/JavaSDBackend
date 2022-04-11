@@ -16,20 +16,11 @@ public class SchoolController {
 
     private final RegistrationService registrationService;
 
-    @RequestMapping(path = "/api/v1/registration/register_school")
-    public String returnRegisterSchoolPage(Model model){
-        model.addAttribute("school", new SchoolRegistrationRequest());
-        return "register_school";
-    }
-
     @PostMapping(value = "/api/v1/registration/register_school")
     public String registerSchool(@ModelAttribute("school") SchoolRegistrationRequest schoolRegistrationRequest){
         registrationService.registerSchool(schoolRegistrationRequest);
         return "redirect:/api/v1/registration/register_school/email_validation";
     }
 
-    @RequestMapping(path = "/api/v1/registration/register_school/email_validation")
-    public String registerSchoolValidation(Model model){
-        return "emailValidation";
-    }
+
 }

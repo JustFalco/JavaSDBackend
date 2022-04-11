@@ -6,6 +6,7 @@ import nl.bd.sdbackendopdracht.models.SchoolRegistrationRequest;
 import nl.bd.sdbackendopdracht.models.datamodels.School;
 import nl.bd.sdbackendopdracht.repositories.SchoolRepository;
 import nl.bd.sdbackendopdracht.security.mail.MailSender;
+import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -25,8 +26,22 @@ public class RegistrationService {
 
         schoolRepository.save(school);
 
-        mailSender.send(request.getSchoolMail(), mail.getMail(request.getSchoolName()));
+        RandomStringGenerator stringGenerator = new RandomStringGenerator.Builder().build();
+        String password = stringGenerator.generate(17);
+        mailSender.send(request.getSchoolMail(), mail.getMail(request.getSchoolName(), request.getSchoolMail(), password));
 
         return "School saved";
+    }
+
+    public String registerStudent(){
+        return "Student registerd";
+    }
+
+    public String registerAdministrator(){
+        return "Administrator registerd";
+    }
+
+    public String registerTeacher(){
+        return "Teacher registerd";
     }
 }
