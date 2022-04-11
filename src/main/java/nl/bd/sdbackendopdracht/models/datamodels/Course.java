@@ -16,6 +16,7 @@ import java.util.Set;
 @ToString
 @EqualsAndHashCode
 @NoArgsConstructor
+@Builder
 @Table(name = "Courses")
 public class Course {
 
@@ -38,7 +39,7 @@ public class Course {
     @ManyToOne
     private User teacherGivesCourse;
 
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "student_follows_course",
