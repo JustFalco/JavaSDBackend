@@ -32,9 +32,10 @@ public class ApiController {
     @PostMapping(value = "/give_task/{userId}")
     public Task giveTaskToStudent(
             @RequestBody TaskRegistrationRequest request,
-            @PathVariable Long userId
+            @PathVariable Long userId,
+            Authentication authentication
     ){
-        return tasksService.createTask(request, userId);
+        return tasksService.createTask(request, userId, authentication.getName());
     }
 
     private final StudentService studentService;

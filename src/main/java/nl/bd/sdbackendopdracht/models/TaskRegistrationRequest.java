@@ -4,6 +4,7 @@ import jdk.jfr.Enabled;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Getter
@@ -13,5 +14,5 @@ import java.time.LocalDate;
 public class TaskRegistrationRequest {
     private final String taskName;
     private final String taskDescription;
-    private final LocalDate taskDeadline;
+    private final LocalDateTime taskDeadline;
 }

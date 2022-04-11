@@ -34,7 +34,7 @@ public class Task {
     //TODO nieuwe feature waarmee je bijlagen toe kan voegen
     private LocalDateTime taksDeadline;
     private LocalDateTime timeOfTaskPublication;
-
+    private Boolean taskFinished;
 //    @JsonIgnore
     @ManyToMany
     @JoinTable(
@@ -43,6 +43,8 @@ public class Task {
             inverseJoinColumns = @JoinColumn(name = "taskId"))
     @Builder.Default private Set<User> taskHasUsers = new HashSet<>();
 
+    @ManyToOne
+    private User taskGivenByTeacher;
 
     public void addUser(User user) {
         this.taskHasUsers.add(user);
