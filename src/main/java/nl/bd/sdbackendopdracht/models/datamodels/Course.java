@@ -47,4 +47,8 @@ public class Course {
             inverseJoinColumns = @JoinColumn(name = "taskId"))
     @Builder.Default private Set<User> studentsFollowingCourse = new HashSet<>();
 
+    public void addUserToCourse(User user){
+        this.studentsFollowingCourse.add(user);
+    }
+
 }
