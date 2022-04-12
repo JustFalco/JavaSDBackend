@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class GradeService {
+public class GradeService extends SuperService {
 
     private final GradeRepository gradeRepository;
 

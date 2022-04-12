@@ -21,7 +21,7 @@ import java.util.Set;
 
 @Service
 @AllArgsConstructor
-public class TasksService implements UserDetailsService {
+public class TasksService extends SuperService{
 
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;

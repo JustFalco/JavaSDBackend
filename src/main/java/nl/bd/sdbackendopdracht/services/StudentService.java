@@ -20,7 +20,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class StudentService implements UserDetailsService {
+public class StudentService extends SuperService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;

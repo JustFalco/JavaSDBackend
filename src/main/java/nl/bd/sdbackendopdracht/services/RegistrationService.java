@@ -23,7 +23,7 @@ import java.util.Random;
 
 @Service
 @AllArgsConstructor
-public class RegistrationService {
+public class RegistrationService extends SuperService{
 
     /* Repository imports */
 

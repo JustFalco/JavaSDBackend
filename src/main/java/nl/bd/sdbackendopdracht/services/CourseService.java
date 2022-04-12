@@ -15,7 +15,7 @@ import java.util.Set;
 
 @Service
 @AllArgsConstructor
-public class CourseService {
+public class CourseService extends SuperService{
 
     private final UserRepository userRepository;
     private final CourseRepository courseRepository;
