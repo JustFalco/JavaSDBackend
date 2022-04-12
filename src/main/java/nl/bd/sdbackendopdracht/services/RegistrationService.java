@@ -2,8 +2,8 @@ package nl.bd.sdbackendopdracht.services;
 
 import lombok.AllArgsConstructor;
 import nl.bd.sdbackendopdracht.models.Mail;
-import nl.bd.sdbackendopdracht.models.SchoolRegistrationRequest;
-import nl.bd.sdbackendopdracht.models.StudentRegistrationRequest;
+import nl.bd.sdbackendopdracht.models.requestmodels.SchoolRegistrationRequest;
+import nl.bd.sdbackendopdracht.models.requestmodels.StudentRegistrationRequest;
 import nl.bd.sdbackendopdracht.models.datamodels.School;
 import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.repositories.SchoolRepository;
@@ -12,14 +12,10 @@ import nl.bd.sdbackendopdracht.security.enums.RoleEnums;
 import nl.bd.sdbackendopdracht.security.exeptions.EmailAlreadyExistsExeption;
 import nl.bd.sdbackendopdracht.security.mail.MailSender;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
-import java.nio.charset.Charset;
 import java.time.LocalDate;
-import java.util.Random;
 
 @Service
 @AllArgsConstructor

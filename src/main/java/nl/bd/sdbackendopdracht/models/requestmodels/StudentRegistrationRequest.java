@@ -1,4 +1,4 @@
-package nl.bd.sdbackendopdracht.models;
+package nl.bd.sdbackendopdracht.models.requestmodels;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

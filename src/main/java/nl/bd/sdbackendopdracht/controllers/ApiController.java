@@ -1,7 +1,7 @@
 package nl.bd.sdbackendopdracht.controllers;
 
 import lombok.AllArgsConstructor;
-import nl.bd.sdbackendopdracht.models.TaskRegistrationRequest;
+import nl.bd.sdbackendopdracht.models.requestmodels.TaskRegistrationRequest;
 import nl.bd.sdbackendopdracht.models.datamodels.Task;
 import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.services.StudentService;

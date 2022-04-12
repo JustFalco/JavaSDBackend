@@ -60,6 +60,9 @@ public class User implements UserDetails {
     @ManyToOne
     private School school;
 
+    @OneToMany(mappedBy = "markBelongsToStudent")
+    private Set<StudentGrades> grades;
+
     @JsonIgnore
     @ManyToMany(mappedBy = "taskHasUsers")
     @Builder.Default
