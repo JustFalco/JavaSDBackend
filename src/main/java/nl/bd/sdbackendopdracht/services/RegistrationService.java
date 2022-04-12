@@ -58,7 +58,7 @@ public class RegistrationService {
         if(isValidEmail){
             throw new EmailAlreadyExistsExeption("Email: " + request.getEmail() + "  already exists");
         }
-        //TODO create salt
+
         String encodedPassword = bCryptPasswordEncoder.encode(request.getPassword());
         User student = User.builder()
                 .firstName(request.getFirstName())
