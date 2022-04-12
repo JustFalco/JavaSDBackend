@@ -23,7 +23,7 @@ public class WebController {
     @RequestMapping(path = "/login")
     public String login(Authentication authentication){
         if(authentication != null){
-            return getIndex(authentication);
+            return "redirect:/";
         }
         return "login";
     }
@@ -36,7 +36,7 @@ public class WebController {
     @RequestMapping(path = "/")
     public String getIndex(Authentication authentication){
         if(authentication != null){
-            return getDashboard();
+            return "redirect:/dashboard";
         }
         return "index";
     }
