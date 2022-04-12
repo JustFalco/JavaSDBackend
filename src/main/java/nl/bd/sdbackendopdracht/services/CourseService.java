@@ -7,6 +7,9 @@ import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.repositories.CourseRepository;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
 import nl.bd.sdbackendopdracht.security.enums.RoleEnums;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -15,7 +18,7 @@ import java.util.Set;
 
 @Service
 @AllArgsConstructor
-public class CourseService extends SuperService{
+public class CourseService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final CourseRepository courseRepository;
@@ -102,5 +105,10 @@ public class CourseService extends SuperService{
         Course course = getCourse(courseId);
         course.setTeacherGivesCourse(newTeacherForCourse);
         return courseRepository.save(course);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findUserByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User does not exists"));
     }
 }

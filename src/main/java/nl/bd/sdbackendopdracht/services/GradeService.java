@@ -6,7 +6,11 @@ import nl.bd.sdbackendopdracht.models.datamodels.Task;
 import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.models.requestmodels.GradeRegistrationRequest;
 import nl.bd.sdbackendopdracht.repositories.GradeRepository;
+import nl.bd.sdbackendopdracht.repositories.UserRepository;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,12 +19,12 @@ import java.util.Set;
 
 @Service
 @AllArgsConstructor
-public class GradeService extends SuperService {
+public class GradeService implements UserDetailsService {
     private final TasksService tasksService;
     private final GradeRepository gradeRepository;
     private final UserService userService;
     private final CourseService courseService;
-
+    private final UserRepository userRepository;
     //Get one grade
     public StudentGrades getStudentGrade(Long gradeId){
         //TODO validation
@@ -94,4 +98,8 @@ public class GradeService extends SuperService {
         return gradeRepository.save(grade);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findUserByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User does not exists"));
+    }
 }

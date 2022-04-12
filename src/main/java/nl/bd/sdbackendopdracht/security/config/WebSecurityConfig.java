@@ -1,7 +1,6 @@
 package nl.bd.sdbackendopdracht.security.config;
 
 import lombok.AllArgsConstructor;
-import nl.bd.sdbackendopdracht.services.StudentService;
 import nl.bd.sdbackendopdracht.services.SuperService;
 import nl.bd.sdbackendopdracht.services.UserService;
 import org.springframework.context.annotation.Bean;
@@ -19,9 +18,9 @@ import static nl.bd.sdbackendopdracht.security.enums.RoleEnums.*;
 @EnableWebSecurity
 @AllArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
     private final SuperService superService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserService userService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

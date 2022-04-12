@@ -9,6 +9,7 @@ import nl.bd.sdbackendopdracht.repositories.CourseRepository;
 import nl.bd.sdbackendopdracht.repositories.TaskRepository;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ import java.util.Set;
 
 @Service
 @AllArgsConstructor
-public class TasksService extends SuperService{
+public class TasksService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;

@@ -12,6 +12,9 @@ import nl.bd.sdbackendopdracht.security.enums.RoleEnums;
 import nl.bd.sdbackendopdracht.security.exeptions.EmailAlreadyExistsExeption;
 import nl.bd.sdbackendopdracht.security.mail.MailSender;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +22,7 @@ import java.time.LocalDate;
 
 @Service
 @AllArgsConstructor
-public class RegistrationService extends SuperService{
+public class RegistrationService implements UserDetailsService {
 
     /* Repository imports */
 
@@ -83,5 +86,10 @@ public class RegistrationService extends SuperService{
 
     public String registerTeacher(){
         return "Teacher registerd";
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findUserByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User does not exists"));
     }
 }
