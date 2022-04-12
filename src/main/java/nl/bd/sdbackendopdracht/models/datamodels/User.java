@@ -61,6 +61,9 @@ public class User implements UserDetails {
     private School school;
 
     @JsonIgnore
+    private String salt;
+
+    @JsonIgnore
     @ManyToMany(mappedBy = "taskHasUsers")
     @Builder.Default
     @ToString.Exclude
