@@ -23,9 +23,11 @@ public class UserService implements UserDetailsService {
     /* Global user methods */
 
     public User getUserByUserId(Long userId){
-        return getUserByUserId(userId);
+        //TODO validation
+        return userRepository.getById(userId);
     }
 
+    //TODO replace
     public User getPersonalUserDetails(String email) {
         return userRepository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundExeption("User with email " + email + " does not exists!"));
     }

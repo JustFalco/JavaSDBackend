@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @EqualsAndHashCode
-public class StudentMarks {
+@Builder
+public class StudentGrades {
     @Id
     @SequenceGenerator(
             name = "mark_id_generator",
@@ -27,7 +28,7 @@ public class StudentMarks {
     private int studentMarkId;
     private LocalDateTime insertionDate;
     private String description;
-    private float cijfer;
+    private float grade;
     private int weight;
     private LocalDate testDate;
 
@@ -39,10 +40,10 @@ public class StudentMarks {
     @OneToOne
     private Task markBelongsToTask;
 
-    public StudentMarks(LocalDateTime insertionDate, String description, float cijfer, int weight, LocalDate testDate, User markBelongsToStudent, User submittedByTeacher) {
+    public StudentGrades(LocalDateTime insertionDate, String description, float grade, int weight, LocalDate testDate, User markBelongsToStudent, User submittedByTeacher) {
         this.insertionDate = insertionDate;
         this.description = description;
-        this.cijfer = cijfer;
+        this.grade = grade;
         this.weight = weight;
         this.testDate = testDate;
         this.markBelongsToStudent = markBelongsToStudent;

@@ -8,16 +8,15 @@ import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.repositories.CourseRepository;
 import nl.bd.sdbackendopdracht.repositories.TaskRepository;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
-import nl.bd.sdbackendopdracht.security.exeptions.TaskNotFoundExeption;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.Month;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -28,7 +27,9 @@ public class TasksService implements UserDetailsService {
     private final TaskRepository taskRepository;
     private final CourseRepository courseRepository;
 
+    private final CourseService courseService;
     private final UserService userService;
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User does not exists"));
@@ -51,18 +52,15 @@ public class TasksService implements UserDetailsService {
     }
 
     public Task giveTaskToUser(Long taskId, Long userId){
-        //TODO validation
-        Task taskFromDatabase = taskRepository.getById(taskId);
-        //TODO validation
-        User userToBeAddedToTask = userRepository.getById(userId);
+        Task taskFromDatabase = getTask(taskId);
+        User userToBeAddedToTask = userService.getUserByUserId(userId);
 
         taskFromDatabase.addUser(userToBeAddedToTask);
         return taskRepository.save(taskFromDatabase);
     }
 
     public void giveTaskToCourseClass(Long courseId, Long taskId){
-        //TODO validation
-        Course couseToGiveTaskTo = courseRepository.getById(courseId);
+        Course couseToGiveTaskTo = courseService.getCourse(courseId);
 
         for(User user : couseToGiveTaskTo.getStudentsFollowingCourse()){
             giveTaskToUser(taskId, user.getUserId());
@@ -73,19 +71,13 @@ public class TasksService implements UserDetailsService {
         return taskRepository.findAll();
     }
 
-    public Task getTaskById(Long id){
-        return taskRepository.findById(id).orElseThrow(() -> new TaskNotFoundExeption("Task with id: " + id + " does not exists!"));
-    }
-
     public Set<Task> getAllTasksFromStudent(Long userId){
-        //TODO validation
-        User user = userRepository.getById(userId);
+        User user = userService.getUserByUserId(userId);
         return user.getUserHasTasks();
     }
 
     public Task changeTask(Long taskId, TaskRegistrationRequest request){
-        //TODO validation
-        Task taskToChange = taskRepository.getById(taskId);
+        Task taskToChange = getTask(taskId);
         taskToChange.setTaskName(request.getTaskName());
         taskToChange.setTaksDescription(request.getTaskDescription());
         taskToChange.setTaksDeadline(request.getTaskDeadline());
@@ -97,5 +89,23 @@ public class TasksService implements UserDetailsService {
         taskRepository.deleteById(taskId);
     }
 
-    //TODO method for removing student from task
+    //Method for removing student from task
+    public Task removeStudentFromTask(Long userId, Long taskId){
+         Task task = getTask(taskId);
+         Set<User> newUserList = new HashSet<>();
+         for(User user : task.getTaskHasUsers()){
+             if(!Objects.equals(user.getUserId(), userId)){
+                 newUserList.add(user);
+             }
+         }
+
+         task.setTaskHasUsers(newUserList);
+         return taskRepository.save(task);
+    }
+
+    //Get one task
+    public Task getTask(Long taskId){
+        //TODO validation
+        return taskRepository.getById(taskId);
+    }
 }
