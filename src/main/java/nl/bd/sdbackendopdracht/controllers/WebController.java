@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class WebController {
 
-    @RequestMapping(path = "/api/v1/registration/register_school/email_validation")
-    public String registerSchoolValidation(Model model){
+    @RequestMapping(path = "/registration/register_school/email_validation")
+    public String registerSchoolValidation(){
         return "emailValidation";
     }
 
-    @RequestMapping(path = "/api/v1/registration/register_school")
+    @RequestMapping(path = "/registration/register_school")
     public String returnRegisterSchoolPage(Model model){
         model.addAttribute("school", new SchoolRegistrationRequest());
         return "register_school";
