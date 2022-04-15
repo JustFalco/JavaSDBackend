@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 @AllArgsConstructor
 public class UserService implements UserDetailsService{
@@ -30,6 +32,10 @@ public class UserService implements UserDetailsService{
     //TODO replace
     public User getPersonalUserDetails(String email) {
         return userRepository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundExeption("User with email " + email + " does not exists!"));
+    }
+
+    public Set<User> getUserByUserId2(Long userId) {
+        return userRepository.findAllById(userId).orElseThrow(() -> new UsernameNotFoundException("error kut"));
     }
 
 

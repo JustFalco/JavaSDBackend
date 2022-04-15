@@ -14,8 +14,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -27,26 +27,41 @@ public class GradeService implements UserDetailsService {
     private final UserRepository userRepository;
     //Get one grade
     public StudentGrades getStudentGrade(Long gradeId){
+        StudentGrades studentGrades = null;
         //TODO validation
-        return gradeRepository.getById(gradeId);
+        if(gradeRepository.findById(gradeId).isPresent()){
+            studentGrades = gradeRepository.findById(gradeId).get();
+        }
+        return studentGrades;
     }
 
     //get all grades from student
-    public Set<StudentGrades> getGradesFromStudent(Long studentId){
+    public List<StudentGrades> getGradesFromStudent(Long studentId){
         User student = userService.getUserByUserId(studentId);
         return student.getGrades();
     }
 
     //get all grades in course
-    public Set<Set<StudentGrades>> getGradesInCourse(Long courseId){
-        Set<User> allStudentsInCourse = courseService.getStudentsOnCourse(courseId);
-        Set<Set<StudentGrades>> allStudentGradesInCourse = new HashSet<>();
-        //TODO validation
-        for (User user : allStudentsInCourse){
-            allStudentGradesInCourse.add(user.getGrades());
-        }
+//    public List<List<StudentGrades>> getGradesInCourse(Long courseId){
+//        List<User> allStudentsInCourse = courseService.getStudentsOnCourse(courseId);
+//        List<List<StudentGrades>> allStudentGradesInCourse = new List<List<>>();
+//        //TODO validation
+//        for (User user : allStudentsInCourse){
+//            allStudentGradesInCourse.add(user.getGrades());
+//        }
+//
+//        return allStudentGradesInCourse;
+//    }
 
-        return allStudentGradesInCourse;
+    //Get last 15 grades
+    public List<StudentGrades> getLastFifteenGrades(Long studentId){
+        List<StudentGrades> allGrades = getGradesFromStudent(studentId);
+        List<StudentGrades> lastFifteen = allGrades;
+        if(allGrades.size() > 15){
+            lastFifteen = allGrades.subList(allGrades.size()-15,allGrades.size());
+        }
+        Collections.reverse(lastFifteen);
+        return lastFifteen;
     }
 
     //change one grade
@@ -82,8 +97,11 @@ public class GradeService implements UserDetailsService {
         //TODO heel veel validation
         User teacher = userService.getPersonalUserDetails(authentication.getName());
         User gradeBelongsToStudent = userService.getUserByUserId(studentId);
+        Task task = null;
+        if(request.getMarkBelongsToTaskId() != 0){
+             task = tasksService.getTask(request.getMarkBelongsToTaskId());
+        }
 
-        Task task = tasksService.getTask(request.getMarkBelongsToTaskId());
 
         StudentGrades grade = StudentGrades.builder()
                 .description(request.getDescription())

@@ -61,7 +61,7 @@ public class User implements UserDetails {
     private School school;
 
     @OneToMany(mappedBy = "markBelongsToStudent")
-    private Set<StudentGrades> grades;
+    private List<StudentGrades> grades;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "taskHasUsers")
