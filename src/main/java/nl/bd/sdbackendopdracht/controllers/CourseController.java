@@ -2,9 +2,12 @@ package nl.bd.sdbackendopdracht.controllers;
 
 import lombok.AllArgsConstructor;
 import nl.bd.sdbackendopdracht.models.datamodels.Course;
+import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.models.requestmodels.CourseRegistrationRequest;
 import nl.bd.sdbackendopdracht.services.CourseService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "api/v1")
@@ -14,13 +17,13 @@ public class CourseController {
     private final CourseService courseService;
 
     //Course aanmaken (Administrator)
-    @PostMapping("/course/create")
+    @PostMapping("/administrator/course/create")
     public Course createCourse(@RequestBody CourseRegistrationRequest request){
         return courseService.createCourse(request);
     }
 
     //Course veranderen (Administrator)
-    @PutMapping("/course/change/course={courseId}")
+    @PutMapping("/administrator/course/change/course={courseId}")
     public Course changeCourse(
             @RequestBody CourseRegistrationRequest request,
             @PathVariable("courseId") Long courseId
@@ -29,14 +32,46 @@ public class CourseController {
     }
 
     //Student toevoegen aan course (Administrator)
+    @PostMapping("/administrator/course/add_student/student={studentId}&course={courseId}")
+    public Course addStudentToCourse(
+            @PathVariable("studentId") Long studentId,
+            @PathVariable("courseId") Long courseId
+    ){
+        return courseService.addStudentToCourse(studentId, courseId);
+    }
 
     //Student verwijderen uit course (Administrator)
+    @DeleteMapping("/administrator/course/delete_student/student={studentId}&course={courseId}")
+    public void removeStudent(
+            @PathVariable("studentId") Long studentId,
+            @PathVariable("courseId") Long courseId
+    ){
+        courseService.removeStudentFromCourse(courseId, studentId);
+    }
 
     //Meerdere studenten toevoegen aan course (Administrator)
+    @PostMapping("/administrator/course/add_students/course={courseId}")
+    public Course addMultipleStudentsToCourse(
+            @PathVariable("courseId") Long courseId,
+            @RequestBody List<Long> studentIds
+    ){
+        return courseService.addMultipleStudentsToCourse(studentIds, courseId);
+    }
 
     //Course verwijderen (Administrator)
+    @DeleteMapping("/administrator/course/remove/course={courseId}")
+    public void removeCourse(
+            @PathVariable("courseId") Long courseId
+    ){
+        courseService.removeCourse(courseId);
+    }
 
     //Course gegevens opvragen (All)
-
+    @GetMapping("/user/course/get_details/course={courseId}")
+    public Course getCourseDetails(
+            @PathVariable("courseId") Long courseId
+    ){
+        return courseService.getCourse(courseId);
+    }
 
 }

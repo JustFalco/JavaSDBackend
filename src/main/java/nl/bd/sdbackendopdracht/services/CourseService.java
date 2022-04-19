@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -93,9 +94,11 @@ public class CourseService implements UserDetailsService {
     }
 
     //Add multiple students to course
-    public Course addMultipleStudentsToCourse(Set<User> usersToBeAdded, Long courseId){
+    public Course addMultipleStudentsToCourse(List<Long> usersToBeAddedIds, Long courseId){
         Course course = getCourse(courseId);
-        course.setStudentsFollowingCourse(usersToBeAdded);
+        for(Long id : usersToBeAddedIds){
+            course.addUserToCourse(userRepository.findById(id).get());
+        }
         return courseRepository.save(course);
     }
 

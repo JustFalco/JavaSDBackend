@@ -51,4 +51,6 @@ public class Course {
         this.studentsFollowingCourse.add(user);
     }
 
+
+
 }
