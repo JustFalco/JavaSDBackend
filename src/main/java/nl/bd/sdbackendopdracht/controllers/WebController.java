@@ -41,4 +41,9 @@ public class WebController {
         return "index";
     }
 
+    //User details page
+    @RequestMapping(path = "/user/get_user/user={userId}")
+    public String getUserDetailsPage(){
+        return "userDetailsPage";
+    }
 }
