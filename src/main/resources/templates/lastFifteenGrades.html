@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Grades</title>
+</head>
+<body>
+<h1>Cijfers</h1>
+<table class="dataTable">
+    <tr><td>
+    <tr>
+        <th>Beschrijving</th>
+        <th>Cijfer</th>
+        <th>Weging</th>
+
+    </tr>
+    <tr th:each = "grades : ${gradeList}">
+        <td class="tableData" th:text="${grades.description}"></td>
+        <td class="tableData" th:text="${grades.grade}"></td>
+        <td class="tableData" th:text="${grades.weight}"></td>
+    </tr>
+    </td>
+    </tr></table>
+</body>
+</html>

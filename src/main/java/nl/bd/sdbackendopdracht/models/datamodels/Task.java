@@ -28,7 +28,7 @@ public class Task {
             generator = "task_id_generator",
             strategy = GenerationType.SEQUENCE
     )
-    private int taskId;
+    private Long taskId;
     private String taskName;
     private String taksDescription;
     //TODO nieuwe feature waarmee je bijlagen toe kan voegen

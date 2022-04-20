@@ -98,9 +98,12 @@ public class GradeService implements UserDetailsService {
         User teacher = userService.getPersonalUserDetails(authentication.getName());
         User gradeBelongsToStudent = userService.getUserByUserId(studentId);
         Task task = null;
-        if(request.getMarkBelongsToTaskId() != 0){
-             task = tasksService.getTask(request.getMarkBelongsToTaskId());
+        if(request.getMarkBelongsToTaskId() != null){
+            if(request.getMarkBelongsToTaskId() != 0){
+                task = tasksService.getTask(request.getMarkBelongsToTaskId());
+            }
         }
+
 
 
         StudentGrades grade = StudentGrades.builder()

@@ -5,6 +5,8 @@ import nl.bd.sdbackendopdracht.models.datamodels.StudentGrades;
 import nl.bd.sdbackendopdracht.models.requestmodels.GradeRegistrationRequest;
 import nl.bd.sdbackendopdracht.services.GradeService;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +20,7 @@ public class GradeController {
     private final GradeService gradeService;
 
     //Get latest 15 Grades (Student)
-    @GetMapping("/student/grades/get_grade/last/student={userId}")
+    @GetMapping("api/v1/student/grades/get_grade/last/student={userId}")
     public List<StudentGrades> getLastFifteenGrades(@PathVariable("userId") Long userId){
         return gradeService.getLastFifteenGrades(userId);
     }
@@ -62,6 +64,7 @@ public class GradeController {
             Authentication authentication
     ){
         return gradeService.submitGrade(studentId, request, authentication);
+
     }
 
     //submit grades for class (Teacher)

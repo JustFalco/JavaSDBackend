@@ -110,6 +110,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>software-development-eindopdracht</finalName>
     </build>
 
 </project>
