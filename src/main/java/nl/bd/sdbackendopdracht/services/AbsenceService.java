@@ -8,6 +8,7 @@ import nl.bd.sdbackendopdracht.repositories.AbsenceRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -18,6 +19,7 @@ public class AbsenceService {
     private final AbsenceRepository absenceRepository;
     private final UserService userService;
     private final CourseService courseService;
+    private final SchoolService schoolService;
 
     //Submit absence
     public Absence submitAbsence(AbsenceRegistrationRequest request, Authentication authentication){
@@ -60,11 +62,29 @@ public class AbsenceService {
 
     //Get all absence from course
     //TODO AFMAKEN
-    public List<Absence> getAllAbsenceFromCourse(Long courseId){
+    public List<Set<Absence>> getAllAbsenceFromCourse(Long courseId){
         Set<User> studentsInCourse = courseService.getCourse(courseId).getStudentsFollowingCourse();
-        return null;
+        List<Set<Absence>> absenceList = new ArrayList<>();
+        for (User student : studentsInCourse){
+            absenceList.add(getAbsenceFromStudent(student.getUserId()));
+        }
+        return absenceList;
     }
 
     //Get all absence from school
+    public List<Set<Absence>> getAllAbsenceFromSchool(Long schoolId){
+        Set<User> studentsInSchool = schoolService.getAllStudentsOnSchool(schoolId);
+        List<Set<Absence>> absenceList = new ArrayList<>();
 
+        for (User student : studentsInSchool){
+            absenceList.add(getAbsenceFromStudent(student.getUserId()));
+        }
+
+        return absenceList;
+    }
+
+    //Get all absence from student (All)
+    public Set<Absence> getAbsenceFromStudent(Long userId){
+        return absenceRepository.getALlAbsenceFromUser(userId).orElseThrow(() -> new IllegalStateException("No things found"));
+    }
 }

@@ -23,7 +23,7 @@ public class School {
             generator = "school_sequencegenerator",
             strategy = GenerationType.SEQUENCE
     )
-    private Long Id;
+    private Long schoolId;
     private String schoolName;
     private String schoolMail;
 }

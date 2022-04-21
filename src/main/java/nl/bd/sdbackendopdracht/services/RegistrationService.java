@@ -51,7 +51,7 @@ public class RegistrationService implements UserDetailsService {
         return "School saved";
     }
 
-    public String registerStudent(StudentRegistrationRequest request){
+    public User registerStudent(StudentRegistrationRequest request){
         boolean isValidEmail = userRepository.findUserByEmail(request.getEmail()).isPresent();
 
         if(isValidEmail){
@@ -75,9 +75,9 @@ public class RegistrationService implements UserDetailsService {
                 .build();
 
 
-        userRepository.save(student);
 
-        return "Student saved!";
+
+        return userRepository.save(student);
     }
 
     public User registerStudent2(StudentRegistrationRequest request){

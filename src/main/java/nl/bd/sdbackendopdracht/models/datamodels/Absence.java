@@ -1,18 +1,22 @@
 package nl.bd.sdbackendopdracht.models.datamodels;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import nl.bd.sdbackendopdracht.security.enums.AbsenceTypes;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
-@Table(name = "absence")
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-@Builder
+@AllArgsConstructor
 @ToString
+@EqualsAndHashCode
+@NoArgsConstructor
+@Builder
+@Table(name = "absence")
 public class Absence {
     @Id
     @SequenceGenerator(
@@ -26,6 +30,7 @@ public class Absence {
     )
     private Long absenceId;
 
+    @JsonIgnore
     @ManyToOne
     private User absentStudent;
     @ManyToOne
@@ -35,4 +40,6 @@ public class Absence {
     private AbsenceTypes absenceType;
 
     private String absenceDescription;
+
+
 }
