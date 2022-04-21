@@ -34,11 +34,6 @@ public class UserService implements UserDetailsService{
         return userRepository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundExeption("User with email " + email + " does not exists!"));
     }
 
-    public Set<User> getUserByUserId2(Long userId) {
-        return userRepository.findAllById(userId).orElseThrow(() -> new UsernameNotFoundException("error kut"));
-    }
-
-
     /* Student specific methods */
 
     /* Teacher specific methods */
