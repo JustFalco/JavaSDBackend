@@ -8,6 +8,7 @@ import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.repositories.CourseRepository;
 import nl.bd.sdbackendopdracht.repositories.TaskRepository;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,7 +36,7 @@ public class TasksService implements UserDetailsService {
         return userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User does not exists"));
     }
 
-    public Task createTask(TaskRegistrationRequest request, Long userId, String currentUserMail){
+    public Task createTask(TaskRegistrationRequest request, String currentUserMail){
         //TODO fix builder
         User personalUserDetails = userService.getPersonalUserDetails(currentUserMail);
         Task task = Task.builder()
@@ -51,7 +52,7 @@ public class TasksService implements UserDetailsService {
         return taskRepository.save(task);
     }
 
-    public Task giveTaskToUser(Long taskId, Long userId){
+    public Task giveTaskToStudent(Long taskId, Long userId){
         Task taskFromDatabase = getTask(taskId);
         User userToBeAddedToTask = userService.getUserByUserId(userId);
 
@@ -63,7 +64,7 @@ public class TasksService implements UserDetailsService {
         Course couseToGiveTaskTo = courseService.getCourse(courseId);
 
         for(User user : couseToGiveTaskTo.getStudentsFollowingCourse()){
-            giveTaskToUser(taskId, user.getUserId());
+            giveTaskToStudent(taskId, user.getUserId());
         }
     }
 
@@ -106,6 +107,14 @@ public class TasksService implements UserDetailsService {
     //Get one task
     public Task getTask(Long taskId){
         //TODO validation
-        return taskRepository.getById(taskId);
+        return taskRepository.findById(taskId).get();
+    }
+
+    public Task createTaskForCourse(TaskRegistrationRequest request, Authentication authentication, Long courseId) {
+        Task task = createTask(request, authentication.getName());
+        taskRepository.save(task);
+
+        giveTaskToCourseClass(courseId, task.getTaskId());
+        return getTask(task.getTaskId());
     }
 }
