@@ -72,6 +72,7 @@ public class RegistrationService implements UserDetailsService {
     }
 
     public User registerStudent(StudentRegistrationRequest request){
+        new EmailValidation().validate(request.getEmail());
         boolean isValidEmail = userRepository.findUserByEmail(request.getEmail()).isPresent();
 
         if(isValidEmail){
@@ -99,6 +100,7 @@ public class RegistrationService implements UserDetailsService {
 
 
     public User registerAdministrator(AdministratorRegistrationRequest request){
+        new EmailValidation().validate(request.getEmail());
         boolean isValidEmail = userRepository.findUserByEmail(request.getEmail()).isPresent();
 
         if(isValidEmail){
@@ -124,7 +126,8 @@ public class RegistrationService implements UserDetailsService {
         return userRepository.save(administrator);
     }
 
-    public User registerTeacher(TeacherRegistrationRequest request  ){
+    public User registerTeacher(TeacherRegistrationRequest request ){
+        new EmailValidation().validate(request.getEmail());
         boolean isValidEmail = userRepository.findUserByEmail(request.getEmail()).isPresent();
 
         if(isValidEmail){
