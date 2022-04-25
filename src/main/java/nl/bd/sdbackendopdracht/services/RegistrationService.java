@@ -2,10 +2,12 @@ package nl.bd.sdbackendopdracht.services;
 
 import lombok.AllArgsConstructor;
 import nl.bd.sdbackendopdracht.models.Mail;
+import nl.bd.sdbackendopdracht.models.requestmodels.AdministratorRegistrationRequest;
 import nl.bd.sdbackendopdracht.models.requestmodels.SchoolRegistrationRequest;
 import nl.bd.sdbackendopdracht.models.requestmodels.StudentRegistrationRequest;
 import nl.bd.sdbackendopdracht.models.datamodels.School;
 import nl.bd.sdbackendopdracht.models.datamodels.User;
+import nl.bd.sdbackendopdracht.models.requestmodels.TeacherRegistrationRequest;
 import nl.bd.sdbackendopdracht.repositories.SchoolRepository;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
 import nl.bd.sdbackendopdracht.security.enums.RoleEnums;
@@ -35,7 +37,7 @@ public class RegistrationService implements UserDetailsService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final static Mail mail = new Mail();
 
-    public String registerSchool(SchoolRegistrationRequest request) {
+    public User registerSchool(SchoolRegistrationRequest request) {
         School school = School.builder()
                 .schoolMail(request.getSchoolMail())
                 .schoolName(request.getSchoolName())
@@ -46,8 +48,19 @@ public class RegistrationService implements UserDetailsService {
         String password = RandomStringUtils.random(14, true, false);
 
         mailSender.send(request.getSchoolMail(), mail.getMail(request.getSchoolName(), request.getSchoolMail(), password));
+        String encodedPassword = bCryptPasswordEncoder.encode(password);
 
-        return "School saved";
+        User tempUser = User.builder()
+                .email(request.getSchoolMail())
+                .password(encodedPassword)
+                .roleEnums(RoleEnums.ADMINISTRATOR)
+                .dateOfCreation(LocalDate.now())
+                .locked(false)
+                .enabled(true)
+                .build();
+
+
+        return userRepository.save(tempUser);
     }
 
     public User registerStudent(StudentRegistrationRequest request){
@@ -77,12 +90,56 @@ public class RegistrationService implements UserDetailsService {
     }
 
 
-    public String registerAdministrator(){
-        return "Administrator registerd";
+    public User registerAdministrator(AdministratorRegistrationRequest request){
+        boolean isValidEmail = userRepository.findUserByEmail(request.getEmail()).isPresent();
+
+        if(isValidEmail){
+            throw new EmailAlreadyExistsExeption("Email: " + request.getEmail() + "  already exists");
+        }
+
+        String encodedPassword = bCryptPasswordEncoder.encode(request.getPassword());
+        User administrator = User.builder()
+                .firstName(request.getFirstName())
+                .middleName(request.getMiddleName())
+                .lastName(request.getLastName())
+                .roleEnums(RoleEnums.ADMINISTRATOR)
+                .email(request.getEmail())
+                .dateOfBirth(request.getDateOfBirth())
+                .dateOfCreation(LocalDate.now())
+                .password(encodedPassword)
+                .workerNumber(request.getWorkerNumber())
+                .isActiveWorker(request.isActiveWorker())
+                .locked(false)
+                .enabled(true)
+                .build();
+
+        return userRepository.save(administrator);
     }
 
-    public String registerTeacher(){
-        return "Teacher registerd";
+    public User registerTeacher(TeacherRegistrationRequest request  ){
+        boolean isValidEmail = userRepository.findUserByEmail(request.getEmail()).isPresent();
+
+        if(isValidEmail){
+            throw new EmailAlreadyExistsExeption("Email: " + request.getEmail() + "  already exists");
+        }
+
+        String encodedPassword = bCryptPasswordEncoder.encode(request.getPassword());
+        User administrator = User.builder()
+                .firstName(request.getFirstName())
+                .middleName(request.getMiddleName())
+                .lastName(request.getLastName())
+                .roleEnums(RoleEnums.TEACHER)
+                .email(request.getEmail())
+                .dateOfBirth(request.getDateOfBirth())
+                .dateOfCreation(LocalDate.now())
+                .password(encodedPassword)
+                .teacherNumber(request.getTeacherNumber())
+                .isActiveTeacher(request.isActiveTeacher())
+                .locked(false)
+                .enabled(true)
+                .build();
+
+        return userRepository.save(administrator);
     }
 
     @Override

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022. Falco Wolkorte
+ */
+
 package nl.bd.sdbackendopdracht.models.requestmodels;
 
 import lombok.AllArgsConstructor;
@@ -12,14 +16,14 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class StudentRegistrationRequest {
+public class AdministratorRegistrationRequest {
     private final String firstName;
     private final String middleName;
     private final String lastName;
     private final String email;
     private final LocalDate dateOfBirth;
     private final String password;
-    private final int studentNumber;
-    private final int studentYear;
+    private final int workerNumber;
+    private final boolean isActiveWorker;
 
 }
