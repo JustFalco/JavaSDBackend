@@ -117,4 +117,5 @@ public class TasksService implements UserDetailsService {
         giveTaskToCourseClass(courseId, task.getTaskId());
         return getTask(task.getTaskId());
     }
+
 }

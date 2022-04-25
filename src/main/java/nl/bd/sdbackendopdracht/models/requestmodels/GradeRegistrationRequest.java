@@ -12,12 +12,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class GradeRegistrationRequest {
+public class  GradeRegistrationRequest {
     private String description;
     private float grade;
     private int weight;
     private LocalDate testDate;
-    private Long markBelongsToStudentId;
-    private Long markSubmittedByTeacherId;
     private Long markBelongsToTaskId;
 }

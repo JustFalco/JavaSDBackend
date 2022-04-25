@@ -30,7 +30,7 @@ public class AbsenceController {
     }
 
     //Change absence (Administrator)
-    @PutMapping("/administrator/absence/change?absence={absenceId}")
+    @PutMapping("/administrator/absence/change/absence={absenceId}")
     public Absence changeAbsence(@PathVariable("absenceId") Long absenceId,
                                  Authentication authentication,
                                  @RequestBody AbsenceRegistrationRequest absenceRegistrationRequest){
@@ -38,9 +38,10 @@ public class AbsenceController {
     }
 
     //Delete absence (Administrator)
-    @DeleteMapping("/administrator/absence/delete?absenceId={absenceId}")
-    public void deleteAbsence(@PathVariable("absenceId") Long absenceId){
+    @DeleteMapping("/administrator/absence/delete/absenceId={absenceId}")
+    public String deleteAbsence(@PathVariable("absenceId") Long absenceId){
         absenceService.removeAbsence(absenceId);
+        return "Absence with id: " + absenceId + " has succesfully been removed!";
     }
 
     //Get all absence from student (all)

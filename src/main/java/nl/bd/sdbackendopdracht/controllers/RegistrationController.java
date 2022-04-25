@@ -9,23 +9,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping(path = "api/v1")
 @AllArgsConstructor
 public class RegistrationController {
     private final RegistrationService registrationService;
 
     //Registreer student
-    @PostMapping(value = "/administrator/registration/register_student")
+    @PostMapping( "/administrator/registration/register_student")
     public User registerStudent(@RequestBody StudentRegistrationRequest request){
         return registrationService.registerStudent(request);
     }
 
     //Registreer school
-    @PostMapping(value = "registration/register_school")
-    public String registerSchool(@ModelAttribute("school") SchoolRegistrationRequest schoolRegistrationRequest){
+    @PostMapping( "registration/register_school")
+    public void registerSchool(@ModelAttribute("school") SchoolRegistrationRequest schoolRegistrationRequest){
         registrationService.registerSchool(schoolRegistrationRequest);
-        //TODO dit klopt niet helemaal
-        return "redirect:register_school/email_validation";
+
     }
 
     //Registreer administratief medewerker

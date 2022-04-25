@@ -65,12 +65,19 @@ public class GradeService implements UserDetailsService {
     }
 
     //change one grade
-    public StudentGrades changeGrade(GradeRegistrationRequest request, Long gradeId, Authentication authentication){
+    public StudentGrades changeGrade(GradeRegistrationRequest request, Long gradeId, Authentication authentication, Long studentId){
+        Task task = null;
+        if(request.getMarkBelongsToTaskId() != null){
+            if(request.getMarkBelongsToTaskId() != 0){
+                task = tasksService.getTask(request.getMarkBelongsToTaskId());
+            }
+        }
+
         //TODO validation
         StudentGrades grade = getStudentGrade(gradeId);
         User teacher = userService.getPersonalUserDetails(authentication.getName());
-        User student = userService.getUserByUserId(request.getMarkBelongsToStudentId());
-        Task task = tasksService.getTask(request.getMarkBelongsToTaskId());
+        User student = userService.getUserByUserId(studentId);
+
         grade.setGrade(request.getGrade());
         grade.setDescription(request.getDescription());
         grade.setInsertionDate(LocalDateTime.now());

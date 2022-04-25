@@ -5,6 +5,7 @@ import nl.bd.sdbackendopdracht.models.datamodels.Course;
 import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.models.requestmodels.CourseRegistrationRequest;
 import nl.bd.sdbackendopdracht.services.CourseService;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,8 +19,8 @@ public class CourseController {
 
     //Course aanmaken (Administrator)
     @PostMapping("/administrator/course/create")
-    public Course createCourse(@RequestBody CourseRegistrationRequest request){
-        return courseService.createCourse(request);
+    public Course createCourse(@RequestBody CourseRegistrationRequest request, Authentication authentication){
+        return courseService.createCourse(request, authentication);
     }
 
     //Course veranderen (Administrator)
@@ -42,11 +43,12 @@ public class CourseController {
 
     //Student verwijderen uit course (Administrator)
     @DeleteMapping("/administrator/course/delete_student/student={studentId}&course={courseId}")
-    public void removeStudent(
+    public String removeStudent(
             @PathVariable("studentId") Long studentId,
             @PathVariable("courseId") Long courseId
     ){
         courseService.removeStudentFromCourse(courseId, studentId);
+        return "Student with id: " + studentId + " has succesfully been removed from course with id: " + courseId + "!";
     }
 
     //Meerdere studenten toevoegen aan course (Administrator)
@@ -60,10 +62,11 @@ public class CourseController {
 
     //Course verwijderen (Administrator)
     @DeleteMapping("/administrator/course/remove/course={courseId}")
-    public void removeCourse(
+    public String removeCourse(
             @PathVariable("courseId") Long courseId
     ){
         courseService.removeCourse(courseId);
+        return "Course with id: " + courseId + " has succesfully been removed!";
     }
 
     //Course gegevens opvragen (All)

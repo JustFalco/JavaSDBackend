@@ -7,6 +7,7 @@ import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.repositories.CourseRepository;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
 import nl.bd.sdbackendopdracht.security.enums.RoleEnums;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,15 +25,18 @@ public class CourseService implements UserDetailsService {
     private final UserRepository userRepository;
     private final CourseRepository courseRepository;
     private final UserService userService;
+
     //Create course
-    public Course createCourse(CourseRegistrationRequest request){
+    public Course createCourse(CourseRegistrationRequest request, Authentication authentication){
+        //TODO validation
         User courseGivenBy = userService.getUserByUserId(request.getTeacherGivesCourseId());
+        User courseCreator = userService.getPersonalUserDetails(authentication.getName());
 
         Course courseToBeCreated = Course.builder()
                 .courseName(request.getCourseName())
                 .courseDescription(request.getCourseDescription())
                 //TODO misschien hier nog even naar kijken
-                .belongsToSchool(courseGivenBy.getSchool())
+                .belongsToSchool(courseCreator.getSchool())
                 .teacherGivesCourse(courseGivenBy)
                 .build();
 

@@ -20,37 +20,24 @@ public class GradeController {
     private final GradeService gradeService;
 
     //Get latest 15 Grades (Student)
-    @GetMapping("api/v1/student/grades/get_grade/last/student={userId}")
+    @GetMapping("/student/grades/get_grade/last/student={userId}")
     public List<StudentGrades> getLastFifteenGrades(@PathVariable("userId") Long userId){
         return gradeService.getLastFifteenGrades(userId);
     }
 
-    //Get all grades (Student)
-    @GetMapping("/student/grades/get_grade/overview/student={userId}")
-    public List<StudentGrades> getGradeOverview(@PathVariable("userId") Long userId){
+    //Get all grades from student (All)
+        @GetMapping("/grades/get_grade/overview/student={userId}")
+    public List<StudentGrades> getGradeOverview(
+            @PathVariable("userId") Long userId
+        ){
         return gradeService.getGradesFromStudent(userId);
     }
 
-    //Get one grade (Student)
-    @GetMapping("/student/grades/get_grade/{gradeId}")
+    //Get grade details (All)
+    @GetMapping("/grades/get_grade/grade={gradeId}")
     public StudentGrades getGrade(@PathVariable Long gradeId){
         //TODO validate Long
         return gradeService.getStudentGrade(gradeId);
-    }
-
-    //Get one grade (Teacher)
-    @GetMapping("/teacher/grades/get_grade/grade={gradeId}")
-    public StudentGrades getGradeTeacher(@PathVariable Long gradeId){
-        //TODO validate Long
-        return getGrade(gradeId);
-    }
-
-    //Get all grades from student (Teacher)
-    @GetMapping("/teacher/grades/get_grade/student={studentId}")
-    public List<StudentGrades> getStudentGrades(
-            @PathVariable("studentId") Long studentId
-    ){
-        return gradeService.getGradesFromStudent(studentId);
     }
 
     //Get all latest grades from class (Teacher)
@@ -78,15 +65,16 @@ public class GradeController {
             @RequestBody GradeRegistrationRequest request,
             Authentication authentication
     ){
-        return gradeService.changeGrade(request, gradeId, authentication);
+        return gradeService.changeGrade(request, gradeId, authentication, studentId);
     }
 
     //Remove grade (Teacher)
     @DeleteMapping("/teacher/grades/delete/grade={gradeId}")
-    public void deleteGrade(
+    public String deleteGrade(
             @PathVariable("gradeId") Long gradeId
     ){
         gradeService.deleteGrade(gradeId);
+        return "Grade with grade id: " + gradeId +  " has been removed!";
     }
 
 }

@@ -11,7 +11,6 @@ import lombok.*;
 public class CourseRegistrationRequest {
     private String courseName;
     private String courseDescription;
-    private Long belongsToSchoolId;
     private Long teacherGivesCourseId;
 
 }

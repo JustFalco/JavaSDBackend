@@ -25,7 +25,6 @@ import java.time.LocalDate;
 public class RegistrationService implements UserDetailsService {
 
     /* Repository imports */
-
     private final SchoolRepository schoolRepository;
     private final UserRepository userRepository;
 
@@ -74,40 +73,9 @@ public class RegistrationService implements UserDetailsService {
                 .enabled(true)
                 .build();
 
-
-
-
         return userRepository.save(student);
     }
 
-    public User registerStudent2(StudentRegistrationRequest request){
-        boolean isValidEmail = userRepository.findUserByEmail(request.getEmail()).isPresent();
-
-        if(isValidEmail){
-            throw new EmailAlreadyExistsExeption("Email: " + request.getEmail() + "  already exists");
-        }
-
-        String encodedPassword = bCryptPasswordEncoder.encode(request.getPassword());
-        User student = User.builder()
-                .firstName(request.getFirstName())
-                .middleName(request.getMiddleName())
-                .lastName(request.getLastName())
-                .roleEnums(request.getRoleEnums())
-                .email(request.getEmail())
-                .dateOfBirth(request.getDateOfBirth())
-                .dateOfCreation(LocalDate.now())
-                .password(encodedPassword)
-                .studentNumber(request.getStudentNumber())
-                .year(request.getStudentYear())
-                .locked(false)
-                .enabled(true)
-                .build();
-
-
-
-
-        return userRepository.save(student);
-    }
 
     public String registerAdministrator(){
         return "Administrator registerd";

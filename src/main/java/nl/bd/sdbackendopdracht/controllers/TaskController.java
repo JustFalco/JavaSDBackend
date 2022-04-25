@@ -28,6 +28,7 @@ public class TaskController {
     }
 
     //Change task (Teacher)
+    //TODO alles wordt naar null geschreven
     @PutMapping("/teacher/task/change/task={taskId}")
     public Task changeTask(
             TaskRegistrationRequest registrationRequest,
@@ -62,6 +63,15 @@ public class TaskController {
     }
 
     //Remove user from task (Teacher)
+    @DeleteMapping("/teacher/task/delete/student={userId}&task={taskId}")
+    public void deleteTask(
+            @PathVariable("userId") Long userId,
+            @PathVariable("taskId") Long taskId
+    ){
+        tasksService.removeStudentFromTask(taskId, userId);
+    }
+
+    //Remove task (Teacher)
     @DeleteMapping("/teacher/task/delete/task={taskId}")
     public void deleteTask(
             @PathVariable("taskId") Long taskId
