@@ -76,6 +76,9 @@ public class User implements UserDetails {
     private Set<Course> coursesBelongingToStudent = new HashSet<>();
 
     public Integer getAge() {
+        if(this.dateOfBirth == null){
+            return 0;
+        }
         return Period.between(this.dateOfBirth, LocalDate.now()).getYears();
     }
 

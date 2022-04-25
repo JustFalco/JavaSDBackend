@@ -2,17 +2,18 @@ package nl.bd.sdbackendopdracht.services;
 
 import lombok.AllArgsConstructor;
 import nl.bd.sdbackendopdracht.models.Mail;
+import nl.bd.sdbackendopdracht.models.datamodels.School;
+import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.models.requestmodels.AdministratorRegistrationRequest;
 import nl.bd.sdbackendopdracht.models.requestmodels.SchoolRegistrationRequest;
 import nl.bd.sdbackendopdracht.models.requestmodels.StudentRegistrationRequest;
-import nl.bd.sdbackendopdracht.models.datamodels.School;
-import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.models.requestmodels.TeacherRegistrationRequest;
 import nl.bd.sdbackendopdracht.repositories.SchoolRepository;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
 import nl.bd.sdbackendopdracht.security.enums.RoleEnums;
 import nl.bd.sdbackendopdracht.security.exeptions.EmailAlreadyExistsExeption;
 import nl.bd.sdbackendopdracht.security.mail.MailSender;
+import nl.bd.sdbackendopdracht.security.validation.EmailValidation;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -38,6 +39,9 @@ public class RegistrationService implements UserDetailsService {
     private final static Mail mail = new Mail();
 
     public User registerSchool(SchoolRegistrationRequest request) {
+
+        new EmailValidation().validate(request.getSchoolMail());
+
         School school = School.builder()
                 .schoolMail(request.getSchoolMail())
                 .schoolName(request.getSchoolName())
@@ -47,7 +51,6 @@ public class RegistrationService implements UserDetailsService {
 
         String password = RandomStringUtils.random(14, true, false);
 
-        mailSender.send(request.getSchoolMail(), mail.getMail(request.getSchoolName(), request.getSchoolMail(), password));
         String encodedPassword = bCryptPasswordEncoder.encode(password);
 
         User tempUser = User.builder()
@@ -59,8 +62,13 @@ public class RegistrationService implements UserDetailsService {
                 .enabled(true)
                 .build();
 
+        userRepository.save(tempUser);
 
-        return userRepository.save(tempUser);
+        mailSender.send(request.getSchoolMail(), mail.getMail(request.getSchoolName(), request.getSchoolMail(), password));
+
+
+
+        return tempUser;
     }
 
     public User registerStudent(StudentRegistrationRequest request){
