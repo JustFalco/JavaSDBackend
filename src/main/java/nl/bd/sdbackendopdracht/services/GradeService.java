@@ -17,6 +17,9 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ *
+ */
 @Service
 @AllArgsConstructor
 public class GradeService implements UserDetailsService {
@@ -25,6 +28,7 @@ public class GradeService implements UserDetailsService {
     private final UserService userService;
     private final CourseService courseService;
     private final UserRepository userRepository;
+
     //Get one grade
     public StudentGrades getStudentGrade(Long gradeId){
         StudentGrades studentGrades = null;

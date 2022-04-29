@@ -23,10 +23,14 @@ public class UserService implements UserDetailsService{
     }
 
     /* Global user methods */
-
     public User getUserByUserId(Long userId){
-        //TODO validation
-        return userRepository.getById(userId);
+        User user = null;
+        if(userRepository.findById(userId).isEmpty()){
+            throw new UserNotFoundExeption("The user with id: " + userId + " has not been found in the database!");
+        }else{
+           user = userRepository.findById(userId).get();
+        }
+        return user;
     }
 
     //TODO replace

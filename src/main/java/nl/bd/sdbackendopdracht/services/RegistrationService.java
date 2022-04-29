@@ -12,6 +12,7 @@ import nl.bd.sdbackendopdracht.repositories.SchoolRepository;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
 import nl.bd.sdbackendopdracht.security.enums.RoleEnums;
 import nl.bd.sdbackendopdracht.security.exeptions.EmailAlreadyExistsExeption;
+import nl.bd.sdbackendopdracht.security.exeptions.IllegalEmailExeption;
 import nl.bd.sdbackendopdracht.security.mail.MailSender;
 import nl.bd.sdbackendopdracht.security.validation.EmailValidation;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -27,6 +28,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class RegistrationService implements UserDetailsService {
 
+    private static final String message = "This email cannot be used because of illegal characters or wrong format!";
+
+    /* Validation imports */
+    private final EmailValidation emailValidation;
+
     /* Repository imports */
     private final SchoolRepository schoolRepository;
     private final UserRepository userRepository;
@@ -40,7 +46,8 @@ public class RegistrationService implements UserDetailsService {
 
     public User registerSchool(SchoolRegistrationRequest request) {
 
-        new EmailValidation().validate(request.getSchoolMail());
+        emailValidation.validate(request.getSchoolMail(), message);
+
 
         School school = School.builder()
                 .schoolMail(request.getSchoolMail())
@@ -72,7 +79,8 @@ public class RegistrationService implements UserDetailsService {
     }
 
     public User registerStudent(StudentRegistrationRequest request){
-        new EmailValidation().validate(request.getEmail());
+        emailValidation.validate(request.getEmail(), message);
+
         boolean isValidEmail = userRepository.findUserByEmail(request.getEmail()).isPresent();
 
         if(isValidEmail){
@@ -100,7 +108,8 @@ public class RegistrationService implements UserDetailsService {
 
 
     public User registerAdministrator(AdministratorRegistrationRequest request){
-        new EmailValidation().validate(request.getEmail());
+        emailValidation.validate(request.getEmail(), message);
+
         boolean isValidEmail = userRepository.findUserByEmail(request.getEmail()).isPresent();
 
         if(isValidEmail){
@@ -127,7 +136,8 @@ public class RegistrationService implements UserDetailsService {
     }
 
     public User registerTeacher(TeacherRegistrationRequest request ){
-        new EmailValidation().validate(request.getEmail());
+        emailValidation.validate(request.getEmail(), message);
+
         boolean isValidEmail = userRepository.findUserByEmail(request.getEmail()).isPresent();
 
         if(isValidEmail){

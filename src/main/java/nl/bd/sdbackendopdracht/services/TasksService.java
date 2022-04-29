@@ -8,6 +8,7 @@ import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.repositories.CourseRepository;
 import nl.bd.sdbackendopdracht.repositories.TaskRepository;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
+import nl.bd.sdbackendopdracht.security.exeptions.TaskNotFoundExeption;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -106,8 +107,14 @@ public class TasksService implements UserDetailsService {
 
     //Get one task
     public Task getTask(Long taskId){
-        //TODO validation
-        return taskRepository.findById(taskId).get();
+        Task task = null;
+        if(taskRepository.findById(taskId).isEmpty()){
+            throw new TaskNotFoundExeption("Task with id: " + taskId + " has not been found in the database!");
+        }else{
+            task = taskRepository.findById(taskId).get();
+        }
+
+        return task;
     }
 
     public Task createTaskForCourse(TaskRegistrationRequest request, Authentication authentication, Long courseId) {

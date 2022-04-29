@@ -7,6 +7,7 @@ import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.repositories.CourseRepository;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
 import nl.bd.sdbackendopdracht.security.enums.RoleEnums;
+import nl.bd.sdbackendopdracht.security.exeptions.CourseNotFoundExeption;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,8 +30,16 @@ public class CourseService implements UserDetailsService {
     //Create course
     public Course createCourse(CourseRegistrationRequest request, Authentication authentication){
         //TODO validation
-        User courseGivenBy = userService.getUserByUserId(request.getTeacherGivesCourseId());
-        User courseCreator = userService.getPersonalUserDetails(authentication.getName());
+        User courseGivenBy = null;
+        User courseCreator = null;
+
+        courseGivenBy = userService.getUserByUserId(request.getTeacherGivesCourseId());
+        courseCreator = userService.getPersonalUserDetails(authentication.getName());
+
+        if(courseGivenBy == null || courseCreator == null){
+            //TODO custom exeption
+            throw new RuntimeException("Course could not be created.");
+        }
 
         Course courseToBeCreated = Course.builder()
                 .courseName(request.getCourseName())
@@ -66,8 +75,14 @@ public class CourseService implements UserDetailsService {
 
     //Get course details
     public Course getCourse(Long courseId){
-        //TODO validation
-        return courseRepository.getById(courseId);
+        Course course = null;
+        if(courseRepository.findById(courseId).isEmpty()){
+            throw new CourseNotFoundExeption("Course with id: " + courseId + " has not been found in the database!");
+        }else{
+            course = courseRepository.findById(courseId).get();
+        }
+
+        return course;
     }
 
     //Remove student from course
