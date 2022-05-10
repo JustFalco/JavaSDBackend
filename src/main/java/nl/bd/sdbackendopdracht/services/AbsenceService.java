@@ -5,6 +5,7 @@ import nl.bd.sdbackendopdracht.models.datamodels.Absence;
 import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.models.requestmodels.AbsenceRegistrationRequest;
 import nl.bd.sdbackendopdracht.repositories.AbsenceRepository;
+import nl.bd.sdbackendopdracht.security.exeptions.AbsenceNotFoundExeption;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -38,8 +39,13 @@ public class AbsenceService {
 
     //Get absence details
     public Absence getAbsenceDetails(Long absenceId){
-        //TODO validation
-        return absenceRepository.findById(absenceId).get();
+        Absence absence = null;
+        if(absenceRepository.findById(absenceId).isEmpty()){
+            throw new AbsenceNotFoundExeption("Absence with id: " + absenceId + " has not been found!");
+        }else{
+            absence = absenceRepository.findById(absenceId).get();
+        }
+        return absence;
     }
 
     //Remove absence

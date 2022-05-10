@@ -32,8 +32,10 @@ public class GradeService implements UserDetailsService {
     //Get one grade
     public StudentGrades getStudentGrade(Long gradeId){
         StudentGrades studentGrades = null;
-        //TODO validation
-        if(gradeRepository.findById(gradeId).isPresent()){
+        if(gradeRepository.findById(gradeId).isEmpty()){
+            //TODO custom exeption
+            throw new RuntimeException("Grade with id: " + gradeId + " has not been found!");
+        }else{
             studentGrades = gradeRepository.findById(gradeId).get();
         }
         return studentGrades;
