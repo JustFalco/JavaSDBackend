@@ -37,7 +37,7 @@ public class TasksService implements UserDetailsService {
         return userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User does not exists"));
     }
 
-    public Task createTask(TaskRegistrationRequest request, String currentUserMail){
+    public Task createTask(TaskRegistrationRequest request, String currentUserMail) {
         //TODO fix builder
         User personalUserDetails = userService.getPersonalUserDetails(currentUserMail);
         Task task = Task.builder()
@@ -45,7 +45,7 @@ public class TasksService implements UserDetailsService {
                 .taksDescription(request.getTaskDescription())
                 .taksDeadline(request.getTaskDeadline())
                 //TODO klok toevoegen
-                .timeOfTaskPublication(LocalDateTime.now())
+//                .timeOfTaskPublication(LocalDateTime.now())
                 .taskFinished(false)
                 .taskGivenByTeacher(personalUserDetails)
                 .build();
@@ -53,7 +53,7 @@ public class TasksService implements UserDetailsService {
         return taskRepository.save(task);
     }
 
-    public Task giveTaskToStudent(Long taskId, Long userId){
+    public Task giveTaskToStudent(Long taskId, Long userId) {
         Task taskFromDatabase = getTask(taskId);
         User userToBeAddedToTask = userService.getUserByUserId(userId);
 
@@ -61,24 +61,25 @@ public class TasksService implements UserDetailsService {
         return taskRepository.save(taskFromDatabase);
     }
 
-    public void giveTaskToCourseClass(Long courseId, Long taskId){
+    public void giveTaskToCourseClass(Long courseId, Long taskId) {
         Course couseToGiveTaskTo = courseService.getCourse(courseId);
 
-        for(User user : couseToGiveTaskTo.getStudentsFollowingCourse()){
+        for (User user : couseToGiveTaskTo.getStudentsFollowingCourse()) {
             giveTaskToStudent(taskId, user.getUserId());
         }
     }
 
-    public List<Task> getAllTasks(){
+    public List<Task> getAllTasks() {
         return taskRepository.findAll();
     }
 
-    public Set<Task> getAllTasksFromStudent(Long userId){
+    public Set<Task> getAllTasksFromStudent(Long userId) {
         User user = userService.getUserByUserId(userId);
+
         return user.getUserHasTasks();
     }
 
-    public Task changeTask(Long taskId, TaskRegistrationRequest request){
+    public Task changeTask(Long taskId, TaskRegistrationRequest request) {
         Task taskToChange = getTask(taskId);
         taskToChange.setTaskName(request.getTaskName());
         taskToChange.setTaksDescription(request.getTaskDescription());
@@ -86,31 +87,35 @@ public class TasksService implements UserDetailsService {
 
         return taskRepository.save(taskToChange);
     }
-    
-    public void deleteTask(Long taskId){
+
+    public void deleteTask(Long taskId) {
+        //TODO kijk of task bestaat
         taskRepository.deleteById(taskId);
     }
 
     //Method for removing student from task
-    public Task removeStudentFromTask(Long userId, Long taskId){
-         Task task = getTask(taskId);
-         Set<User> newUserList = new HashSet<>();
-         for(User user : task.getTaskHasUsers()){
-             if(!Objects.equals(user.getUserId(), userId)){
-                 newUserList.add(user);
-             }
-         }
+    public Task removeStudentFromTask(Long userId, Long taskId) {
+        Task task = getTask(taskId);
+        Set<User> newUserList = new HashSet<>();
+        for (User user : task.getTaskHasUsers()) {
+            if (!Objects.equals(user.getUserId(), userId)) {
+                newUserList.add(user);
+            }
+        }
 
-         task.setTaskHasUsers(newUserList);
-         return taskRepository.save(task);
+        task.setTaskHasUsers(newUserList);
+
+        return taskRepository.save(task);
     }
 
     //Get one task
-    public Task getTask(Long taskId){
-        Task task = null;
-        if(taskRepository.findById(taskId).isEmpty()){
+    public Task getTask(Long taskId) {
+        Task task;
+        boolean taskDoesntExists = taskRepository.findById(taskId).isEmpty();
+
+        if (taskDoesntExists) {
             throw new TaskNotFoundExeption("Task with id: " + taskId + " has not been found in the database!");
-        }else{
+        } else {
             task = taskRepository.findById(taskId).get();
         }
 

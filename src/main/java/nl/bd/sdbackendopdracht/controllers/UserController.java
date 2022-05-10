@@ -2,7 +2,10 @@ package nl.bd.sdbackendopdracht.controllers;
 
 import lombok.AllArgsConstructor;
 import nl.bd.sdbackendopdracht.models.datamodels.User;
+import nl.bd.sdbackendopdracht.security.enums.RoleEnums;
 import nl.bd.sdbackendopdracht.services.UserService;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +27,13 @@ public class UserController {
             Authentication authentication
     ){
         return userService.getPersonalUserDetails(authentication.getName());
+    }
+
+    @GetMapping("/user/get_details/user={userId}")
+    public User getUser(
+            @PathVariable("userId") Long id
+    ){
+        return userService.getUserByUserId(id);
     }
 
 }

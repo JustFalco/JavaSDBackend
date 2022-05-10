@@ -6,7 +6,9 @@ import nl.bd.sdbackendopdracht.models.requestmodels.AdministratorRegistrationReq
 import nl.bd.sdbackendopdracht.models.requestmodels.SchoolRegistrationRequest;
 import nl.bd.sdbackendopdracht.models.requestmodels.StudentRegistrationRequest;
 import nl.bd.sdbackendopdracht.models.requestmodels.TeacherRegistrationRequest;
+import nl.bd.sdbackendopdracht.security.enums.RoleEnums;
 import nl.bd.sdbackendopdracht.services.RegistrationService;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
