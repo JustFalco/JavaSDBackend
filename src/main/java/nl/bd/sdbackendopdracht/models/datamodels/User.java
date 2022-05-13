@@ -3,7 +3,6 @@ package nl.bd.sdbackendopdracht.models.datamodels;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import nl.bd.sdbackendopdracht.security.enums.RoleEnums;
-import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
