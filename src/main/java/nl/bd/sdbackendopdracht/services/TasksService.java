@@ -130,4 +130,12 @@ public class TasksService implements UserDetailsService {
         return getTask(task.getTaskId());
     }
 
+    //Add a file such as a test to a task
+    public void addFiletoTask(){
+
+    }
+
+
+    //TODO Get all tasks created by specific teacher
+
 }

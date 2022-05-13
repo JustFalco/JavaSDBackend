@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.awt.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,11 +33,12 @@ public class Task {
     private Long taskId;
     private String taskName;
     private String taksDescription;
-    //TODO nieuwe feature waarmee je bijlagen toe kan voegen
+
     private LocalDateTime taksDeadline;
     private LocalDateTime timeOfTaskPublication;
     private Boolean taskFinished;
-//    @JsonIgnore
+    //TODO nieuwe feature waarmee je bijlagen toe kan voegen
+
     @ManyToMany
     @JoinTable(
             name = "user_has_task",
