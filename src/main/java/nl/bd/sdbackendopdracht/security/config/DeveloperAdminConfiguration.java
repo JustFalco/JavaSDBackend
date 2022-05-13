@@ -26,7 +26,7 @@ public class DeveloperAdminConfiguration {
             if(userRepository.findByAdminRoleEnum(RoleEnums.DEVELOPER).isEmpty()){
                 User admin = User.builder()
                         .firstName("Admin")
-                        .email("falco@wolkorte.nl")
+                        .email("Admin")
                         .locked(false)
                         .enabled(true)
                         .password(bCryptPasswordEncoder.encode("Falco567"))

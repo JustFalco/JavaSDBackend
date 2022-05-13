@@ -1,15 +1,10 @@
 package nl.bd.sdbackendopdracht.security.enums;
 
 import com.google.common.collect.Sets;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static nl.bd.sdbackendopdracht.security.enums.UserPermissions.STUDENT_READ;
-import static nl.bd.sdbackendopdracht.security.enums.UserPermissions.STUDENT_WRITE;
 
 public enum RoleEnums {
     STUDENT(Sets.newHashSet()),

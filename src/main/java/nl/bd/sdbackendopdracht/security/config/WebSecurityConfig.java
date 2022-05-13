@@ -1,7 +1,6 @@
 package nl.bd.sdbackendopdracht.security.config;
 
 import lombok.AllArgsConstructor;
-import nl.bd.sdbackendopdracht.services.SuperService;
 import nl.bd.sdbackendopdracht.services.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +17,7 @@ import static nl.bd.sdbackendopdracht.security.enums.RoleEnums.*;
 @EnableWebSecurity
 @AllArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private final SuperService superService;
+
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserService userService;
 
@@ -52,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public DaoAuthenticationProvider daoAuthenticationProvider(){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(bCryptPasswordEncoder);
-        provider.setUserDetailsService(superService);
+        provider.setUserDetailsService(userService);
         return provider;
     }
 }
