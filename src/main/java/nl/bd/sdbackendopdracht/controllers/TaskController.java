@@ -54,10 +54,13 @@ public class TaskController {
     @PostMapping("/teacher/task/add_file/task={taskId}")
     public Task addFileToTask(
             @PathVariable("taskId") Long taskId,
-            @RequestParam("file") MultipartFile file
+            @RequestParam("files") MultipartFile[] files
     ){
         Task task = tasksService.getTask(taskId);
-        storageService.store(file, task);
+        for(MultipartFile file : files){
+            storageService.store(file, task);
+        }
+
         return task;
     }
 
@@ -100,30 +103,6 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.OK).body(files);
     }
 
-//    //Get files from task (all)
-//    @GetMapping("/task/get_taskfiles/task={taskId}")
-//    public Set<ResponseFile> getAllTaskfilesFromTask(
-//            @PathVariable("taskId") Long taskId
-//    ){
-//        Set<ResponseFile> responseFiles = new HashSet<>();
-//        for (TaskFile file : storageService.getAllFiles(taskId)){
-//
-//            String fileDownloadUri = ServletUriComponentsBuilder
-//                    .fromCurrentContextPath()
-//                    .path("/files/")
-//                    //TODO zou nog wel eens fout kunnen gaan
-//                    .path(file.getName())
-//                    .toUriString();
-//
-//            ResponseFile responseFile = ResponseFile.builder()
-//                    .name(file.getName())
-//                    .downloadUri(fileDownloadUri)
-//                    .type(file.getType())
-//                    .size(file.getData().length)
-//                    .build();
-//        }
-//        return responseFiles;
-//    }
 
     //Change task (Teacher)
     //TODO alles wordt naar null geschreven
