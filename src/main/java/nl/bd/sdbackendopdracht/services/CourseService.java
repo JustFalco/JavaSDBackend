@@ -8,6 +8,7 @@ import nl.bd.sdbackendopdracht.repositories.CourseRepository;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
 import nl.bd.sdbackendopdracht.security.enums.RoleEnums;
 import nl.bd.sdbackendopdracht.security.exeptions.CourseNotFoundExeption;
+import nl.bd.sdbackendopdracht.security.exeptions.UserNotFoundExeption;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -54,16 +55,46 @@ public class CourseService implements UserDetailsService {
 
     //Remove course
     public void removeCourse(Long courseId){
-        //TODO validation
-        courseRepository.deleteById(courseId);
+        if(courseRepository.findById(courseId).isEmpty()){
+            //TODO return response object
+            throw new CourseNotFoundExeption("Course not found");
+        }else{
+            courseRepository.deleteById(courseId);
+        }
+
     }
+
     //Change course
     public Course changeCourse(CourseRegistrationRequest request, Long courseId){
-        Course courseToBeChanged = getCourse(courseId);
-        courseToBeChanged.setCourseName(request.getCourseName());
-        courseToBeChanged.setCourseDescription(request.getCourseDescription());
-        User teacherForCourse = userService.getUserByUserId(request.getTeacherGivesCourseId());
-        courseToBeChanged.setTeacherGivesCourse(teacherForCourse);
+        Course courseToBeChanged = null;
+        User teacherForCourse = null;
+        try{
+            courseToBeChanged = getCourse(courseId);
+            if(request.getTeacherGivesCourseId() != null && request.getTeacherGivesCourseId() != 0){
+                teacherForCourse = userService.getUserByUserId(request.getTeacherGivesCourseId());
+            }
+
+        }catch (CourseNotFoundExeption courseNotFoundExeption){
+            //TODO return response object
+            throw new RuntimeException("Could not change course!");
+        }catch(UserNotFoundExeption userNotFoundExeption){
+            throw new RuntimeException("Could not change course!");
+        }
+        finally{
+            if(courseToBeChanged != null){
+                //TODO verander alle ifs naar .isEmpty()
+                if(!request.getCourseName().isEmpty()){
+                    courseToBeChanged.setCourseName(request.getCourseName());
+                }
+                if(!request.getCourseDescription().isEmpty()){
+                    courseToBeChanged.setCourseDescription(request.getCourseDescription());
+                }
+                if(teacherForCourse != null){
+                    courseToBeChanged.setTeacherGivesCourse(teacherForCourse);
+                }
+            }
+        }
+
         return courseRepository.save(courseToBeChanged);
     }
 
@@ -101,7 +132,14 @@ public class CourseService implements UserDetailsService {
 
     //Add student to course
     public Course addStudentToCourse(Long studentId, Long courseId){
-        Course course = getCourse(courseId);
+        Course course = null;
+        //TODO afmaken
+        try {
+            course = getCourse(courseId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
         User studentToBeAdded = userService.getUserByUserId(studentId);
 
         if(studentToBeAdded.getRoleEnums() == RoleEnums.STUDENT){

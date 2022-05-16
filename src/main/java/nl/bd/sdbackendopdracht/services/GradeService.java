@@ -71,6 +71,7 @@ public class GradeService implements UserDetailsService {
     }
 
     //change one grade
+    //TODO kijken of input null is
     public StudentGrades changeGrade(GradeRegistrationRequest request, Long gradeId, Authentication authentication, Long studentId){
         Task task = null;
         if(request.getMarkBelongsToTaskId() != null){
@@ -79,7 +80,7 @@ public class GradeService implements UserDetailsService {
             }
         }
 
-        //TODO validation
+        //TODO validation en trycatch
         StudentGrades grade = getStudentGrade(gradeId);
         User teacher = userService.getPersonalUserDetails(authentication.getName());
         User student = userService.getUserByUserId(studentId);

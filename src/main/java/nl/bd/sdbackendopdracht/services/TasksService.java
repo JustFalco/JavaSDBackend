@@ -79,18 +79,30 @@ public class TasksService implements UserDetailsService {
         return user.getUserHasTasks();
     }
 
+
     public Task changeTask(Long taskId, TaskRegistrationRequest request) {
         Task taskToChange = getTask(taskId);
-        taskToChange.setTaskName(request.getTaskName());
-        taskToChange.setTaksDescription(request.getTaskDescription());
-        taskToChange.setTaksDeadline(request.getTaskDeadline());
+        if(request.getTaskName() != null && request.getTaskName() != ""){
+            taskToChange.setTaskName(request.getTaskName());
+        }
+        if(request.getTaskDescription() != null && request.getTaskDescription() != ""){
+            taskToChange.setTaksDescription(request.getTaskDescription());
+        }
+        if(request.getTaskDeadline() != null){
+            taskToChange.setTaksDeadline(request.getTaskDeadline());
+        }
 
         return taskRepository.save(taskToChange);
     }
 
     public void deleteTask(Long taskId) {
-        //TODO kijk of task bestaat
-        taskRepository.deleteById(taskId);
+        boolean empty = taskRepository.findById(taskId).isEmpty();
+        if(empty){
+            throw new TaskNotFoundExeption("Task with id: " + taskId + " does not exists!");
+        }else{
+            taskRepository.deleteById(taskId);
+        }
+
     }
 
     //Method for removing student from task
@@ -129,12 +141,6 @@ public class TasksService implements UserDetailsService {
         giveTaskToCourseClass(courseId, task.getTaskId());
         return getTask(task.getTaskId());
     }
-
-    //Add a file such as a test to a task
-    public void addFiletoTask(){
-
-    }
-
 
     //TODO Get all tasks created by specific teacher
 

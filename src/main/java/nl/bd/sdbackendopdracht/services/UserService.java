@@ -38,9 +38,11 @@ public class UserService implements UserDetailsService{
         return userRepository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundExeption("User with email " + email + " does not exists!"));
     }
 
-    /* Student specific methods */
+    //TODO change user details
 
-    /* Teacher specific methods */
+    /* TODO Student specific methods */
 
-    /* Administrator specific methods */
+    /* TODO Teacher specific methods */
+
+    /* TODO Administrator specific methods */
 }

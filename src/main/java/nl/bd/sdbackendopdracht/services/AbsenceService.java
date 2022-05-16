@@ -6,6 +6,7 @@ import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.models.requestmodels.AbsenceRegistrationRequest;
 import nl.bd.sdbackendopdracht.repositories.AbsenceRepository;
 import nl.bd.sdbackendopdracht.security.exeptions.AbsenceNotFoundExeption;
+import nl.bd.sdbackendopdracht.security.exeptions.UserNotFoundExeption;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -55,13 +56,35 @@ public class AbsenceService {
 
     //Change absence
     public Absence changeAbsence(Long absenceId, AbsenceRegistrationRequest request, Authentication authentication){
-        Absence absence = getAbsenceDetails(absenceId);
-        User student = userService.getUserByUserId(request.getAbsentStudent());
-        User administrator = userService.getPersonalUserDetails(authentication.getName());
-        absence.setAbsenceType(request.getAbsenceType());
-        absence.setAbsenceDescription(request.getAbsenceDescription());
-        absence.setAbsentStudent(student);
-        absence.setSubmittedByAdministrator(administrator);
+        Absence absence;
+        try{
+            absence = getAbsenceDetails(absenceId);
+
+        }catch (AbsenceNotFoundExeption exeption){
+            return null;
+        }
+
+        try {
+            User student = userService.getUserByUserId(request.getAbsentStudent());
+            User administrator = userService.getPersonalUserDetails(authentication.getName());
+            if (request.getAbsenceType() != null) {
+                absence.setAbsenceType(request.getAbsenceType());
+            }
+            if (request.getAbsenceDescription() != null && request.getAbsenceDescription() != "") {
+                absence.setAbsenceDescription(request.getAbsenceDescription());
+            }
+            if(student != null){
+                absence.setAbsentStudent(student);
+            }
+            if(administrator != null){
+                absence.setSubmittedByAdministrator(administrator);
+            }
+
+
+        }catch (UserNotFoundExeption userNotFoundExeption){
+            //TODO custom exeption
+            throw new RuntimeException("Abcense could not be changed: " + userNotFoundExeption);
+        }
 
         return absenceRepository.save(absence);
     }

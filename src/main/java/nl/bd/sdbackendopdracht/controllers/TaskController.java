@@ -105,10 +105,9 @@ public class TaskController {
 
 
     //Change task (Teacher)
-    //TODO alles wordt naar null geschreven
     @PutMapping("/teacher/task/change/task={taskId}")
     public Task changeTask(
-            TaskRegistrationRequest registrationRequest,
+            @RequestBody TaskRegistrationRequest registrationRequest,
             @PathVariable("taskId") Long taskId
     ){
         return tasksService.changeTask(taskId, registrationRequest);
