@@ -7,6 +7,9 @@ import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.models.requestmodels.GradeRegistrationRequest;
 import nl.bd.sdbackendopdracht.repositories.GradeRepository;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
+import nl.bd.sdbackendopdracht.security.exeptions.GradeNotFoundExeption;
+import nl.bd.sdbackendopdracht.security.exeptions.GradeProcessExeption;
+import nl.bd.sdbackendopdracht.security.validation.NumValidation;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -29,12 +31,13 @@ public class GradeService implements UserDetailsService {
     private final CourseService courseService;
     private final UserRepository userRepository;
 
+    private final NumValidation validation = new NumValidation();
+
     //Get one grade
     public StudentGrades getStudentGrade(Long gradeId){
         StudentGrades studentGrades = null;
         if(gradeRepository.findById(gradeId).isEmpty()){
-            //TODO custom exeption
-            throw new RuntimeException("Grade with id: " + gradeId + " has not been found!");
+            throw new GradeNotFoundExeption("Grade with id: " + gradeId + " has not been found!");
         }else{
             studentGrades = gradeRepository.findById(gradeId).get();
         }
@@ -46,18 +49,6 @@ public class GradeService implements UserDetailsService {
         User student = userService.getUserByUserId(studentId);
         return student.getGrades();
     }
-
-    //get all grades in course
-//    public List<List<StudentGrades>> getGradesInCourse(Long courseId){
-//        List<User> allStudentsInCourse = courseService.getStudentsOnCourse(courseId);
-//        List<List<StudentGrades>> allStudentGradesInCourse = new List<List<>>();
-//        //TODO validation
-//        for (User user : allStudentsInCourse){
-//            allStudentGradesInCourse.add(user.getGrades());
-//        }
-//
-//        return allStudentGradesInCourse;
-//    }
 
     //Get last 15 grades
     public List<StudentGrades> getLastFifteenGrades(Long studentId){
@@ -71,54 +62,69 @@ public class GradeService implements UserDetailsService {
     }
 
     //change one grade
-    //TODO kijken of input null is
     public StudentGrades changeGrade(GradeRegistrationRequest request, Long gradeId, Authentication authentication, Long studentId){
         Task task = null;
-        if(request.getMarkBelongsToTaskId() != null){
-            if(request.getMarkBelongsToTaskId() != 0){
-                task = tasksService.getTask(request.getMarkBelongsToTaskId());
+        StudentGrades grade = null;
+        try {
+            task = tasksService.getTask(request.getMarkBelongsToTaskId());
+        } catch (Exception e) {
+            task = null;
+            throw new GradeProcessExeption("Could not change grade: " + e.getMessage());
+        }finally {
+
+            User teacher = null;
+            User student = null;
+            try {
+                grade = getStudentGrade(gradeId);
+                teacher = userService.getPersonalUserDetails(authentication.getName());
+                student = userService.getUserByUserId(studentId);
+            } catch (Exception e) {
+                throw new GradeProcessExeption("could not change grade: " + e.getMessage());
+            }
+            finally {
+                if(validation.validateFloat(request.getGrade(), 0, 20)){
+                    grade.setGrade(request.getGrade());
+                }
+                if(!request.getDescription().isEmpty()){
+                    grade.setDescription(request.getDescription());
+                }
+                if(validation.validateNumber(request.getWeight(), 1, 20)){
+                    grade.setWeight(request.getWeight());
+                }
+                if(request.getTestDate() != null){
+                    grade.setTestDate(request.getTestDate());
+                }
+
+                grade.setInsertionDate(LocalDateTime.now());
+                grade.setSubmittedByTeacher(teacher);
+                grade.setMarkBelongsToStudent(student);
+                grade.setMarkBelongsToTask(task);
             }
         }
-
-        //TODO validation en trycatch
-        StudentGrades grade = getStudentGrade(gradeId);
-        User teacher = userService.getPersonalUserDetails(authentication.getName());
-        User student = userService.getUserByUserId(studentId);
-
-        grade.setGrade(request.getGrade());
-        grade.setDescription(request.getDescription());
-        grade.setInsertionDate(LocalDateTime.now());
-        grade.setSubmittedByTeacher(teacher);
-        grade.setMarkBelongsToStudent(student);
-        grade.setMarkBelongsToTask(task);
-        grade.setWeight(request.getWeight());
-        grade.setTestDate(request.getTestDate());
 
         return gradeRepository.save(grade);
     }
 
-    //TODO submit grade for all students in course
-
     //delete grade
     public void deleteGrade(Long gradeId){
+        if(gradeRepository.findById(gradeId).isEmpty()){
+            throw new GradeNotFoundExeption("Grade with id: " + gradeId + " cannot be deleted because it cannot be found in the database");
+        }
         gradeRepository.deleteById(gradeId);
     }
 
-    //TODO Submit grade for task
-
     //Submit single grade
     public StudentGrades submitGrade(Long studentId, GradeRegistrationRequest request, Authentication authentication){
-        //TODO heel veel validation
-        User teacher = userService.getPersonalUserDetails(authentication.getName());
-        User gradeBelongsToStudent = userService.getUserByUserId(studentId);
-        Task task = null;
-        if(request.getMarkBelongsToTaskId() != null){
-            if(request.getMarkBelongsToTaskId() != 0){
-                task = tasksService.getTask(request.getMarkBelongsToTaskId());
-            }
+        if(!validation.validateId(studentId)){
+            throw new NumberFormatException("Id: " + studentId + " is an illegal number");
+        }
+        if(!validation.validateNumber(request.getWeight(), 1, 10) || !validation.validateFloat(request.getGrade(), 0, 20)){
+            throw new NumberFormatException("Illegal number input");
         }
 
-
+        User teacher = userService.getPersonalUserDetails(authentication.getName());
+        User gradeBelongsToStudent = userService.getUserByUserId(studentId);
+        Task task = tasksService.getTask(request.getMarkBelongsToTaskId());
 
         StudentGrades grade = StudentGrades.builder()
                 .description(request.getDescription())

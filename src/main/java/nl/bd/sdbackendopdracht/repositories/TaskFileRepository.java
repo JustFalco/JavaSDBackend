@@ -14,4 +14,5 @@ import java.util.Set;
 public interface TaskFileRepository extends JpaRepository<TaskFile, String> {
     @Query("SELECT s FROM TaskFile s WHERE s.fileBelongsToTask = ?1")
     Optional<Set<TaskFile>> getFilesFromTask(Task task);
+
 }

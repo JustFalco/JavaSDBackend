@@ -33,7 +33,6 @@ public class UserService implements UserDetailsService{
         return user;
     }
 
-    //TODO replace
     public User getPersonalUserDetails(String email) {
         return userRepository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundExeption("User with email " + email + " does not exists!"));
     }

@@ -8,7 +8,9 @@ import nl.bd.sdbackendopdracht.repositories.CourseRepository;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
 import nl.bd.sdbackendopdracht.security.enums.RoleEnums;
 import nl.bd.sdbackendopdracht.security.exeptions.CourseNotFoundExeption;
+import nl.bd.sdbackendopdracht.security.exeptions.CourseProcessExeption;
 import nl.bd.sdbackendopdracht.security.exeptions.UserNotFoundExeption;
+import nl.bd.sdbackendopdracht.security.validation.NumValidation;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,40 +30,40 @@ public class CourseService implements UserDetailsService {
     private final CourseRepository courseRepository;
     private final UserService userService;
 
+    private final NumValidation validation = new NumValidation();
     //Create course
     public Course createCourse(CourseRegistrationRequest request, Authentication authentication){
-        //TODO validation
-        User courseGivenBy = null;
-        User courseCreator = null;
-
-        courseGivenBy = userService.getUserByUserId(request.getTeacherGivesCourseId());
-        courseCreator = userService.getPersonalUserDetails(authentication.getName());
-
-        if(courseGivenBy == null || courseCreator == null){
-            //TODO custom exeption
-            throw new RuntimeException("Course could not be created.");
+        if(!validation.validateId(request.getTeacherGivesCourseId())){
+            throw new CourseProcessExeption("Could not create course because of invalid id: " + request.getTeacherGivesCourseId());
         }
 
-        Course courseToBeCreated = Course.builder()
-                .courseName(request.getCourseName())
-                .courseDescription(request.getCourseDescription())
-                //TODO misschien hier nog even naar kijken
-                .belongsToSchool(courseCreator.getSchool())
-                .teacherGivesCourse(courseGivenBy)
-                .build();
+        User courseGivenBy = null;
+        User courseCreator = null;
+        Course courseToBeCreated = null;
 
-        return courseRepository.save(courseToBeCreated);
+        try {
+            courseGivenBy = userService.getUserByUserId(request.getTeacherGivesCourseId());
+            courseCreator = userService.getPersonalUserDetails(authentication.getName());
+            courseToBeCreated = Course.builder()
+                    .courseName(request.getCourseName())
+                    .courseDescription(request.getCourseDescription())
+                    .belongsToSchool(courseCreator.getSchool())
+                    .teacherGivesCourse(courseGivenBy)
+                    .build();
+
+            return courseRepository.save(courseToBeCreated);
+        } catch (Exception e) {
+            throw new CourseProcessExeption("Could not create course: " + e.getMessage());
+        }
     }
 
     //Remove course
     public void removeCourse(Long courseId){
         if(courseRepository.findById(courseId).isEmpty()){
-            //TODO return response object
-            throw new CourseNotFoundExeption("Course not found");
+            throw new CourseNotFoundExeption("Course with id: " + courseId + " not found");
         }else{
             courseRepository.deleteById(courseId);
         }
-
     }
 
     //Change course
@@ -74,13 +76,9 @@ public class CourseService implements UserDetailsService {
                 teacherForCourse = userService.getUserByUserId(request.getTeacherGivesCourseId());
             }
 
-        }catch (CourseNotFoundExeption courseNotFoundExeption){
-            //TODO return response object
-            throw new RuntimeException("Could not change course!");
-        }catch(UserNotFoundExeption userNotFoundExeption){
-            throw new RuntimeException("Could not change course!");
-        }
-        finally{
+        }catch (CourseNotFoundExeption | UserNotFoundExeption exception){
+            throw new RuntimeException("Could not change course: " + exception.getMessage());
+        } finally{
             if(courseToBeChanged != null){
                 //TODO verander alle ifs naar .isEmpty()
                 if(!request.getCourseName().isEmpty()){
@@ -95,6 +93,7 @@ public class CourseService implements UserDetailsService {
             }
         }
 
+        assert courseToBeChanged != null;
         return courseRepository.save(courseToBeChanged);
     }
 
@@ -120,7 +119,6 @@ public class CourseService implements UserDetailsService {
     public Course removeStudentFromCourse(Long courseId, Long studentId){
         Course course = getCourse(courseId);
         Set<User> newStudentList = new HashSet<>();
-        //TODO refactor
         for (User student : course.getStudentsFollowingCourse()){
             if(!Objects.equals(student.getUserId(), studentId)){
                 newStudentList.add(student);

@@ -9,12 +9,14 @@ import nl.bd.sdbackendopdracht.repositories.CourseRepository;
 import nl.bd.sdbackendopdracht.repositories.TaskRepository;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
 import nl.bd.sdbackendopdracht.security.exeptions.TaskNotFoundExeption;
+import nl.bd.sdbackendopdracht.security.validation.NumValidation;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -32,20 +34,20 @@ public class TasksService implements UserDetailsService {
     private final CourseService courseService;
     private final UserService userService;
 
+    private final NumValidation validation = new NumValidation();
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User does not exists"));
     }
 
     public Task createTask(TaskRegistrationRequest request, String currentUserMail) {
-        //TODO fix builder
         User personalUserDetails = userService.getPersonalUserDetails(currentUserMail);
         Task task = Task.builder()
                 .taskName(request.getTaskName())
                 .taksDescription(request.getTaskDescription())
                 .taksDeadline(request.getTaskDeadline())
-                //TODO klok toevoegen
-//                .timeOfTaskPublication(LocalDateTime.now())
+                .timeOfTaskPublication(LocalDateTime.now(Clock.systemDefaultZone()))
                 .taskFinished(false)
                 .taskGivenByTeacher(personalUserDetails)
                 .build();
@@ -123,6 +125,10 @@ public class TasksService implements UserDetailsService {
     //Get one task
     public Task getTask(Long taskId) {
         Task task;
+        if(!validation.validateId(taskId)){
+            throw new NumberFormatException("Id: " + taskId + " is an illegal number");
+        }
+
         boolean taskDoesntExists = taskRepository.findById(taskId).isEmpty();
 
         if (taskDoesntExists) {
@@ -142,6 +148,10 @@ public class TasksService implements UserDetailsService {
         return getTask(task.getTaskId());
     }
 
-    //TODO Get all tasks created by specific teacher
-
+    public Set<Task> getTasksFromTeacher(Long teacherId){
+        User teacher = userService.getUserByUserId(teacherId);
+        return taskRepository.getTasksFromTeacher(teacher).orElseThrow(
+                () -> new TaskNotFoundExeption("No tasks found belonging to teacher: " + teacher.getFirstName())
+        );
+    }
 }
