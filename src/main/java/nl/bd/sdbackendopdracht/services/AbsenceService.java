@@ -25,7 +25,7 @@ public class AbsenceService {
     private final SchoolService schoolService;
 
     //Submit absence
-    public Absence submitAbsence(AbsenceRegistrationRequest request, Authentication authentication){
+    public Absence submitAbsence(AbsenceRegistrationRequest request, Authentication authentication) {
         User absentStudent = userService.getUserByUserId(request.getAbsentStudent());
         User administrator = userService.getPersonalUserDetails(authentication.getName());
 
@@ -40,26 +40,26 @@ public class AbsenceService {
     }
 
     //Get absence details
-    public Absence getAbsenceDetails(Long absenceId){
+    public Absence getAbsenceDetails(Long absenceId) {
         Absence absence = null;
-        if(absenceRepository.findById(absenceId).isEmpty()){
+        if (absenceRepository.findById(absenceId).isEmpty()) {
             throw new AbsenceNotFoundExeption("Absence with id: " + absenceId + " has not been found!");
-        }else{
+        } else {
             absence = absenceRepository.findById(absenceId).get();
         }
         return absence;
     }
 
     //Remove absence
-    public void removeAbsence(Long absenceId){
-        if(absenceRepository.findById(absenceId).isEmpty()){
+    public void removeAbsence(Long absenceId) {
+        if (absenceRepository.findById(absenceId).isEmpty()) {
             throw new AbsenceNotFoundExeption("Absence cannot be deleted because it is not found in the database!");
         }
         absenceRepository.deleteById(absenceId);
     }
 
     //Change absence
-    public Absence changeAbsence(Long absenceId, AbsenceRegistrationRequest request, Authentication authentication){
+    public Absence changeAbsence(Long absenceId, AbsenceRegistrationRequest request, Authentication authentication) {
         Absence absence = getAbsenceDetails(absenceId);
 
         try {
@@ -71,15 +71,15 @@ public class AbsenceService {
             if (request.getAbsenceDescription() != null && request.getAbsenceDescription() != "") {
                 absence.setAbsenceDescription(request.getAbsenceDescription());
             }
-            if(student != null){
+            if (student != null) {
                 absence.setAbsentStudent(student);
             }
-            if(administrator != null){
+            if (administrator != null) {
                 absence.setSubmittedByAdministrator(administrator);
             }
 
 
-        }catch (UserNotFoundExeption userNotFoundExeption){
+        } catch (UserNotFoundExeption userNotFoundExeption) {
             throw new AbsenceProcessorExeption("Abcense could not be changed: " + userNotFoundExeption.getMessage());
         }
 
@@ -88,21 +88,21 @@ public class AbsenceService {
     }
 
     //Get all absence from course
-    public List<Set<Absence>> getAllAbsenceFromCourse(Long courseId){
+    public List<Set<Absence>> getAllAbsenceFromCourse(Long courseId) {
         Set<User> studentsInCourse = courseService.getCourse(courseId).getStudentsFollowingCourse();
         List<Set<Absence>> absenceList = new ArrayList<>();
-        for (User student : studentsInCourse){
+        for (User student : studentsInCourse) {
             absenceList.add(getAbsenceFromStudent(student.getUserId()));
         }
         return absenceList;
     }
 
     //Get all absence from school
-    public List<Set<Absence>> getAllAbsenceFromSchool(Long schoolId){
+    public List<Set<Absence>> getAllAbsenceFromSchool(Long schoolId) {
         Set<User> studentsInSchool = schoolService.getAllStudentsOnSchool(schoolId);
         List<Set<Absence>> absenceList = new ArrayList<>();
 
-        for (User student : studentsInSchool){
+        for (User student : studentsInSchool) {
             absenceList.add(getAbsenceFromStudent(student.getUserId()));
         }
 
@@ -110,7 +110,7 @@ public class AbsenceService {
     }
 
     //Get all absence from student (All)
-    public Set<Absence> getAbsenceFromStudent(Long userId){
+    public Set<Absence> getAbsenceFromStudent(Long userId) {
         return absenceRepository.getALlAbsenceFromUser(userId).orElseThrow(() -> new IllegalStateException("No things found"));
     }
 }

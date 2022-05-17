@@ -71,16 +71,15 @@ public class RegistrationService implements UserDetailsService {
         mailSender.send(request.getSchoolMail(), mail.getMail(request.getSchoolName(), request.getSchoolMail(), password));
 
 
-
         return tempUser;
     }
 
-    public User registerStudent(UserRegistrationRequest request){
+    public User registerStudent(UserRegistrationRequest request) {
         emailValidation.validate(request.getEmail(), message);
 
         boolean isValidEmail = userRepository.findUserByEmail(request.getEmail()).isPresent();
 
-        if(isValidEmail){
+        if (isValidEmail) {
             throw new EmailAlreadyExistsExeption("Email: " + request.getEmail() + "  already exists");
         }
 
@@ -104,12 +103,12 @@ public class RegistrationService implements UserDetailsService {
     }
 
 
-    public User registerAdministrator(UserRegistrationRequest request){
+    public User registerAdministrator(UserRegistrationRequest request) {
         emailValidation.validate(request.getEmail(), message);
 
         boolean isValidEmail = userRepository.findUserByEmail(request.getEmail()).isPresent();
 
-        if(isValidEmail){
+        if (isValidEmail) {
             throw new EmailAlreadyExistsExeption("Email: " + request.getEmail() + "  already exists");
         }
 
@@ -132,12 +131,12 @@ public class RegistrationService implements UserDetailsService {
         return userRepository.save(administrator);
     }
 
-    public User registerTeacher(UserRegistrationRequest request ){
+    public User registerTeacher(UserRegistrationRequest request) {
         emailValidation.validate(request.getEmail(), message);
 
         boolean isValidEmail = userRepository.findUserByEmail(request.getEmail()).isPresent();
 
-        if(isValidEmail){
+        if (isValidEmail) {
             throw new EmailAlreadyExistsExeption("Email: " + request.getEmail() + "  already exists");
         }
 

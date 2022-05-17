@@ -32,8 +32,8 @@ public class CourseService implements UserDetailsService {
     private final NumValidation validation = new NumValidation();
 
     //Create course
-    public Course createCourse(CourseRegistrationRequest request, Authentication authentication){
-        if(!validation.validateId(request.getTeacherGivesCourseId())){
+    public Course createCourse(CourseRegistrationRequest request, Authentication authentication) {
+        if (!validation.validateId(request.getTeacherGivesCourseId())) {
             throw new CourseProcessExeption("Could not create course because of invalid id: " + request.getTeacherGivesCourseId());
         }
 
@@ -58,35 +58,35 @@ public class CourseService implements UserDetailsService {
     }
 
     //Remove course
-    public void removeCourse(Long courseId){
-        if(courseRepository.findById(courseId).isEmpty()){
+    public void removeCourse(Long courseId) {
+        if (courseRepository.findById(courseId).isEmpty()) {
             throw new CourseNotFoundExeption("Course with id: " + courseId + " not found");
-        }else{
+        } else {
             courseRepository.deleteById(courseId);
         }
     }
 
     //Change course
-    public Course changeCourse(CourseRegistrationRequest request, Long courseId){
+    public Course changeCourse(CourseRegistrationRequest request, Long courseId) {
         Course courseToBeChanged = null;
         User teacherForCourse = null;
-        try{
+        try {
             courseToBeChanged = getCourse(courseId);
-            if(request.getTeacherGivesCourseId() != null && request.getTeacherGivesCourseId() != 0){
+            if (request.getTeacherGivesCourseId() != null && request.getTeacherGivesCourseId() != 0) {
                 teacherForCourse = userService.getUserByUserId(request.getTeacherGivesCourseId());
             }
 
-        }catch (CourseNotFoundExeption | UserNotFoundExeption exception){
+        } catch (CourseNotFoundExeption | UserNotFoundExeption exception) {
             throw new RuntimeException("Could not change course: " + exception.getMessage());
-        } finally{
-            if(courseToBeChanged != null){
-                if(request.getCourseName()  != null){
+        } finally {
+            if (courseToBeChanged != null) {
+                if (request.getCourseName() != null) {
                     courseToBeChanged.setCourseName(request.getCourseName());
                 }
-                if(request.getCourseDescription() != null){
+                if (request.getCourseDescription() != null) {
                     courseToBeChanged.setCourseDescription(request.getCourseDescription());
                 }
-                if(teacherForCourse != null){
+                if (teacherForCourse != null) {
                     courseToBeChanged.setTeacherGivesCourse(teacherForCourse);
                 }
             }
@@ -97,17 +97,17 @@ public class CourseService implements UserDetailsService {
     }
 
     //Get students from course
-    public Set<User> getStudentsOnCourse(Long courseId){
+    public Set<User> getStudentsOnCourse(Long courseId) {
         Course course = getCourse(courseId);
         return course.getStudentsFollowingCourse();
     }
 
     //Get course details
-    public Course getCourse(Long courseId){
+    public Course getCourse(Long courseId) {
         Course course = null;
-        if(courseRepository.findById(courseId).isEmpty()){
+        if (courseRepository.findById(courseId).isEmpty()) {
             throw new CourseNotFoundExeption("Course with id: " + courseId + " has not been found in the database!");
-        }else{
+        } else {
             course = courseRepository.findById(courseId).get();
         }
 
@@ -115,11 +115,11 @@ public class CourseService implements UserDetailsService {
     }
 
     //Remove student from course
-    public Course removeStudentFromCourse(Long courseId, Long studentId){
+    public Course removeStudentFromCourse(Long courseId, Long studentId) {
         Course course = getCourse(courseId);
         Set<User> newStudentList = new HashSet<>();
-        for (User student : course.getStudentsFollowingCourse()){
-            if(!Objects.equals(student.getUserId(), studentId)){
+        for (User student : course.getStudentsFollowingCourse()) {
+            if (!Objects.equals(student.getUserId(), studentId)) {
                 newStudentList.add(student);
             }
         }
@@ -128,13 +128,13 @@ public class CourseService implements UserDetailsService {
     }
 
     //Add student to course
-    public Course addStudentToCourse(Long studentId, Long courseId){
+    public Course addStudentToCourse(Long studentId, Long courseId) {
         Course course = getCourse(courseId);
         User studentToBeAdded = userService.getUserByUserId(studentId);
 
-        if(studentToBeAdded.getRoleEnums() == RoleEnums.STUDENT){
+        if (studentToBeAdded.getRoleEnums() == RoleEnums.STUDENT) {
             course.addUserToCourse(studentToBeAdded);
-        }else {
+        } else {
             throw new IllegalStateException("This user is not a student!");
         }
 
@@ -142,16 +142,16 @@ public class CourseService implements UserDetailsService {
     }
 
     //Add multiple students to course
-    public Course addMultipleStudentsToCourse(List<Long> usersToBeAddedIds, Long courseId){
+    public Course addMultipleStudentsToCourse(List<Long> usersToBeAddedIds, Long courseId) {
         Course course = getCourse(courseId);
-        for(Long id : usersToBeAddedIds){
+        for (Long id : usersToBeAddedIds) {
             course.addUserToCourse(userRepository.findById(id).get());
         }
         return courseRepository.save(course);
     }
 
     //Set other teacher on course
-    public Course changeCourseTeacher(Long teacherUserId, Long courseId){
+    public Course changeCourseTeacher(Long teacherUserId, Long courseId) {
         User newTeacherForCourse = userService.getUserByUserId(teacherUserId);
         Course course = getCourse(courseId);
         course.setTeacherGivesCourse(newTeacherForCourse);

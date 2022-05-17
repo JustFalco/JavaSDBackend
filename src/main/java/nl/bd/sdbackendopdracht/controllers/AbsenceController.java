@@ -18,34 +18,34 @@ public class AbsenceController {
 
     //Submit absence (Administrator)
     @PostMapping("/administrator/absence/submit")
-    public Absence submitAbsence(@RequestBody AbsenceRegistrationRequest absenceRegistrationRequest, Authentication authentication){
+    public Absence submitAbsence(@RequestBody AbsenceRegistrationRequest absenceRegistrationRequest, Authentication authentication) {
         return absenceService.submitAbsence(absenceRegistrationRequest, authentication);
     }
 
     //Get absence info(All)
     @GetMapping("/absence/absenceId={absenceId}")
-    public Absence getAbsenceData(@PathVariable("absenceId") Long absenceId){
+    public Absence getAbsenceData(@PathVariable("absenceId") Long absenceId) {
         return absenceService.getAbsenceDetails(absenceId);
     }
 
     //Change absence (Administrator)
     @PutMapping("/administrator/absence/change/absence={absenceId}")
     public Absence changeAbsence(@PathVariable("absenceId") Long absenceId,
-                                                Authentication authentication,
-                                                @RequestBody AbsenceRegistrationRequest absenceRegistrationRequest){
+                                 Authentication authentication,
+                                 @RequestBody AbsenceRegistrationRequest absenceRegistrationRequest) {
         return absenceService.changeAbsence(absenceId, absenceRegistrationRequest, authentication);
     }
 
     //Delete absence (Administrator)
     @DeleteMapping("/administrator/absence/delete/absenceId={absenceId}")
-    public String deleteAbsence(@PathVariable("absenceId") Long absenceId){
+    public String deleteAbsence(@PathVariable("absenceId") Long absenceId) {
         absenceService.removeAbsence(absenceId);
         return "Absence with id: " + absenceId + " has succesfully been removed!";
     }
 
     //Get all absence from student (all)
     @GetMapping("/absence/get_absence/student={userId}")
-    public Set<Absence> getAbsenceFromStudent(@PathVariable("userId") Long userId){
+    public Set<Absence> getAbsenceFromStudent(@PathVariable("userId") Long userId) {
         return absenceService.getAbsenceFromStudent(userId);
     }
 }

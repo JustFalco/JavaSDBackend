@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class  GradeRegistrationRequest {
+public class GradeRegistrationRequest {
     private String description;
     private float grade;
     private int weight;

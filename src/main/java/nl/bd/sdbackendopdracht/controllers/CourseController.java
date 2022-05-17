@@ -18,7 +18,7 @@ public class CourseController {
 
     //Course aanmaken (Administrator)
     @PostMapping("/administrator/course/create")
-    public Course createCourse(@RequestBody CourseRegistrationRequest request, Authentication authentication){
+    public Course createCourse(@RequestBody CourseRegistrationRequest request, Authentication authentication) {
         return courseService.createCourse(request, authentication);
     }
 
@@ -27,7 +27,7 @@ public class CourseController {
     public Course changeCourse(
             @RequestBody CourseRegistrationRequest request,
             @PathVariable("courseId") Long courseId
-    ){
+    ) {
         return courseService.changeCourse(request, courseId);
     }
 
@@ -36,7 +36,7 @@ public class CourseController {
     public Course addStudentToCourse(
             @PathVariable("studentId") Long studentId,
             @PathVariable("courseId") Long courseId
-    ){
+    ) {
         return courseService.addStudentToCourse(studentId, courseId);
     }
 
@@ -45,7 +45,7 @@ public class CourseController {
     public String removeStudent(
             @PathVariable("studentId") Long studentId,
             @PathVariable("courseId") Long courseId
-    ){
+    ) {
         courseService.removeStudentFromCourse(courseId, studentId);
         return "Student with id: " + studentId + " has succesfully been removed from course with id: " + courseId + "!";
     }
@@ -55,7 +55,7 @@ public class CourseController {
     public Course addMultipleStudentsToCourse(
             @PathVariable("courseId") Long courseId,
             @RequestBody List<Long> studentIds
-    ){
+    ) {
         return courseService.addMultipleStudentsToCourse(studentIds, courseId);
     }
 
@@ -63,7 +63,7 @@ public class CourseController {
     @DeleteMapping("/administrator/course/remove/course={courseId}")
     public String removeCourse(
             @PathVariable("courseId") Long courseId
-    ){
+    ) {
         courseService.removeCourse(courseId);
         return "Course with id: " + courseId + " has succesfully been removed!";
     }
@@ -72,7 +72,7 @@ public class CourseController {
     @GetMapping("/user/course/get_details/course={courseId}")
     public Course getCourseDetails(
             @PathVariable("courseId") Long courseId
-    ){
+    ) {
         return courseService.getCourse(courseId);
     }
 

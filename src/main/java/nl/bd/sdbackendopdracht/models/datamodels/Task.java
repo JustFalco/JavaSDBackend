@@ -40,7 +40,8 @@ public class Task {
             name = "user_has_task",
             joinColumns = @JoinColumn(name = "userId"),
             inverseJoinColumns = @JoinColumn(name = "taskId"))
-    @Builder.Default private Set<User> taskHasUsers = new HashSet<>();
+    @Builder.Default
+    private Set<User> taskHasUsers = new HashSet<>();
 
     @ManyToOne
     private User taskGivenByTeacher;

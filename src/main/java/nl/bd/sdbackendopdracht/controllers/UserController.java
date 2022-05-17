@@ -18,14 +18,14 @@ public class UserController {
     @GetMapping("/user/get_details")
     public User getPersonalDetails(
             Authentication authentication
-    ){
+    ) {
         return userService.getPersonalUserDetails(authentication.getName());
     }
 
     @GetMapping("/user/get_details/user={userId}")
     public User getUser(
             @PathVariable("userId") Long id
-    ){
+    ) {
         return userService.getUserByUserId(id);
     }
 
@@ -33,7 +33,7 @@ public class UserController {
     public User changeUser(
             @PathVariable("userId") Long userId,
             @RequestBody UserRegistrationRequest request
-    ){
+    ) {
         return userService.changeUserDetails(userId, request);
     }
 

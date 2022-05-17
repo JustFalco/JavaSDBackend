@@ -23,17 +23,18 @@ public class FileStorageService {
 
     private TaskFileRepository taskFileRepository;
     private TasksService tasksService;
-    public TaskFile store(MultipartFile file, Task task){
+
+    public TaskFile store(MultipartFile file, Task task) {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         TaskFile taskFile = null;
-        try{
-            if(task == null){
+        try {
+            if (task == null) {
                 taskFile = TaskFile.builder()
                         .name(fileName)
                         .type(file.getContentType())
                         .data(file.getBytes())
                         .build();
-            }else{
+            } else {
                 taskFile = TaskFile.builder()
                         .name(fileName)
                         .type(file.getContentType())
@@ -42,29 +43,29 @@ public class FileStorageService {
                         .build();
             }
 
-        }catch (IOException exception){
+        } catch (IOException exception) {
             throw new FileProcessorExeption("file could not be stored: " + exception.getMessage());
         }
 
-        if(taskFile == null){
+        if (taskFile == null) {
             throw new FileProcessorExeption("file could not be stored!");
         }
 
         return taskFileRepository.save(taskFile);
     }
 
-    public TaskFile getFile(String id){
+    public TaskFile getFile(String id) {
         TaskFile file = null;
         boolean empty = taskFileRepository.findById(id).isEmpty();
-        if(empty){
+        if (empty) {
             throw new RuntimeException("File with id: " + id + " has not been found!");
-        }else{
+        } else {
             file = taskFileRepository.findById(id).get();
         }
         return file;
     }
 
-    public Stream<TaskFile> getAllFiles(Long taskId){
+    public Stream<TaskFile> getAllFiles(Long taskId) {
         Task task = tasksService.getTask(taskId);
         Set<TaskFile> taskFiles = taskFileRepository.getFilesFromTask(task).orElseThrow(() -> new RuntimeException("Files not found!"));
         return taskFiles.stream();

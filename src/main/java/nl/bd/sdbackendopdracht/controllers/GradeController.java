@@ -20,21 +20,21 @@ public class GradeController {
 
     //Get latest 15 Grades (Student)
     @GetMapping("/student/grades/get_grade/last/student={userId}")
-    public List<StudentGrades> getLastFifteenGrades(@PathVariable("userId") Long userId){
+    public List<StudentGrades> getLastFifteenGrades(@PathVariable("userId") Long userId) {
         return gradeService.getLastFifteenGrades(userId);
     }
 
     //Get all grades from student (All)
-        @GetMapping("/grades/get_grade/overview/student={userId}")
+    @GetMapping("/grades/get_grade/overview/student={userId}")
     public List<StudentGrades> getGradeOverview(
             @PathVariable("userId") Long userId
-        ){
+    ) {
         return gradeService.getGradesFromStudent(userId);
     }
 
     //Get grade details (All)
     @GetMapping("/grades/get_grade/grade={gradeId}")
-    public StudentGrades getGrade(@PathVariable("gradeId") Long gradeId){
+    public StudentGrades getGrade(@PathVariable("gradeId") Long gradeId) {
         return gradeService.getStudentGrade(gradeId);
     }
 
@@ -47,7 +47,7 @@ public class GradeController {
             @PathVariable Long studentId,
             @RequestBody GradeRegistrationRequest request,
             Authentication authentication
-    ){
+    ) {
         return gradeService.submitGrade(studentId, request, authentication);
 
     }
@@ -62,7 +62,7 @@ public class GradeController {
             @PathVariable("gradeId") Long gradeId,
             @RequestBody GradeRegistrationRequest request,
             Authentication authentication
-    ){
+    ) {
         return gradeService.changeGrade(request, gradeId, authentication, studentId);
     }
 
@@ -70,7 +70,7 @@ public class GradeController {
     @DeleteMapping("/teacher/grades/delete/grade={gradeId}")
     public ResponseEntity<String> deleteGrade(
             @PathVariable("gradeId") Long gradeId
-    ){
+    ) {
         gradeService.deleteGrade(gradeId);
         return ResponseEntity.status(HttpStatus.OK).body("Grade with id" + gradeId + " has been deleted!");
     }

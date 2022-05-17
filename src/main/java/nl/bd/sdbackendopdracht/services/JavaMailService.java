@@ -22,7 +22,7 @@ public class JavaMailService implements MailSender {
     @Override
     @Async
     public void send(String to, String email) {
-        try{
+        try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
             helper.setText(email, true);
@@ -30,7 +30,7 @@ public class JavaMailService implements MailSender {
             helper.setSubject("Confirm your email");
             helper.setFrom("hello@ProjectProgen.com");
             mailSender.send(message);
-        }catch (MessagingException e){
+        } catch (MessagingException e) {
             LOGGER.error("Failed to send email", e);
             throw new IllegalStateException("Failed to send email");
         }

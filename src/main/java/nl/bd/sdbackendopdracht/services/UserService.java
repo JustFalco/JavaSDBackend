@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class UserService implements UserDetailsService{
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -26,12 +26,12 @@ public class UserService implements UserDetailsService{
     }
 
     /* Global user methods */
-    public User getUserByUserId(Long userId){
+    public User getUserByUserId(Long userId) {
         User user = null;
-        if(userRepository.findById(userId).isEmpty()){
+        if (userRepository.findById(userId).isEmpty()) {
             throw new UserNotFoundExeption("The user with id: " + userId + " has not been found in the database!");
-        }else{
-           user = userRepository.findById(userId).get();
+        } else {
+            user = userRepository.findById(userId).get();
         }
         return user;
     }
@@ -40,10 +40,10 @@ public class UserService implements UserDetailsService{
         return userRepository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundExeption("User with email " + email + " does not exists!"));
     }
 
-    public User changeUserDetails(Long userId, UserRegistrationRequest request){
+    public User changeUserDetails(Long userId, UserRegistrationRequest request) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundExeption("User with id: " + userId + " has not been found!"));
 
-        if(request.getFirstName() != null){
+        if (request.getFirstName() != null) {
             user.setFirstName(request.getFirstName());
         }
         if (request.getMiddleName() != null) {
@@ -52,7 +52,7 @@ public class UserService implements UserDetailsService{
         if (request.getLastName() != null) {
             user.setLastName(request.getLastName());
         }
-        if (request.getEmail() != null){
+        if (request.getEmail() != null) {
             user.setEmail(request.getEmail());
         }
         if (request.getDateOfBirth() != null) {

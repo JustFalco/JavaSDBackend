@@ -18,11 +18,11 @@ public enum RoleEnums {
         this.permissions = permissions;
     }
 
-    public Set<UserPermissions> getPermissions(){
+    public Set<UserPermissions> getPermissions() {
         return this.permissions;
     }
 
-    public Set<SimpleGrantedAuthority> getGrantedAuthorities(){
+    public Set<SimpleGrantedAuthority> getGrantedAuthorities() {
         Set<SimpleGrantedAuthority> permissions = getPermissions().stream()
                 .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
                 .collect(Collectors.toSet());

@@ -36,18 +36,18 @@ public class Course {
     @ManyToOne
     private User teacherGivesCourse;
 
-//    @JsonIgnore
+    //    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "student_follows_course",
             joinColumns = @JoinColumn(name = "userId"),
             inverseJoinColumns = @JoinColumn(name = "taskId"))
-    @Builder.Default private Set<User> studentsFollowingCourse = new HashSet<>();
+    @Builder.Default
+    private Set<User> studentsFollowingCourse = new HashSet<>();
 
-    public void addUserToCourse(User user){
+    public void addUserToCourse(User user) {
         this.studentsFollowingCourse.add(user);
     }
-
 
 
 }

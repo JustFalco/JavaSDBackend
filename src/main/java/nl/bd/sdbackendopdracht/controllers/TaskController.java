@@ -33,7 +33,7 @@ public class TaskController {
             @RequestBody TaskRegistrationRequest taskRegistrationRequest,
             Authentication authentication,
             @PathVariable("courseId") Long courseId
-            ){
+    ) {
         return tasksService.createTaskForCourse(taskRegistrationRequest, authentication, courseId);
     }
 
@@ -42,7 +42,7 @@ public class TaskController {
     public Task createTask(
             @RequestBody TaskRegistrationRequest taskRegistrationRequest,
             Authentication authentication
-    ){
+    ) {
         Task task = tasksService.createTask(taskRegistrationRequest, authentication.getName());
         return task;
     }
@@ -52,9 +52,9 @@ public class TaskController {
     public Task addFileToTask(
             @PathVariable("taskId") Long taskId,
             @RequestParam("files") MultipartFile[] files
-    ){
+    ) {
         Task task = tasksService.getTask(taskId);
-        for(MultipartFile file : files){
+        for (MultipartFile file : files) {
             storageService.store(file, task);
         }
 
@@ -63,6 +63,7 @@ public class TaskController {
 
     /**
      * Veel van deze code komt van https://www.bezkoder.com/spring-boot-upload-file-database/
+     *
      * @param fileId
      * @return
      */
@@ -77,14 +78,15 @@ public class TaskController {
 
     /**
      * Veel van deze code komt van https://www.bezkoder.com/spring-boot-upload-file-database/
+     *
      * @param taskId
      * @return
      */
     //Get files from task (all)
     @GetMapping("/task/get_taskfiles/task={taskId}")
-    public  ResponseEntity<List<ResponseFile>> getAllTaskfilesFromTask(
+    public ResponseEntity<List<ResponseFile>> getAllTaskfilesFromTask(
             @PathVariable("taskId") Long taskId
-    ){
+    ) {
         List<ResponseFile> files = storageService.getAllFiles(taskId).map(dbFile -> {
             String fileDownloadUri = ServletUriComponentsBuilder
                     .fromCurrentContextPath()
@@ -106,7 +108,7 @@ public class TaskController {
     public Task changeTask(
             @RequestBody TaskRegistrationRequest registrationRequest,
             @PathVariable("taskId") Long taskId
-    ){
+    ) {
         return tasksService.changeTask(taskId, registrationRequest);
     }
 
@@ -114,7 +116,7 @@ public class TaskController {
     @GetMapping("/task/get_taskdetails/task={taskId}")
     public Task getTaskDetails(
             @PathVariable("taskId") Long taskId
-    ){
+    ) {
         return tasksService.getTask(taskId);
     }
 
@@ -122,7 +124,7 @@ public class TaskController {
     @GetMapping("/task/get_tasks_from_student/student={userId}")
     public Set<Task> getTasksFromStudent(
             @PathVariable("userId") Long userId
-    ){
+    ) {
         return tasksService.getAllTasksFromStudent(userId);
     }
 
@@ -131,7 +133,7 @@ public class TaskController {
     public Task addStudentToTask(
             @PathVariable("userId") Long userId,
             @PathVariable("taskId") Long taskId
-    ){
+    ) {
         return tasksService.giveTaskToStudent(taskId, userId);
     }
 
@@ -140,7 +142,7 @@ public class TaskController {
     public void deleteTask(
             @PathVariable("userId") Long userId,
             @PathVariable("taskId") Long taskId
-    ){
+    ) {
         tasksService.removeStudentFromTask(taskId, userId);
     }
 
@@ -148,7 +150,7 @@ public class TaskController {
     @DeleteMapping("/teacher/task/delete/task={taskId}")
     public void deleteTask(
             @PathVariable("taskId") Long taskId
-    ){
+    ) {
         tasksService.deleteTask(taskId);
     }
 

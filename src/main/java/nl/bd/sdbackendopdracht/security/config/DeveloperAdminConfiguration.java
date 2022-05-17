@@ -21,9 +21,9 @@ public class DeveloperAdminConfiguration {
     @Bean
     CommandLineRunner commandLineRunner(
             UserRepository userRepository
-    ){
+    ) {
         return args -> {
-            if(userRepository.findByAdminRoleEnum(RoleEnums.DEVELOPER).isEmpty()){
+            if (userRepository.findByAdminRoleEnum(RoleEnums.DEVELOPER).isEmpty()) {
                 User admin = User.builder()
                         .firstName("Admin")
                         .email("Admin")

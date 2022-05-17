@@ -84,13 +84,13 @@ public class TasksService implements UserDetailsService {
 
     public Task changeTask(Long taskId, TaskRegistrationRequest request) {
         Task taskToChange = getTask(taskId);
-        if(request.getTaskName() != null && request.getTaskName() != ""){
+        if (request.getTaskName() != null && request.getTaskName() != "") {
             taskToChange.setTaskName(request.getTaskName());
         }
-        if(request.getTaskDescription() != null && request.getTaskDescription() != ""){
+        if (request.getTaskDescription() != null && request.getTaskDescription() != "") {
             taskToChange.setTaksDescription(request.getTaskDescription());
         }
-        if(request.getTaskDeadline() != null){
+        if (request.getTaskDeadline() != null) {
             taskToChange.setTaksDeadline(request.getTaskDeadline());
         }
 
@@ -99,9 +99,9 @@ public class TasksService implements UserDetailsService {
 
     public void deleteTask(Long taskId) {
         boolean empty = taskRepository.findById(taskId).isEmpty();
-        if(empty){
+        if (empty) {
             throw new TaskNotFoundExeption("Task with id: " + taskId + " does not exists!");
-        }else{
+        } else {
             taskRepository.deleteById(taskId);
         }
 
@@ -125,7 +125,7 @@ public class TasksService implements UserDetailsService {
     //Get one task
     public Task getTask(Long taskId) {
         Task task;
-        if(!validation.validateId(taskId)){
+        if (!validation.validateId(taskId)) {
             throw new NumberFormatException("Id: " + taskId + " is an illegal number");
         }
 
@@ -148,7 +148,7 @@ public class TasksService implements UserDetailsService {
         return getTask(task.getTaskId());
     }
 
-    public Set<Task> getTasksFromTeacher(Long teacherId){
+    public Set<Task> getTasksFromTeacher(Long teacherId) {
         User teacher = userService.getUserByUserId(teacherId);
         return taskRepository.getTasksFromTeacher(teacher).orElseThrow(
                 () -> new TaskNotFoundExeption("No tasks found belonging to teacher: " + teacher.getFirstName())
