@@ -4,15 +4,12 @@ import lombok.AllArgsConstructor;
 import nl.bd.sdbackendopdracht.models.Mail;
 import nl.bd.sdbackendopdracht.models.datamodels.School;
 import nl.bd.sdbackendopdracht.models.datamodels.User;
-import nl.bd.sdbackendopdracht.models.requestmodels.AdministratorRegistrationRequest;
 import nl.bd.sdbackendopdracht.models.requestmodels.SchoolRegistrationRequest;
-import nl.bd.sdbackendopdracht.models.requestmodels.StudentRegistrationRequest;
-import nl.bd.sdbackendopdracht.models.requestmodels.TeacherRegistrationRequest;
+import nl.bd.sdbackendopdracht.models.requestmodels.UserRegistrationRequest;
 import nl.bd.sdbackendopdracht.repositories.SchoolRepository;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
 import nl.bd.sdbackendopdracht.security.enums.RoleEnums;
 import nl.bd.sdbackendopdracht.security.exeptions.EmailAlreadyExistsExeption;
-import nl.bd.sdbackendopdracht.security.exeptions.IllegalEmailExeption;
 import nl.bd.sdbackendopdracht.security.mail.MailSender;
 import nl.bd.sdbackendopdracht.security.validation.EmailValidation;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -78,7 +75,7 @@ public class RegistrationService implements UserDetailsService {
         return tempUser;
     }
 
-    public User registerStudent(StudentRegistrationRequest request){
+    public User registerStudent(UserRegistrationRequest request){
         emailValidation.validate(request.getEmail(), message);
 
         boolean isValidEmail = userRepository.findUserByEmail(request.getEmail()).isPresent();
@@ -107,7 +104,7 @@ public class RegistrationService implements UserDetailsService {
     }
 
 
-    public User registerAdministrator(AdministratorRegistrationRequest request){
+    public User registerAdministrator(UserRegistrationRequest request){
         emailValidation.validate(request.getEmail(), message);
 
         boolean isValidEmail = userRepository.findUserByEmail(request.getEmail()).isPresent();
@@ -135,7 +132,7 @@ public class RegistrationService implements UserDetailsService {
         return userRepository.save(administrator);
     }
 
-    public User registerTeacher(TeacherRegistrationRequest request ){
+    public User registerTeacher(UserRegistrationRequest request ){
         emailValidation.validate(request.getEmail(), message);
 
         boolean isValidEmail = userRepository.findUserByEmail(request.getEmail()).isPresent();

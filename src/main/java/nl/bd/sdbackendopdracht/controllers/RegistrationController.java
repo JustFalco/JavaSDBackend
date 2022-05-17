@@ -2,14 +2,9 @@ package nl.bd.sdbackendopdracht.controllers;
 
 import lombok.AllArgsConstructor;
 import nl.bd.sdbackendopdracht.models.datamodels.User;
-import nl.bd.sdbackendopdracht.models.requestmodels.AdministratorRegistrationRequest;
 import nl.bd.sdbackendopdracht.models.requestmodels.SchoolRegistrationRequest;
-import nl.bd.sdbackendopdracht.models.requestmodels.StudentRegistrationRequest;
-import nl.bd.sdbackendopdracht.models.requestmodels.TeacherRegistrationRequest;
-import nl.bd.sdbackendopdracht.security.enums.RoleEnums;
+import nl.bd.sdbackendopdracht.models.requestmodels.UserRegistrationRequest;
 import nl.bd.sdbackendopdracht.services.RegistrationService;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -20,7 +15,7 @@ public class RegistrationController {
 
     //Registreer student
     @PostMapping( "/administrator/registration/register_student")
-    public User registerStudent(@RequestBody StudentRegistrationRequest request){
+    public User registerStudent(@RequestBody UserRegistrationRequest request){
         return registrationService.registerStudent(request);
     }
 
@@ -32,13 +27,13 @@ public class RegistrationController {
 
     //Registreer administratief medewerker
     @PostMapping( "/administrator/registration/register_administrator")
-    public User registerStudent(@RequestBody AdministratorRegistrationRequest request){
+    public User registerAdministrator(@RequestBody UserRegistrationRequest request){
         return registrationService.registerAdministrator(request);
     }
 
     //Registreer docent
     @PostMapping( "/administrator/registration/register_teacher")
-    public User registerStudent(@RequestBody TeacherRegistrationRequest request){
+    public User registerTeacher(@RequestBody UserRegistrationRequest request){
         return registrationService.registerTeacher(request);
     }
 }

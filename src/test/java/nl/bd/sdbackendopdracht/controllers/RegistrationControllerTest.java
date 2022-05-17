@@ -1,7 +1,6 @@
 package nl.bd.sdbackendopdracht.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import nl.bd.sdbackendopdracht.models.requestmodels.StudentRegistrationRequest;
 import nl.bd.sdbackendopdracht.services.RegistrationService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

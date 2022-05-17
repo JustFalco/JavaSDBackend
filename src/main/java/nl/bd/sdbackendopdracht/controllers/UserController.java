@@ -2,12 +2,10 @@ package nl.bd.sdbackendopdracht.controllers;
 
 import lombok.AllArgsConstructor;
 import nl.bd.sdbackendopdracht.models.datamodels.User;
+import nl.bd.sdbackendopdracht.models.requestmodels.UserRegistrationRequest;
 import nl.bd.sdbackendopdracht.services.UserService;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "api/v1")
@@ -29,6 +27,14 @@ public class UserController {
             @PathVariable("userId") Long id
     ){
         return userService.getUserByUserId(id);
+    }
+
+    @PutMapping("/user/change/user={userId}")
+    public User changeUser(
+            @PathVariable("userId") Long userId,
+            @RequestBody UserRegistrationRequest request
+    ){
+        return userService.changeUserDetails(userId, request);
     }
 
 }

@@ -29,8 +29,8 @@ public class CourseService implements UserDetailsService {
     private final UserRepository userRepository;
     private final CourseRepository courseRepository;
     private final UserService userService;
-
     private final NumValidation validation = new NumValidation();
+
     //Create course
     public Course createCourse(CourseRegistrationRequest request, Authentication authentication){
         if(!validation.validateId(request.getTeacherGivesCourseId())){
@@ -80,11 +80,10 @@ public class CourseService implements UserDetailsService {
             throw new RuntimeException("Could not change course: " + exception.getMessage());
         } finally{
             if(courseToBeChanged != null){
-                //TODO verander alle ifs naar .isEmpty()
-                if(!request.getCourseName().isEmpty()){
+                if(request.getCourseName()  != null){
                     courseToBeChanged.setCourseName(request.getCourseName());
                 }
-                if(!request.getCourseDescription().isEmpty()){
+                if(request.getCourseDescription() != null){
                     courseToBeChanged.setCourseDescription(request.getCourseDescription());
                 }
                 if(teacherForCourse != null){
@@ -130,22 +129,16 @@ public class CourseService implements UserDetailsService {
 
     //Add student to course
     public Course addStudentToCourse(Long studentId, Long courseId){
-        Course course = null;
-        //TODO afmaken
-        try {
-            course = getCourse(courseId);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-        }
+        Course course = getCourse(courseId);
         User studentToBeAdded = userService.getUserByUserId(studentId);
 
         if(studentToBeAdded.getRoleEnums() == RoleEnums.STUDENT){
             course.addUserToCourse(studentToBeAdded);
-            return courseRepository.save(course);
         }else {
             throw new IllegalStateException("This user is not a student!");
         }
+
+        return courseRepository.save(course);
     }
 
     //Add multiple students to course

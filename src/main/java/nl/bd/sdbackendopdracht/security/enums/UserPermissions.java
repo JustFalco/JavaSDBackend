@@ -4,7 +4,6 @@ import lombok.Getter;
 
 @Getter
 public enum UserPermissions {
-    //TODO aanvullen?
     STUDENT_READ("student:read"),
     STUDENT_WRITE("student:write");
 
