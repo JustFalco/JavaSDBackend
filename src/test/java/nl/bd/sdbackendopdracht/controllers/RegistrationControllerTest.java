@@ -24,8 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@WebAppConfiguration
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @WithMockUser(username = "Admin", password = "SuperStrongP@ssword123", authorities = {"DEVELOPER"})
 class RegistrationControllerTest {
@@ -35,17 +34,9 @@ class RegistrationControllerTest {
     @LocalServerPort
     private int port;
 
-
     @Autowired
     private MockMvc mockMvc;
 
-    @BeforeEach
-    void setUp() {
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
 
     @Test
     void registerStudent() throws Exception {
@@ -54,7 +45,7 @@ class RegistrationControllerTest {
                 null,
                 "Wolkorte",
                 "falco@wolkorte.nl",
-                LocalDate.of(2001, Month.OCTOBER, 29),
+                null,
                 "Falc0",
                 1,
                 true
