@@ -25,8 +25,7 @@ class TasksServiceTest {
     private UserRepository userRepository;
     @Mock
     private TaskRepository taskRepository;
-    @Mock
-    private CourseRepository courseRepository;
+
     @Mock
     private CourseService courseService;
     @Mock
@@ -38,7 +37,7 @@ class TasksServiceTest {
     @BeforeEach
     void setUp() {
         autoCloseable = MockitoAnnotations.openMocks(this);
-        tasksService = new TasksService(userRepository, taskRepository, courseRepository, courseService, userService);
+        tasksService = new TasksService(userRepository, taskRepository, courseService, userService);
     }
 
     @AfterEach
