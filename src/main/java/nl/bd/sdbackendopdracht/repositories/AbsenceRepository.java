@@ -2,7 +2,6 @@ package nl.bd.sdbackendopdracht.repositories;
 
 import nl.bd.sdbackendopdracht.models.datamodels.Absence;
 import nl.bd.sdbackendopdracht.models.datamodels.Course;
-import nl.bd.sdbackendopdracht.models.datamodels.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

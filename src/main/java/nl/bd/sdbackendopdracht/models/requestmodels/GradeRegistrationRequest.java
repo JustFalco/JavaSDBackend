@@ -4,7 +4,6 @@ package nl.bd.sdbackendopdracht.models.requestmodels;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter

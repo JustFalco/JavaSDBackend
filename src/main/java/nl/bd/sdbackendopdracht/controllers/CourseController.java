@@ -2,7 +2,6 @@ package nl.bd.sdbackendopdracht.controllers;
 
 import lombok.AllArgsConstructor;
 import nl.bd.sdbackendopdracht.models.datamodels.Course;
-import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.models.requestmodels.CourseRegistrationRequest;
 import nl.bd.sdbackendopdracht.services.CourseService;
 import org.springframework.security.core.Authentication;

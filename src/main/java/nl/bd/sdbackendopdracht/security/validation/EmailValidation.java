@@ -6,7 +6,6 @@ package nl.bd.sdbackendopdracht.security.validation;
 
 import lombok.AllArgsConstructor;
 import nl.bd.sdbackendopdracht.security.exeptions.IllegalEmailExeption;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -3,10 +3,8 @@ package nl.bd.sdbackendopdracht.models.datamodels;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import nl.bd.sdbackendopdracht.security.enums.AbsenceTypes;
-import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Getter

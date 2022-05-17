@@ -1,9 +1,9 @@
 package nl.bd.sdbackendopdracht.security.config;
 
 import lombok.AllArgsConstructor;
+import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
 import nl.bd.sdbackendopdracht.security.enums.RoleEnums;
-import nl.bd.sdbackendopdracht.models.datamodels.User;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,7 +1,6 @@
 package nl.bd.sdbackendopdracht.models.requestmodels;
 
 import lombok.*;
-import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.security.enums.AbsenceTypes;
 
 @Getter

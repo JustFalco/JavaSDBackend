@@ -4,11 +4,9 @@ import lombok.AllArgsConstructor;
 import nl.bd.sdbackendopdracht.models.datamodels.Absence;
 import nl.bd.sdbackendopdracht.models.requestmodels.AbsenceRegistrationRequest;
 import nl.bd.sdbackendopdracht.services.AbsenceService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
 
 @RestController

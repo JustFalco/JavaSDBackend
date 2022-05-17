@@ -1,9 +1,9 @@
 package nl.bd.sdbackendopdracht.services;
 
 import lombok.AllArgsConstructor;
-import nl.bd.sdbackendopdracht.models.requestmodels.CourseRegistrationRequest;
 import nl.bd.sdbackendopdracht.models.datamodels.Course;
 import nl.bd.sdbackendopdracht.models.datamodels.User;
+import nl.bd.sdbackendopdracht.models.requestmodels.CourseRegistrationRequest;
 import nl.bd.sdbackendopdracht.repositories.CourseRepository;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
 import nl.bd.sdbackendopdracht.security.enums.RoleEnums;

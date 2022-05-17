@@ -1,10 +1,10 @@
 package nl.bd.sdbackendopdracht.services;
 
 import lombok.AllArgsConstructor;
-import nl.bd.sdbackendopdracht.models.requestmodels.TaskRegistrationRequest;
 import nl.bd.sdbackendopdracht.models.datamodels.Course;
 import nl.bd.sdbackendopdracht.models.datamodels.Task;
 import nl.bd.sdbackendopdracht.models.datamodels.User;
+import nl.bd.sdbackendopdracht.models.requestmodels.TaskRegistrationRequest;
 import nl.bd.sdbackendopdracht.repositories.CourseRepository;
 import nl.bd.sdbackendopdracht.repositories.TaskRepository;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
