@@ -44,16 +44,6 @@ public class StudentGrades {
     @OneToOne
     private Task markBelongsToTask;
 
-    public StudentGrades(LocalDateTime insertionDate, String description, float grade, int weight, LocalDate testDate, User markBelongsToStudent, User submittedByTeacher) {
-        this.insertionDate = insertionDate;
-        this.description = description;
-        this.grade = grade;
-        this.weight = weight;
-        this.testDate = testDate;
-        this.markBelongsToStudent = markBelongsToStudent;
-        this.submittedByTeacher = submittedByTeacher;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

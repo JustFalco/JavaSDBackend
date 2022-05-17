@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -18,15 +19,15 @@ import java.util.stream.Stream;
 public class FileStorageService {
 
     /**
-     * Code van https://www.bezkoder.com/spring-boot-upload-file-database/
+     * Code van <a href="https://www.bezkoder.com/spring-boot-upload-file-database/">https://www.bezkoder.com/spring-boot-upload-file-database/</a>
      */
 
     private TaskFileRepository taskFileRepository;
     private TasksService tasksService;
 
     public TaskFile store(MultipartFile file, Task task) {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        TaskFile taskFile = null;
+        String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+        TaskFile taskFile;
         try {
             if (task == null) {
                 taskFile = TaskFile.builder()
@@ -55,7 +56,7 @@ public class FileStorageService {
     }
 
     public TaskFile getFile(String id) {
-        TaskFile file = null;
+        TaskFile file;
         boolean empty = taskFileRepository.findById(id).isEmpty();
         if (empty) {
             throw new RuntimeException("File with id: " + id + " has not been found!");

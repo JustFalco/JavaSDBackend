@@ -1,16 +1,7 @@
 package nl.bd.sdbackendopdracht.models.requestmodels;
 
-import lombok.*;
 import nl.bd.sdbackendopdracht.security.enums.AbsenceTypes;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode
-@ToString
-public class AbsenceRegistrationRequest {
-    private Long absentStudent;
-    private AbsenceTypes absenceType;
-    private String absenceDescription;
+
+public record AbsenceRegistrationRequest(Long absentStudent, AbsenceTypes absenceType, String absenceDescription) {
 }

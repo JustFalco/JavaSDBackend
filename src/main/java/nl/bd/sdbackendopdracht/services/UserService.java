@@ -27,7 +27,7 @@ public class UserService implements UserDetailsService {
 
     /* Global user methods */
     public User getUserByUserId(Long userId) {
-        User user = null;
+        User user;
         if (userRepository.findById(userId).isEmpty()) {
             throw new UserNotFoundExeption("The user with id: " + userId + " has not been found in the database!");
         } else {
@@ -43,40 +43,29 @@ public class UserService implements UserDetailsService {
     public User changeUserDetails(Long userId, UserRegistrationRequest request) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundExeption("User with id: " + userId + " has not been found!"));
 
-        if (request.getFirstName() != null) {
-            user.setFirstName(request.getFirstName());
+        if (request.firstName() != null) {
+            user.setFirstName(request.firstName());
         }
-        if (request.getMiddleName() != null) {
-            user.setMiddleName(request.getMiddleName());
+        if (request.middleName() != null) {
+            user.setMiddleName(request.middleName());
         }
-        if (request.getLastName() != null) {
-            user.setLastName(request.getLastName());
+        if (request.lastName() != null) {
+            user.setLastName(request.lastName());
         }
-        if (request.getEmail() != null) {
-            user.setEmail(request.getEmail());
+        if (request.email() != null) {
+            user.setEmail(request.email());
         }
-        if (request.getDateOfBirth() != null) {
-            user.setDateOfBirth(request.getDateOfBirth());
+        if (request.dateOfBirth() != null) {
+            user.setDateOfBirth(request.dateOfBirth());
         }
-        if (request.getPassword() != null) {
-            user.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
+        if (request.password() != null) {
+            user.setPassword(bCryptPasswordEncoder.encode(request.password()));
         }
-        if (validation.validateNumber(request.getTeacherNumber(), 1, Integer.MAX_VALUE)) {
-            user.setTeacherNumber(request.getTeacherNumber());
-        }
-        if (validation.validateNumber(request.getStudentNumber(), 1, Integer.MAX_VALUE)) {
-            user.setStudentNumber(request.getStudentNumber());
-        }
-        if (validation.validateNumber(request.getStudentYear(), 1, 100)) {
-            user.setYear(request.getStudentYear());
-        }
-        if (validation.validateNumber(request.getWorkerNumber(), 1, Integer.MAX_VALUE)) {
-            user.setWorkerNumber(request.getWorkerNumber());
+        if (validation.validateNumber(request.studentYear(), 1, 100)) {
+            user.setYear(request.studentYear());
         }
 
-        user.setIsActiveTeacher(request.isActiveTeacher());
-        user.setIsActiveWorker(request.isActiveWorker());
-        user.setIsActiveStudent(request.isActiveStudent());
+        user.setEnabled(request.isActive());
 
         return userRepository.save(user);
     }

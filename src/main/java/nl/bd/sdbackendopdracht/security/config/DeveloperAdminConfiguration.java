@@ -29,7 +29,7 @@ public class DeveloperAdminConfiguration {
                         .email("Admin")
                         .locked(false)
                         .enabled(true)
-                        .password(bCryptPasswordEncoder.encode("Falco567"))
+                        .password(bCryptPasswordEncoder.encode("SuperStrongP@ssword123"))
                         .roleEnums(RoleEnums.DEVELOPER)
                         .dateOfCreation(LocalDate.now())
                         .dateOfBirth(LocalDate.of(2001, Month.OCTOBER, 29))

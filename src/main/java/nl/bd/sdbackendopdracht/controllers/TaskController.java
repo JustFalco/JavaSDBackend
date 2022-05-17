@@ -43,8 +43,7 @@ public class TaskController {
             @RequestBody TaskRegistrationRequest taskRegistrationRequest,
             Authentication authentication
     ) {
-        Task task = tasksService.createTask(taskRegistrationRequest, authentication.getName());
-        return task;
+        return tasksService.createTask(taskRegistrationRequest, authentication.getName());
     }
 
     //Add file to task(Teacher)
@@ -62,10 +61,10 @@ public class TaskController {
     }
 
     /**
-     * Veel van deze code komt van https://www.bezkoder.com/spring-boot-upload-file-database/
+     * Veel van deze code komt van <a href="https://www.bezkoder.com/spring-boot-upload-file-database/">https://www.bezkoder.com/spring-boot-upload-file-database/</a>
      *
-     * @param fileId
-     * @return
+     * @param fileId of type long
+     * @return returns a responseEntity with an byte array in its body
      */
     //Get file by id (all)
     @GetMapping("/task/get_taskfiles/file={fileId}")
@@ -77,10 +76,10 @@ public class TaskController {
     }
 
     /**
-     * Veel van deze code komt van https://www.bezkoder.com/spring-boot-upload-file-database/
+     * Veel van deze code komt van <a href="https://www.bezkoder.com/spring-boot-upload-file-database/">https://www.bezkoder.com/spring-boot-upload-file-database/</a>
      *
-     * @param taskId
-     * @return
+     * @param taskId Long variable task id
+     * @return response entity with in the body a list of files
      */
     //Get files from task (all)
     @GetMapping("/task/get_taskfiles/task={taskId}")

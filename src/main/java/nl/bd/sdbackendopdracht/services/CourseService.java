@@ -33,20 +33,20 @@ public class CourseService implements UserDetailsService {
 
     //Create course
     public Course createCourse(CourseRegistrationRequest request, Authentication authentication) {
-        if (!validation.validateId(request.getTeacherGivesCourseId())) {
-            throw new CourseProcessExeption("Could not create course because of invalid id: " + request.getTeacherGivesCourseId());
+        if (!validation.validateId(request.teacherGivesCourseId())) {
+            throw new CourseProcessExeption("Could not create course because of invalid id: " + request.teacherGivesCourseId());
         }
 
-        User courseGivenBy = null;
-        User courseCreator = null;
-        Course courseToBeCreated = null;
+        User courseGivenBy;
+        User courseCreator;
+        Course courseToBeCreated;
 
         try {
-            courseGivenBy = userService.getUserByUserId(request.getTeacherGivesCourseId());
+            courseGivenBy = userService.getUserByUserId(request.teacherGivesCourseId());
             courseCreator = userService.getPersonalUserDetails(authentication.getName());
             courseToBeCreated = Course.builder()
-                    .courseName(request.getCourseName())
-                    .courseDescription(request.getCourseDescription())
+                    .courseName(request.courseName())
+                    .courseDescription(request.courseDescription())
                     .belongsToSchool(courseCreator.getSchool())
                     .teacherGivesCourse(courseGivenBy)
                     .build();
@@ -72,19 +72,19 @@ public class CourseService implements UserDetailsService {
         User teacherForCourse = null;
         try {
             courseToBeChanged = getCourse(courseId);
-            if (request.getTeacherGivesCourseId() != null && request.getTeacherGivesCourseId() != 0) {
-                teacherForCourse = userService.getUserByUserId(request.getTeacherGivesCourseId());
+            if (request.teacherGivesCourseId() != null && request.teacherGivesCourseId() != 0) {
+                teacherForCourse = userService.getUserByUserId(request.teacherGivesCourseId());
             }
 
         } catch (CourseNotFoundExeption | UserNotFoundExeption exception) {
             throw new RuntimeException("Could not change course: " + exception.getMessage());
         } finally {
             if (courseToBeChanged != null) {
-                if (request.getCourseName() != null) {
-                    courseToBeChanged.setCourseName(request.getCourseName());
+                if (request.courseName() != null) {
+                    courseToBeChanged.setCourseName(request.courseName());
                 }
-                if (request.getCourseDescription() != null) {
-                    courseToBeChanged.setCourseDescription(request.getCourseDescription());
+                if (request.courseDescription() != null) {
+                    courseToBeChanged.setCourseDescription(request.courseDescription());
                 }
                 if (teacherForCourse != null) {
                     courseToBeChanged.setTeacherGivesCourse(teacherForCourse);
@@ -104,7 +104,7 @@ public class CourseService implements UserDetailsService {
 
     //Get course details
     public Course getCourse(Long courseId) {
-        Course course = null;
+        Course course;
         if (courseRepository.findById(courseId).isEmpty()) {
             throw new CourseNotFoundExeption("Course with id: " + courseId + " has not been found in the database!");
         } else {
@@ -145,7 +145,12 @@ public class CourseService implements UserDetailsService {
     public Course addMultipleStudentsToCourse(List<Long> usersToBeAddedIds, Long courseId) {
         Course course = getCourse(courseId);
         for (Long id : usersToBeAddedIds) {
-            course.addUserToCourse(userRepository.findById(id).get());
+            try {
+                course.addUserToCourse(userRepository.findById(id).orElseThrow(() -> new UserNotFoundExeption("User with id: " + id + " has not been found in database!")));
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
         }
         return courseRepository.save(course);
     }

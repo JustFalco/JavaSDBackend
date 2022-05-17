@@ -43,12 +43,12 @@ public class RegistrationService implements UserDetailsService {
 
     public User registerSchool(SchoolRegistrationRequest request) {
 
-        emailValidation.validate(request.getSchoolMail(), message);
+        emailValidation.validate(request.schoolMail(), message);
 
 
         School school = School.builder()
-                .schoolMail(request.getSchoolMail())
-                .schoolName(request.getSchoolName())
+                .schoolMail(request.schoolMail())
+                .schoolName(request.schoolName())
                 .build();
 
         schoolRepository.save(school);
@@ -58,7 +58,7 @@ public class RegistrationService implements UserDetailsService {
         String encodedPassword = bCryptPasswordEncoder.encode(password);
 
         User tempUser = User.builder()
-                .email(request.getSchoolMail())
+                .email(request.schoolMail())
                 .password(encodedPassword)
                 .roleEnums(RoleEnums.ADMINISTRATOR)
                 .dateOfCreation(LocalDate.now())
@@ -68,33 +68,32 @@ public class RegistrationService implements UserDetailsService {
 
         userRepository.save(tempUser);
 
-        mailSender.send(request.getSchoolMail(), mail.getMail(request.getSchoolName(), request.getSchoolMail(), password));
+        mailSender.send(request.schoolMail(), mail.getMail(request.schoolName(), request.schoolMail(), password));
 
 
         return tempUser;
     }
 
     public User registerStudent(UserRegistrationRequest request) {
-        emailValidation.validate(request.getEmail(), message);
+        emailValidation.validate(request.email(), message);
 
-        boolean isValidEmail = userRepository.findUserByEmail(request.getEmail()).isPresent();
+        boolean isValidEmail = userRepository.findUserByEmail(request.email()).isPresent();
 
         if (isValidEmail) {
-            throw new EmailAlreadyExistsExeption("Email: " + request.getEmail() + "  already exists");
+            throw new EmailAlreadyExistsExeption("Email: " + request.email() + "  already exists");
         }
 
-        String encodedPassword = bCryptPasswordEncoder.encode(request.getPassword());
+        String encodedPassword = bCryptPasswordEncoder.encode(request.password());
         User student = User.builder()
-                .firstName(request.getFirstName())
-                .middleName(request.getMiddleName())
-                .lastName(request.getLastName())
+                .firstName(request.firstName())
+                .middleName(request.middleName())
+                .lastName(request.lastName())
                 .roleEnums(RoleEnums.STUDENT)
-                .email(request.getEmail())
-                .dateOfBirth(request.getDateOfBirth())
+                .email(request.email())
+                .dateOfBirth(request.dateOfBirth())
                 .dateOfCreation(LocalDate.now())
                 .password(encodedPassword)
-                .studentNumber(request.getStudentNumber())
-                .year(request.getStudentYear())
+                .year(request.studentYear())
                 .locked(false)
                 .enabled(true)
                 .build();
@@ -104,26 +103,24 @@ public class RegistrationService implements UserDetailsService {
 
 
     public User registerAdministrator(UserRegistrationRequest request) {
-        emailValidation.validate(request.getEmail(), message);
+        emailValidation.validate(request.email(), message);
 
-        boolean isValidEmail = userRepository.findUserByEmail(request.getEmail()).isPresent();
+        boolean isValidEmail = userRepository.findUserByEmail(request.email()).isPresent();
 
         if (isValidEmail) {
-            throw new EmailAlreadyExistsExeption("Email: " + request.getEmail() + "  already exists");
+            throw new EmailAlreadyExistsExeption("Email: " + request.email() + "  already exists");
         }
 
-        String encodedPassword = bCryptPasswordEncoder.encode(request.getPassword());
+        String encodedPassword = bCryptPasswordEncoder.encode(request.password());
         User administrator = User.builder()
-                .firstName(request.getFirstName())
-                .middleName(request.getMiddleName())
-                .lastName(request.getLastName())
+                .firstName(request.firstName())
+                .middleName(request.middleName())
+                .lastName(request.lastName())
                 .roleEnums(RoleEnums.ADMINISTRATOR)
-                .email(request.getEmail())
-                .dateOfBirth(request.getDateOfBirth())
+                .email(request.email())
+                .dateOfBirth(request.dateOfBirth())
                 .dateOfCreation(LocalDate.now())
                 .password(encodedPassword)
-                .workerNumber(request.getWorkerNumber())
-                .isActiveWorker(request.isActiveWorker())
                 .locked(false)
                 .enabled(true)
                 .build();
@@ -132,26 +129,24 @@ public class RegistrationService implements UserDetailsService {
     }
 
     public User registerTeacher(UserRegistrationRequest request) {
-        emailValidation.validate(request.getEmail(), message);
+        emailValidation.validate(request.email(), message);
 
-        boolean isValidEmail = userRepository.findUserByEmail(request.getEmail()).isPresent();
+        boolean isValidEmail = userRepository.findUserByEmail(request.email()).isPresent();
 
         if (isValidEmail) {
-            throw new EmailAlreadyExistsExeption("Email: " + request.getEmail() + "  already exists");
+            throw new EmailAlreadyExistsExeption("Email: " + request.email() + "  already exists");
         }
 
-        String encodedPassword = bCryptPasswordEncoder.encode(request.getPassword());
+        String encodedPassword = bCryptPasswordEncoder.encode(request.password());
         User administrator = User.builder()
-                .firstName(request.getFirstName())
-                .middleName(request.getMiddleName())
-                .lastName(request.getLastName())
+                .firstName(request.firstName())
+                .middleName(request.middleName())
+                .lastName(request.lastName())
                 .roleEnums(RoleEnums.TEACHER)
-                .email(request.getEmail())
-                .dateOfBirth(request.getDateOfBirth())
+                .email(request.email())
+                .dateOfBirth(request.dateOfBirth())
                 .dateOfCreation(LocalDate.now())
                 .password(encodedPassword)
-                .teacherNumber(request.getTeacherNumber())
-                .isActiveTeacher(request.isActiveTeacher())
                 .locked(false)
                 .enabled(true)
                 .build();

@@ -29,14 +29,13 @@ public class GradeService implements UserDetailsService {
     private final TasksService tasksService;
     private final GradeRepository gradeRepository;
     private final UserService userService;
-    private final CourseService courseService;
     private final UserRepository userRepository;
 
     private final NumValidation validation = new NumValidation();
 
     //Get one grade
     public StudentGrades getStudentGrade(Long gradeId) {
-        StudentGrades studentGrades = null;
+        StudentGrades studentGrades;
         if (gradeRepository.findById(gradeId).isEmpty()) {
             throw new GradeNotFoundExeption("Grade with id: " + gradeId + " has not been found!");
         } else {
@@ -64,43 +63,47 @@ public class GradeService implements UserDetailsService {
 
     //change one grade
     public StudentGrades changeGrade(GradeRegistrationRequest request, Long gradeId, Authentication authentication, Long studentId) {
-        Task task = null;
+        Task task;
         StudentGrades grade = null;
         try {
-            task = tasksService.getTask(request.getMarkBelongsToTaskId());
+            task = tasksService.getTask(request.markBelongsToTaskId());
         } catch (Exception e) {
-            task = null;
             throw new GradeProcessExeption("Could not change grade: " + e.getMessage());
-        } finally {
-
-            User teacher = null;
-            User student = null;
-            try {
-                grade = getStudentGrade(gradeId);
-                teacher = userService.getPersonalUserDetails(authentication.getName());
-                student = userService.getUserByUserId(studentId);
-            } catch (Exception e) {
-                throw new GradeProcessExeption("could not change grade: " + e.getMessage());
-            } finally {
-                if (validation.validateFloat(request.getGrade(), 0, 20)) {
-                    grade.setGrade(request.getGrade());
-                }
-                if (!request.getDescription().isEmpty()) {
-                    grade.setDescription(request.getDescription());
-                }
-                if (validation.validateNumber(request.getWeight(), 1, 20)) {
-                    grade.setWeight(request.getWeight());
-                }
-                if (request.getTestDate() != null) {
-                    grade.setTestDate(request.getTestDate());
-                }
-
-                grade.setInsertionDate(LocalDateTime.now());
-                grade.setSubmittedByTeacher(teacher);
-                grade.setMarkBelongsToStudent(student);
-                grade.setMarkBelongsToTask(task);
-            }
         }
+
+        User teacher = null;
+        User student = null;
+        try {
+            grade = getStudentGrade(gradeId);
+            teacher = userService.getPersonalUserDetails(authentication.getName());
+            student = userService.getUserByUserId(studentId);
+        } catch (Exception e) {
+            throw new GradeProcessExeption("could not change grade: " + e.getMessage());
+        } finally {
+            if (validation.validateFloat(request.grade(), 0, 20)) {
+                assert grade != null;
+                grade.setGrade(request.grade());
+            }
+            if (!request.description().isEmpty()) {
+                assert grade != null;
+                grade.setDescription(request.description());
+            }
+            if (validation.validateNumber(request.weight(), 1, 20)) {
+                assert grade != null;
+                grade.setWeight(request.weight());
+            }
+            if (request.testDate() != null) {
+                assert grade != null;
+                grade.setTestDate(request.testDate());
+            }
+
+            assert grade != null;
+            grade.setInsertionDate(LocalDateTime.now());
+            grade.setSubmittedByTeacher(teacher);
+            grade.setMarkBelongsToStudent(student);
+            grade.setMarkBelongsToTask(task);
+        }
+
 
         return gradeRepository.save(grade);
     }
@@ -118,22 +121,22 @@ public class GradeService implements UserDetailsService {
         if (!validation.validateId(studentId)) {
             throw new NumberFormatException("Id: " + studentId + " is an illegal number");
         }
-        if (!validation.validateNumber(request.getWeight(), 1, 10) || !validation.validateFloat(request.getGrade(), 0, 20)) {
+        if (!validation.validateNumber(request.weight(), 1, 10) || !validation.validateFloat(request.grade(), 0, 20)) {
             throw new NumberFormatException("Illegal number input");
         }
 
         User teacher = userService.getPersonalUserDetails(authentication.getName());
         User gradeBelongsToStudent = userService.getUserByUserId(studentId);
-        Task task = tasksService.getTask(request.getMarkBelongsToTaskId());
+        Task task = tasksService.getTask(request.markBelongsToTaskId());
 
         StudentGrades grade = StudentGrades.builder()
-                .description(request.getDescription())
-                .grade(request.getGrade())
+                .description(request.description())
+                .grade(request.grade())
                 .insertionDate(LocalDateTime.now())
                 .markBelongsToStudent(gradeBelongsToStudent)
                 .markBelongsToTask(task)
                 .submittedByTeacher(teacher)
-                .testDate(request.getTestDate())
+                .testDate(request.testDate())
                 .build();
 
         return gradeRepository.save(grade);

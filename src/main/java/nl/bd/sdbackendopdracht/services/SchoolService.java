@@ -2,7 +2,6 @@ package nl.bd.sdbackendopdracht.services;
 
 import lombok.AllArgsConstructor;
 import nl.bd.sdbackendopdracht.models.datamodels.User;
-import nl.bd.sdbackendopdracht.repositories.SchoolRepository;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
 import nl.bd.sdbackendopdracht.security.enums.RoleEnums;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,6 @@ import java.util.Set;
 @AllArgsConstructor
 public class SchoolService {
 
-    private final SchoolRepository schoolRepository;
     private final UserRepository userRepository;
 
     public Set<User> getAllStudentsOnSchool(Long schoolId) {

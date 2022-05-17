@@ -1,10 +1,12 @@
 package nl.bd.sdbackendopdracht.models.datamodels;
 
 import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -14,8 +16,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
-@EqualsAndHashCode
 public class Task {
     @Id
     @SequenceGenerator(
@@ -48,5 +48,30 @@ public class Task {
 
     public void addUser(User user) {
         this.taskHasUsers.add(user);
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+                "taskId = " + taskId + ", " +
+                "taskName = " + taskName + ", " +
+                "taksDescription = " + taksDescription + ", " +
+                "taksDeadline = " + taksDeadline + ", " +
+                "timeOfTaskPublication = " + timeOfTaskPublication + ", " +
+                "taskFinished = " + taskFinished + ", " +
+                "taskGivenByTeacher = " + taskGivenByTeacher + ")";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Task task = (Task) o;
+        return taskId != null && Objects.equals(taskId, task.taskId);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

@@ -3,15 +3,16 @@ package nl.bd.sdbackendopdracht.models.datamodels;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import nl.bd.sdbackendopdracht.security.enums.AbsenceTypes;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @ToString
-@EqualsAndHashCode
 @NoArgsConstructor
 @Builder
 @Table(name = "absence")
@@ -39,5 +40,16 @@ public class Absence {
 
     private String absenceDescription;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Absence absence = (Absence) o;
+        return absenceId != null && Objects.equals(absenceId, absence.absenceId);
+    }
 
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

@@ -5,7 +5,6 @@ import nl.bd.sdbackendopdracht.models.datamodels.Course;
 import nl.bd.sdbackendopdracht.models.datamodels.Task;
 import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.models.requestmodels.TaskRegistrationRequest;
-import nl.bd.sdbackendopdracht.repositories.CourseRepository;
 import nl.bd.sdbackendopdracht.repositories.TaskRepository;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
 import nl.bd.sdbackendopdracht.security.exeptions.TaskNotFoundExeption;
@@ -29,7 +28,6 @@ public class TasksService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;
-    private final CourseRepository courseRepository;
 
     private final CourseService courseService;
     private final UserService userService;
@@ -44,9 +42,9 @@ public class TasksService implements UserDetailsService {
     public Task createTask(TaskRegistrationRequest request, String currentUserMail) {
         User personalUserDetails = userService.getPersonalUserDetails(currentUserMail);
         Task task = Task.builder()
-                .taskName(request.getTaskName())
-                .taksDescription(request.getTaskDescription())
-                .taksDeadline(request.getTaskDeadline())
+                .taskName(request.taskName())
+                .taksDescription(request.taskDescription())
+                .taksDeadline(request.taskDeadline())
                 .timeOfTaskPublication(LocalDateTime.now(Clock.systemDefaultZone()))
                 .taskFinished(false)
                 .taskGivenByTeacher(personalUserDetails)
@@ -84,14 +82,14 @@ public class TasksService implements UserDetailsService {
 
     public Task changeTask(Long taskId, TaskRegistrationRequest request) {
         Task taskToChange = getTask(taskId);
-        if (request.getTaskName() != null && request.getTaskName() != "") {
-            taskToChange.setTaskName(request.getTaskName());
+        if (request.taskName() != null && !request.taskName().equals("")) {
+            taskToChange.setTaskName(request.taskName());
         }
-        if (request.getTaskDescription() != null && request.getTaskDescription() != "") {
-            taskToChange.setTaksDescription(request.getTaskDescription());
+        if (request.taskDescription() != null && !request.taskDescription().equals("")) {
+            taskToChange.setTaksDescription(request.taskDescription());
         }
-        if (request.getTaskDeadline() != null) {
-            taskToChange.setTaksDeadline(request.getTaskDeadline());
+        if (request.taskDeadline() != null) {
+            taskToChange.setTaksDeadline(request.taskDeadline());
         }
 
         return taskRepository.save(taskToChange);

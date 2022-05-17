@@ -18,9 +18,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT s FROM User s WHERE s.roleEnums = ?1")
     Optional<User> findByAdminRoleEnum(RoleEnums roleEnums);
 
-    @Query("SELECT s FROM User s WHERE s.userId = ?1")
-    Optional<Set<User>> findAllById(Long userId);
-
     @Query("SELECT s FROM User s WHERE s.school.schoolId = ?1 AND s.roleEnums = ?2")
     Optional<Set<User>> getStudentsOnSchool(Long schoolId, RoleEnums role);
 

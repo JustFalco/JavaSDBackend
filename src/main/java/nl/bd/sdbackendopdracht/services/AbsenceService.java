@@ -26,14 +26,14 @@ public class AbsenceService {
 
     //Submit absence
     public Absence submitAbsence(AbsenceRegistrationRequest request, Authentication authentication) {
-        User absentStudent = userService.getUserByUserId(request.getAbsentStudent());
+        User absentStudent = userService.getUserByUserId(request.absentStudent());
         User administrator = userService.getPersonalUserDetails(authentication.getName());
 
         Absence absence = Absence.builder()
-                .absenceDescription(request.getAbsenceDescription())
+                .absenceDescription(request.absenceDescription())
                 .absentStudent(absentStudent)
                 .submittedByAdministrator(administrator)
-                .absenceType(request.getAbsenceType())
+                .absenceType(request.absenceType())
                 .build();
 
         return absenceRepository.save(absence);
@@ -41,7 +41,7 @@ public class AbsenceService {
 
     //Get absence details
     public Absence getAbsenceDetails(Long absenceId) {
-        Absence absence = null;
+        Absence absence;
         if (absenceRepository.findById(absenceId).isEmpty()) {
             throw new AbsenceNotFoundExeption("Absence with id: " + absenceId + " has not been found!");
         } else {
@@ -63,13 +63,13 @@ public class AbsenceService {
         Absence absence = getAbsenceDetails(absenceId);
 
         try {
-            User student = userService.getUserByUserId(request.getAbsentStudent());
+            User student = userService.getUserByUserId(request.absentStudent());
             User administrator = userService.getPersonalUserDetails(authentication.getName());
-            if (request.getAbsenceType() != null) {
-                absence.setAbsenceType(request.getAbsenceType());
+            if (request.absenceType() != null) {
+                absence.setAbsenceType(request.absenceType());
             }
-            if (request.getAbsenceDescription() != null && request.getAbsenceDescription() != "") {
-                absence.setAbsenceDescription(request.getAbsenceDescription());
+            if (request.absenceDescription() != null && !request.absenceDescription().equals("")) {
+                absence.setAbsenceDescription(request.absenceDescription());
             }
             if (student != null) {
                 absence.setAbsentStudent(student);
@@ -83,8 +83,7 @@ public class AbsenceService {
             throw new AbsenceProcessorExeption("Abcense could not be changed: " + userNotFoundExeption.getMessage());
         }
 
-        Absence save = absenceRepository.save(absence);
-        return save;
+        return absenceRepository.save(absence);
     }
 
     //Get all absence from course

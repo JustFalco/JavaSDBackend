@@ -19,7 +19,6 @@ import java.util.*;
 @Getter
 @Setter
 @Builder
-@ToString
 public class User implements UserDetails {
 
     @Id
@@ -45,13 +44,7 @@ public class User implements UserDetails {
     private LocalDate dateOfCreation;
     private LocalDate dateOfBirth;
     private String password;
-    private int workerNumber;
-    private Boolean isActiveWorker;
-    private int studentNumber;
     private int year;
-    private Boolean isActiveStudent;
-    private int teacherNumber;
-    private Boolean isActiveTeacher;
     @Transient
     private Integer age;
     private Boolean locked = false;
@@ -114,5 +107,28 @@ public class User implements UserDetails {
 
     public Long getUserId() {
         return userId;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", firstName='" + firstName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", roleEnums=" + roleEnums +
+                ", email='" + email + '\'' +
+                ", dateOfCreation=" + dateOfCreation +
+                ", dateOfBirth=" + dateOfBirth +
+                ", password='" + password + '\'' +
+                ", year=" + year +
+                ", age=" + age +
+                ", locked=" + locked +
+                ", enabled=" + enabled +
+                ", school=" + school +
+                ", grades=" + grades +
+                ", userHasTasks=" + userHasTasks +
+                ", coursesBelongingToStudent=" + coursesBelongingToStudent +
+                '}';
     }
 }

@@ -76,9 +76,9 @@ class TasksServiceTest {
         TaskRegistrationRequest request = new TaskRegistrationRequest("Test task", "test task object", LocalDateTime.MAX);
         User personalUserDetails = userService.getPersonalUserDetails(mail);
         Task createdTask = Task.builder()
-                .taskName(request.getTaskName())
-                .taksDescription(request.getTaskDescription())
-                .taksDeadline(request.getTaskDeadline())
+                .taskName(request.taskName())
+                .taksDescription(request.taskDescription())
+                .taksDeadline(request.taskDeadline())
 //                .timeOfTaskPublication(LocalDateTime.now())
                 .taskFinished(false)
                 .taskGivenByTeacher(personalUserDetails)
