@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import nl.bd.sdbackendopdracht.models.datamodels.Task;
 import nl.bd.sdbackendopdracht.models.datamodels.TaskFile;
 import nl.bd.sdbackendopdracht.repositories.TaskFileRepository;
+import nl.bd.sdbackendopdracht.security.exeptions.FileProcessorExeption;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,16 +44,14 @@ public class FileStorageService {
             }
 
         }catch (IOException exception){
-            //TODO fix this shit?
-            taskFile = null;
+            throw new FileProcessorExeption("file could not be stored: " + exception.getMessage());
         }
 
-        if(taskFile != null){
-            return taskFileRepository.save(taskFile);
-        }else {
-            throw new RuntimeException("Task could not be created!");
+        if(taskFile == null){
+            throw new FileProcessorExeption("file could not be stored!");
         }
 
+        return taskFileRepository.save(taskFile);
     }
 
     public TaskFile getFile(String id){

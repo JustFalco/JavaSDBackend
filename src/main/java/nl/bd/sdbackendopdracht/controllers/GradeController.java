@@ -4,13 +4,12 @@ import lombok.AllArgsConstructor;
 import nl.bd.sdbackendopdracht.models.datamodels.StudentGrades;
 import nl.bd.sdbackendopdracht.models.requestmodels.GradeRegistrationRequest;
 import nl.bd.sdbackendopdracht.services.GradeService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping(path = "api/v1")
@@ -35,8 +34,7 @@ public class GradeController {
 
     //Get grade details (All)
     @GetMapping("/grades/get_grade/grade={gradeId}")
-    public StudentGrades getGrade(@PathVariable Long gradeId){
-        //TODO validate Long
+    public StudentGrades getGrade(@PathVariable("gradeId") Long gradeId){
         return gradeService.getStudentGrade(gradeId);
     }
 
@@ -70,11 +68,11 @@ public class GradeController {
 
     //Remove grade (Teacher)
     @DeleteMapping("/teacher/grades/delete/grade={gradeId}")
-    public String deleteGrade(
+    public ResponseEntity<String> deleteGrade(
             @PathVariable("gradeId") Long gradeId
     ){
         gradeService.deleteGrade(gradeId);
-        return "Grade with grade id: " + gradeId +  " has been removed!";
+        return ResponseEntity.status(HttpStatus.OK).body("Grade with id" + gradeId + " has been deleted!");
     }
 
 }

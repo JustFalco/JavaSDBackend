@@ -6,7 +6,10 @@ import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.models.requestmodels.AbsenceRegistrationRequest;
 import nl.bd.sdbackendopdracht.repositories.AbsenceRepository;
 import nl.bd.sdbackendopdracht.security.exeptions.AbsenceNotFoundExeption;
+import nl.bd.sdbackendopdracht.security.exeptions.AbsenceProcessorExeption;
 import nl.bd.sdbackendopdracht.security.exeptions.UserNotFoundExeption;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -51,18 +54,15 @@ public class AbsenceService {
 
     //Remove absence
     public void removeAbsence(Long absenceId){
+        if(absenceRepository.findById(absenceId).isEmpty()){
+            throw new AbsenceNotFoundExeption("Absence cannot be deleted because it is not found in the database!");
+        }
         absenceRepository.deleteById(absenceId);
     }
 
     //Change absence
     public Absence changeAbsence(Long absenceId, AbsenceRegistrationRequest request, Authentication authentication){
-        Absence absence;
-        try{
-            absence = getAbsenceDetails(absenceId);
-
-        }catch (AbsenceNotFoundExeption exeption){
-            return null;
-        }
+        Absence absence = getAbsenceDetails(absenceId);
 
         try {
             User student = userService.getUserByUserId(request.getAbsentStudent());
@@ -82,15 +82,14 @@ public class AbsenceService {
 
 
         }catch (UserNotFoundExeption userNotFoundExeption){
-            //TODO custom exeption
-            throw new RuntimeException("Abcense could not be changed: " + userNotFoundExeption);
+            throw new AbsenceProcessorExeption("Abcense could not be changed: " + userNotFoundExeption.getMessage());
         }
 
-        return absenceRepository.save(absence);
+        Absence save = absenceRepository.save(absence);
+        return save;
     }
 
     //Get all absence from course
-    //TODO AFMAKEN
     public List<Set<Absence>> getAllAbsenceFromCourse(Long courseId){
         Set<User> studentsInCourse = courseService.getCourse(courseId).getStudentsFollowingCourse();
         List<Set<Absence>> absenceList = new ArrayList<>();
