@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class GradeProcessExeption extends RuntimeException {
 
     /**
+     *
      */
     public GradeProcessExeption(String message) {
         super(message);

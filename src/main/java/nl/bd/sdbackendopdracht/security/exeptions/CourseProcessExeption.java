@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class CourseProcessExeption extends RuntimeException {
 
     /**
+     *
      */
     public CourseProcessExeption(String message) {
         super(message);

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class AbsenceProcessorExeption extends RuntimeException {
 
     /**
+     *
      */
     public AbsenceProcessorExeption(String message) {
         super(message);

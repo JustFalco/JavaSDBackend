@@ -147,7 +147,7 @@ public class CourseService implements UserDetailsService {
         for (Long id : usersToBeAddedIds) {
             try {
                 course.addUserToCourse(userRepository.findById(id).orElseThrow(() -> new UserNotFoundExeption("User with id: " + id + " has not been found in database!")));
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 

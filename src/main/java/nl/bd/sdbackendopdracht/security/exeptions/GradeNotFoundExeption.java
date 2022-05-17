@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class GradeNotFoundExeption extends RuntimeException {
 
     /**
+     *
      */
     public GradeNotFoundExeption(String message) {
         super(message);
