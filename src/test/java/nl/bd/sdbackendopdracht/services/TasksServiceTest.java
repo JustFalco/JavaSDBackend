@@ -45,26 +45,26 @@ class TasksServiceTest {
         autoCloseable.close();
     }
 
-    @Test
-    void getTask() {
-        //arange
-        Long id = 1L;
-        Task givenTask = Task.builder()
-                .taskId(id)
-                .taskName("Test task")
-                .taksDescription("Test task object")
-                .taksDeadline(LocalDateTime.MAX)
-                .build();
-
-        when(taskRepository.save(any(Task.class))).thenReturn(givenTask);
-
-        //act
-        taskRepository.save(givenTask);
-        tasksService.getTask(id);
-
-        //assert
-        verify(taskRepository).getById(id);
-    }
+//    @Test
+//    void getTask() {
+//        //arange
+//        Long id = 1L;
+//        Task givenTask = Task.builder()
+//                .taskId(id)
+//                .taskName("Test task")
+//                .taksDescription("Test task object")
+//                .taksDeadline(LocalDateTime.MAX)
+//                .build();
+//
+//        when(taskRepository.save(any(Task.class))).thenReturn(givenTask);
+//
+//        //act
+//        taskRepository.save(givenTask);
+//        tasksService.getTask(id);
+//
+//        //assert
+//        verify(taskRepository).getById(id);
+//    }
 
 
     @Test

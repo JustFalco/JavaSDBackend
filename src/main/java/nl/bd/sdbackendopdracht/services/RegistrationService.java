@@ -10,8 +10,10 @@ import nl.bd.sdbackendopdracht.repositories.SchoolRepository;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
 import nl.bd.sdbackendopdracht.security.enums.RoleEnums;
 import nl.bd.sdbackendopdracht.security.exeptions.EmailAlreadyExistsExeption;
+import nl.bd.sdbackendopdracht.security.exeptions.SchoolAlreadyExistsExeption;
 import nl.bd.sdbackendopdracht.security.mail.MailSender;
 import nl.bd.sdbackendopdracht.security.validation.EmailValidation;
+import nl.bd.sdbackendopdracht.security.validation.PasswordValidation;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,10 +27,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class RegistrationService implements UserDetailsService {
 
-    private static final String message = "This email cannot be used because of illegal characters or wrong format!";
-
     /* Validation imports */
     private final EmailValidation emailValidation;
+    private final PasswordValidation passwordValidation;
 
     /* Repository imports */
     private final SchoolRepository schoolRepository;
@@ -43,12 +44,21 @@ public class RegistrationService implements UserDetailsService {
 
     public User registerSchool(SchoolRegistrationRequest request) {
 
-        emailValidation.validate(request.schoolMail(), message);
+        emailValidation.validate(request.schoolMail());
+        boolean isValidEmail = schoolRepository.finBySchoolMail(request.schoolMail()).isPresent();
+        boolean isValidName = schoolRepository.findBySchoolName(request.schoolName().toUpperCase()).isPresent();
+
+        if (isValidEmail) {
+            throw new SchoolAlreadyExistsExeption("Email: " + request.schoolMail() + "  already exists");
+        }
+        if (isValidName) {
+            throw new SchoolAlreadyExistsExeption("Name: " + request.schoolName() + "  already exists");
+        }
 
 
         School school = School.builder()
                 .schoolMail(request.schoolMail())
-                .schoolName(request.schoolName())
+                .schoolName(request.schoolName().toUpperCase())
                 .build();
 
         schoolRepository.save(school);
@@ -75,7 +85,8 @@ public class RegistrationService implements UserDetailsService {
     }
 
     public User registerStudent(UserRegistrationRequest request) {
-        emailValidation.validate(request.email(), message);
+        emailValidation.validate(request.email());
+        passwordValidation.validate(request.password());
 
         boolean isValidEmail = userRepository.findUserByEmail(request.email()).isPresent();
 
@@ -103,7 +114,8 @@ public class RegistrationService implements UserDetailsService {
 
 
     public User registerAdministrator(UserRegistrationRequest request) {
-        emailValidation.validate(request.email(), message);
+        emailValidation.validate(request.email());
+        passwordValidation.validate(request.password());
 
         boolean isValidEmail = userRepository.findUserByEmail(request.email()).isPresent();
 
@@ -129,7 +141,8 @@ public class RegistrationService implements UserDetailsService {
     }
 
     public User registerTeacher(UserRegistrationRequest request) {
-        emailValidation.validate(request.email(), message);
+        emailValidation.validate(request.email());
+        passwordValidation.validate(request.password());
 
         boolean isValidEmail = userRepository.findUserByEmail(request.email()).isPresent();
 

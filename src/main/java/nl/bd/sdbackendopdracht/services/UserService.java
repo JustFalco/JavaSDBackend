@@ -5,6 +5,7 @@ import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.models.requestmodels.UserRegistrationRequest;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
 import nl.bd.sdbackendopdracht.security.exeptions.UserNotFoundExeption;
+import nl.bd.sdbackendopdracht.security.validation.EmailValidation;
 import nl.bd.sdbackendopdracht.security.validation.NumValidation;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,6 +20,8 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final NumValidation validation = new NumValidation();
+
+    private final EmailValidation emailValidation;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -37,6 +40,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User getPersonalUserDetails(String email) {
+        emailValidation.validate(email);
         return userRepository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundExeption("User with email " + email + " does not exists!"));
     }
 

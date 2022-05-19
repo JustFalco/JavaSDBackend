@@ -43,6 +43,9 @@ public class User implements UserDetails {
     private String email;
     private LocalDate dateOfCreation;
     private LocalDate dateOfBirth;
+    @Column(
+            nullable = false
+    )
     private String password;
     private int year;
     @Transient

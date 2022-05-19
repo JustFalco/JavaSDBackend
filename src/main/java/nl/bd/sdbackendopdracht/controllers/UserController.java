@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.models.requestmodels.UserRegistrationRequest;
 import nl.bd.sdbackendopdracht.services.UserService;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +36,13 @@ public class UserController {
             @RequestBody UserRegistrationRequest request
     ) {
         return userService.changeUserDetails(userId, request);
+    }
+
+    @GetMapping("/user/get_details/email={email}")
+    public User getByEmail(
+            @PathVariable("email") String email
+    ){
+        return userService.getPersonalUserDetails(email);
     }
 
 }
