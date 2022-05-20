@@ -30,12 +30,12 @@ public class UserController {
         return userService.getUserByUserId(id);
     }
 
-    @PutMapping("/user/change/user={userId}")
+    @PutMapping("/user/change/email={email}")
     public User changeUser(
-            @PathVariable("userId") Long userId,
+            @PathVariable("email") String email,
             @RequestBody UserRegistrationRequest request
     ) {
-        return userService.changeUserDetails(userId, request);
+        return userService.changeUserDetails(email, request);
     }
 
     @GetMapping("/user/get_details/email={email}")
@@ -43,6 +43,13 @@ public class UserController {
             @PathVariable("email") String email
     ){
         return userService.getPersonalUserDetails(email);
+    }
+
+    @DeleteMapping("/admin/delete/user={userId}")
+    public void delete(
+            @PathVariable("userId") Long userId
+    ){
+        userService.removeUser(userId);
     }
 
 }

@@ -13,6 +13,7 @@ import nl.bd.sdbackendopdracht.security.exeptions.EmailAlreadyExistsExeption;
 import nl.bd.sdbackendopdracht.security.exeptions.SchoolAlreadyExistsExeption;
 import nl.bd.sdbackendopdracht.security.mail.MailSender;
 import nl.bd.sdbackendopdracht.security.validation.EmailValidation;
+import nl.bd.sdbackendopdracht.security.validation.InputValidation;
 import nl.bd.sdbackendopdracht.security.validation.PasswordValidation;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,6 +31,7 @@ public class RegistrationService implements UserDetailsService {
     /* Validation imports */
     private final EmailValidation emailValidation;
     private final PasswordValidation passwordValidation;
+    private final InputValidation inputValidation;
 
     /* Repository imports */
     private final SchoolRepository schoolRepository;
@@ -45,16 +47,14 @@ public class RegistrationService implements UserDetailsService {
     public User registerSchool(SchoolRegistrationRequest request) {
 
         emailValidation.validate(request.schoolMail());
-        boolean isValidEmail = schoolRepository.finBySchoolMail(request.schoolMail()).isPresent();
-        boolean isValidName = schoolRepository.findBySchoolName(request.schoolName().toUpperCase()).isPresent();
+        inputValidation.validate(request.schoolName());
 
-        if (isValidEmail) {
-            throw new SchoolAlreadyExistsExeption("Email: " + request.schoolMail() + "  already exists");
-        }
-        if (isValidName) {
-            throw new SchoolAlreadyExistsExeption("Name: " + request.schoolName() + "  already exists");
-        }
+        boolean isValidEmail = schoolRepository.finBySchoolMail(request.schoolMail()).isEmpty();
+        boolean isValidName = schoolRepository.findBySchoolName(request.schoolName().toUpperCase()).isEmpty();
 
+        if (!isValidEmail || !isValidName) {
+            throw new SchoolAlreadyExistsExeption("School already exists in database!");
+        }
 
         School school = School.builder()
                 .schoolMail(request.schoolMail())

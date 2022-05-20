@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.models.requestmodels.UserRegistrationRequest;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
+import nl.bd.sdbackendopdracht.security.enums.RoleEnums;
 import nl.bd.sdbackendopdracht.security.exeptions.UserNotFoundExeption;
 import nl.bd.sdbackendopdracht.security.validation.EmailValidation;
 import nl.bd.sdbackendopdracht.security.validation.NumValidation;
@@ -40,12 +41,15 @@ public class UserService implements UserDetailsService {
     }
 
     public User getPersonalUserDetails(String email) {
-        emailValidation.validate(email);
+        if(!email.equals("Admin")){
+            emailValidation.validate(email);
+        }
         return userRepository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundExeption("User with email " + email + " does not exists!"));
     }
 
-    public User changeUserDetails(Long userId, UserRegistrationRequest request) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundExeption("User with id: " + userId + " has not been found!"));
+    public User changeUserDetails(String email, UserRegistrationRequest request) {
+        emailValidation.validate(email);
+        User user = getPersonalUserDetails(email);
 
         if (request.firstName() != null) {
             user.setFirstName(request.firstName());
@@ -55,9 +59,6 @@ public class UserService implements UserDetailsService {
         }
         if (request.lastName() != null) {
             user.setLastName(request.lastName());
-        }
-        if (request.email() != null) {
-            user.setEmail(request.email());
         }
         if (request.dateOfBirth() != null) {
             user.setDateOfBirth(request.dateOfBirth());
@@ -72,6 +73,10 @@ public class UserService implements UserDetailsService {
         user.setEnabled(request.isActive());
 
         return userRepository.save(user);
+    }
+
+    public void removeUser(Long userId){
+        userRepository.deleteById(userId);
     }
 
 }

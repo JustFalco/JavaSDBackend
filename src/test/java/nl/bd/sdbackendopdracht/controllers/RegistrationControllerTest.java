@@ -6,10 +6,7 @@ import nl.bd.sdbackendopdracht.models.requestmodels.SchoolRegistrationRequest;
 import nl.bd.sdbackendopdracht.models.requestmodels.UserRegistrationRequest;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
 import nl.bd.sdbackendopdracht.security.enums.RoleEnums;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -25,14 +23,14 @@ import java.time.LocalDate;
 import java.time.Month;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @WithMockUser(username = "Admin", password = "SuperStrongP@ssword123", authorities = {"DEVELOPER"})
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class RegistrationControllerTest {
 
     public static final MediaType APPLICATION_JSON_UTF8 = new MediaType(MediaType.APPLICATION_JSON.getType(), MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
@@ -132,6 +130,7 @@ class RegistrationControllerTest {
 //                .andExpect(jsonPath("$.length()", ))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
+
     }
 
     @Test
@@ -196,11 +195,11 @@ class RegistrationControllerTest {
                 .andExpect(status().is4xxClientError());
 
         // Check if the result has a size of 1
-        mockMvc.perform(get("/api/v1/user/get_details/email=falco@wolkorte.nl"))
+        mockMvc.perform(get("/api/v1/user/get_details/email=falco3@wolkorte.nl"))
                 .andDo(print())
-                .andExpect(content().contentType("application/json"))
-//                .andExpect(jsonPath("$").value(RoleEnums.ADMINISTRATOR.name()))
                 .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json"))
+                .andExpect(jsonPath("$.roleEnums").value("ADMINISTRATOR"))
                 .andReturn().getResponse().getContentAsString();
     }
 
