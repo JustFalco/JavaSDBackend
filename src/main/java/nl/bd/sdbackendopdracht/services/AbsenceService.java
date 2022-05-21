@@ -5,6 +5,7 @@ import nl.bd.sdbackendopdracht.models.datamodels.Absence;
 import nl.bd.sdbackendopdracht.models.datamodels.User;
 import nl.bd.sdbackendopdracht.models.requestmodels.AbsenceRegistrationRequest;
 import nl.bd.sdbackendopdracht.repositories.AbsenceRepository;
+import nl.bd.sdbackendopdracht.security.enums.RoleEnums;
 import nl.bd.sdbackendopdracht.security.exeptions.AbsenceNotFoundExeption;
 import nl.bd.sdbackendopdracht.security.exeptions.AbsenceProcessorExeption;
 import nl.bd.sdbackendopdracht.security.exeptions.UserNotFoundExeption;
@@ -27,6 +28,11 @@ public class AbsenceService {
     //Submit absence
     public Absence submitAbsence(AbsenceRegistrationRequest request, Authentication authentication) {
         User absentStudent = userService.getUserByUserId(request.absentStudent());
+
+        if(absentStudent.getRoleEnums() != RoleEnums.STUDENT){
+            throw new AbsenceProcessorExeption("Trying to submit absence for non student");
+        }
+
         User administrator = userService.getPersonalUserDetails(authentication.getName());
 
         Absence absence = Absence.builder()

@@ -44,6 +44,9 @@ public class CourseService implements UserDetailsService {
         try {
             courseGivenBy = userService.getUserByUserId(request.teacherGivesCourseId());
             courseCreator = userService.getPersonalUserDetails(authentication.getName());
+            if(courseCreator.getRoleEnums() == RoleEnums.STUDENT || courseGivenBy.getRoleEnums() == RoleEnums.STUDENT){
+                throw new CourseProcessExeption("Could not create course because given users do not have the right permissions");
+            }
             courseToBeCreated = Course.builder()
                     .courseName(request.courseName())
                     .courseDescription(request.courseDescription())
@@ -68,7 +71,7 @@ public class CourseService implements UserDetailsService {
 
     //Change course
     public Course changeCourse(CourseRegistrationRequest request, Long courseId) {
-        Course courseToBeChanged = null;
+        Course courseToBeChanged;
         User teacherForCourse = null;
         try {
             courseToBeChanged = getCourse(courseId);
@@ -77,20 +80,24 @@ public class CourseService implements UserDetailsService {
             }
 
         } catch (CourseNotFoundExeption | UserNotFoundExeption exception) {
-            throw new RuntimeException("Could not change course: " + exception.getMessage());
-        } finally {
-            if (courseToBeChanged != null) {
-                if (request.courseName() != null) {
-                    courseToBeChanged.setCourseName(request.courseName());
+            throw new CourseProcessExeption("Could not change course: " + exception.getMessage());
+        }
+
+        if (courseToBeChanged != null) {
+            if (request.courseName() != null) {
+                courseToBeChanged.setCourseName(request.courseName());
+            }
+            if (request.courseDescription() != null) {
+                courseToBeChanged.setCourseDescription(request.courseDescription());
+            }
+            if (teacherForCourse != null) {
+                if(teacherForCourse.getRoleEnums() == RoleEnums.STUDENT){
+                    throw new CourseProcessExeption("Could not change course because teacher id refrences a student");
                 }
-                if (request.courseDescription() != null) {
-                    courseToBeChanged.setCourseDescription(request.courseDescription());
-                }
-                if (teacherForCourse != null) {
-                    courseToBeChanged.setTeacherGivesCourse(teacherForCourse);
-                }
+                courseToBeChanged.setTeacherGivesCourse(teacherForCourse);
             }
         }
+
 
         assert courseToBeChanged != null;
         return courseRepository.save(courseToBeChanged);
@@ -119,10 +126,15 @@ public class CourseService implements UserDetailsService {
         Course course = getCourse(courseId);
         Set<User> newStudentList = new HashSet<>();
         for (User student : course.getStudentsFollowingCourse()) {
-            if (!Objects.equals(student.getUserId(), studentId)) {
+            if (student.getUserId() != studentId && student.getRoleEnums() == RoleEnums.STUDENT) {
                 newStudentList.add(student);
             }
         }
+
+        if(newStudentList.size() == course.getStudentsFollowingCourse().size()){
+            throw new CourseProcessExeption("No student has been removed!");
+        }
+
         course.setStudentsFollowingCourse(newStudentList);
         return courseRepository.save(course);
     }
@@ -145,13 +157,13 @@ public class CourseService implements UserDetailsService {
     public Course addMultipleStudentsToCourse(List<Long> usersToBeAddedIds, Long courseId) {
         Course course = getCourse(courseId);
         for (Long id : usersToBeAddedIds) {
-            try {
-                course.addUserToCourse(userRepository.findById(id).orElseThrow(() -> new UserNotFoundExeption("User with id: " + id + " has not been found in database!")));
-            } catch (Exception e) {
-                e.printStackTrace();
+            User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundExeption("User with id: " + id + " has not been found in database!"));
+            if(user.getRoleEnums() != RoleEnums.STUDENT){
+                throw new CourseProcessExeption("Trying to add a non student to course!");
             }
-
+            course.addUserToCourse(user);
         }
+
         return courseRepository.save(course);
     }
 
