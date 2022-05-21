@@ -5,6 +5,7 @@ import nl.bd.sdbackendopdracht.models.datamodels.Task;
 import nl.bd.sdbackendopdracht.models.datamodels.TaskFile;
 import nl.bd.sdbackendopdracht.models.requestmodels.TaskRegistrationRequest;
 import nl.bd.sdbackendopdracht.models.responsemodels.ResponseFile;
+import nl.bd.sdbackendopdracht.security.exeptions.TheePotExeption;
 import nl.bd.sdbackendopdracht.services.FileStorageService;
 import nl.bd.sdbackendopdracht.services.TasksService;
 import org.springframework.http.HttpHeaders;
@@ -153,5 +154,9 @@ public class TaskController {
         tasksService.deleteTask(taskId);
     }
 
-    //Finish task (Student)?
+    //TODO Finish task (Student)?
+    @GetMapping("/admin/coffee")
+    public void getCoffee(){
+        throw new TheePotExeption();
+    }
 }

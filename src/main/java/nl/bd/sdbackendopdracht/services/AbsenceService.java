@@ -71,6 +71,11 @@ public class AbsenceService {
         try {
             User student = userService.getUserByUserId(request.absentStudent());
             User administrator = userService.getPersonalUserDetails(authentication.getName());
+
+            if(student.getRoleEnums() != RoleEnums.STUDENT){
+                throw new AbsenceProcessorExeption("Trying to add a non student to absence");
+            }
+
             if (request.absenceType() != null) {
                 absence.setAbsenceType(request.absenceType());
             }
@@ -116,6 +121,10 @@ public class AbsenceService {
 
     //Get all absence from student (All)
     public Set<Absence> getAbsenceFromStudent(Long userId) {
-        return absenceRepository.getALlAbsenceFromUser(userId).orElseThrow(() -> new IllegalStateException("No things found"));
+        User student = userService.getUserByUserId(userId);
+        if(student.getRoleEnums() != RoleEnums.STUDENT){
+            throw new AbsenceProcessorExeption("Trying to get absence from non student!");
+        }
+        return absenceRepository.getALlAbsenceFromUser(userId).orElseThrow(() -> new IllegalStateException("No absence found"));
     }
 }
