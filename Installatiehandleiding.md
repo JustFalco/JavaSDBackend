@@ -179,6 +179,8 @@ Om de applicatie te draaien in een container, is het belangrijk dat docker is ge
 - [Linux](https://docs.docker.com/engine/install/ubuntu/)
 - [MacOS](https://docs.docker.com/desktop/mac/install/)
 
+Zorg er voor dat tijdens het installeren ook WSL geinstalleerd word, anders kunnen er rare bugs ontstaan, zie (stap 5)[https://docs.microsoft.com/nl-nl/windows/wsl/install-manual#step-4---download-the-linux-kernel-update-package]
+
 Na het installeren van docker:
 1. Pak het zip bestand van de applicatie uit
 2. Open de applicatie in een tekst bewerker naar keuze (Notepad++, VScode, IntelliJ IDEA, Atom)
