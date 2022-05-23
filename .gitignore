@@ -35,3 +35,9 @@ build/
 
 ### NPM ###
 /node_modules/
+
+### extra ###
+.m2
+.jpb
+/pid_files
+.env
