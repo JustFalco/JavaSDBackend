@@ -59,7 +59,7 @@ class UserControllerTest {
                 .andExpect(status().isOk());
     }
 
-    //Get a user with wrong username
+    //Get current user with wrong username
     @Test
     @WithMockUser(username = "Admin1", password = "SuperStrongP@ssword123", authorities = {"DEVELOPER"})
     void getPersonalDetailsFail() throws Exception {
@@ -71,21 +71,7 @@ class UserControllerTest {
     @Test
     void getUser() throws Exception {
         //Register user with no errors
-        UserRegistrationRequest request = new UserRegistrationRequest(
-                "Nick",
-                null,
-                "Schuit",
-                "nick@schuit.nl",
-                null,
-                "F@lcoW0lkorte",
-                1,
-                true
-        );
-
-        String jsonBody = objectMapper.writeValueAsString(request);
-        mockMvc.perform(post("/api/v1/administrator/registration/register_student").contentType(APPLICATION_JSON_UTF8).content(jsonBody))
-                .andDo(print())
-                .andExpect(status().isOk());
+        extracted();
 
 
         //Test if we get user back that was submitted to database
@@ -102,9 +88,7 @@ class UserControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    @Test
-    void changeUser() throws Exception {
-        //Register user with no errors
+    private void extracted() throws Exception {
         UserRegistrationRequest request = new UserRegistrationRequest(
                 "Nick",
                 null,
@@ -123,8 +107,14 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.firstName").value("Nick"))
                 .andExpect(jsonPath("$.email").value("nick@schuit.nl"))
                 .andReturn();
+    }
 
-        //Change user with email nick@schuit.nl
+    @Test
+    void changeUser() throws Exception {
+        //Register user with no errors
+        extracted();
+
+        //Change users first and last name with email nick@schuit.nl
         UserRegistrationRequest request2 = new UserRegistrationRequest(
                 "Falco",
                 null,
@@ -157,21 +147,7 @@ class UserControllerTest {
     @Test
     void getByEmail() throws Exception {
         //Register user with no errors
-        UserRegistrationRequest request = new UserRegistrationRequest(
-                "Nick",
-                null,
-                "Schuit",
-                "nick@schuit.nl",
-                null,
-                "F@lcoW0lkorte",
-                1,
-                true
-        );
-
-        String jsonBody = objectMapper.writeValueAsString(request);
-        mockMvc.perform(post("/api/v1/administrator/registration/register_student").contentType(APPLICATION_JSON_UTF8).content(jsonBody))
-                .andDo(print())
-                .andExpect(status().isOk());
+        extracted();
 
         //Try to get user from database with his email
         mockMvc.perform(get("/api/v1/user/get_details/email=nick@schuit.nl"))

@@ -119,15 +119,20 @@ public class GradeService implements UserDetailsService {
     //Submit single grade
     public StudentGrades submitGrade(Long studentId, GradeRegistrationRequest request, Authentication authentication) {
         if (!validation.validateId(studentId)) {
-            throw new NumberFormatException("Id: " + studentId + " is an illegal number");
+            throw new GradeProcessExeption("Id: " + studentId + " is an illegal number");
         }
-        if (!validation.validateNumber(request.weight(), 1, 10) || !validation.validateFloat(request.grade(), 0, 20)) {
-            throw new NumberFormatException("Illegal number input");
+        if (!validation.validateNumber(request.weight(), 1, 10) || !validation.validateFloat(request.grade(), 0.0f, 20.0f)) {
+            throw new GradeProcessExeption("Illegal number input");
         }
 
         User teacher = userService.getPersonalUserDetails(authentication.getName());
         User gradeBelongsToStudent = userService.getUserByUserId(studentId);
-        Task task = tasksService.getTask(request.markBelongsToTaskId());
+
+        Task task = null;
+        if(request.markBelongsToTaskId() != null){
+            task = tasksService.getTask(request.markBelongsToTaskId());
+        }
+
 
         StudentGrades grade = StudentGrades.builder()
                 .description(request.description())
