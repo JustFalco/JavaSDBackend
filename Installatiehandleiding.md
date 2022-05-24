@@ -196,4 +196,4 @@ SPRING_DOCKER_PORT=8080
 5. Sla het bestand op
 6. Open de terminal van de tekst bewerker en voer het volgende commando uit
 > docker-compose up -d --build
-4. Na een tijdje zou de applicatie op localhost:8081 moeten draaien en en is de OpenAPI documentatie te vinden op http://localhost:8081/swagger-ui/index.html
+4. Na een tijdje zou de applicatie op localhost:8081 moeten draaien en en is de OpenAPI documentatie te vinden op http://localhost:8081/swagger-ui/index.html 
