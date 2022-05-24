@@ -201,4 +201,34 @@ SPRING_DOCKER_PORT=8080
 4. Na een tijdje zou de applicatie op localhost:8081 moeten draaien en is de OpenAPI documentatie te vinden op http://localhost:8081/swagger-ui/index.html en is de SMPT mail server te vinden http://localhost:1080/
 
 # Testgebruikers
-De applicatie kan 
+De applicatie word standaard gestart met testdata. Deze data bestaat uit 4 verschillende gebruikers en een school:
+
+### Student
+De test gebruiker student bestaat uit de volgende inloggegevens: 
+- Email: falco@wolkorte.nl
+- Wachtwoord: StrongP@ssword123
+Met deze gebruiker kan ingelogd worden en deze gebruiker heeft toegang tot alle endpoints die beginnen met /api/v*/student/** 
+
+### Docent
+De test gebruiker docent bestaat uit de volgende inloggegevens:
+- Email: john@doe.nl
+- Wachtwoord: StrongP@ssword123 \
+  Met deze gebruiker kan ingelogd worden en deze gebruiker heeft toegang tot alle endpoints die beginnen met /api/v*/teacher/**
+
+### Administratief medewerker
+De test gebruiker student bestaat uit de volgende inloggegevens:
+- Email: jane@doe.nl
+- Wachtwoord: StrongP@ssword123 \
+  Met deze gebruiker kan ingelogd worden en deze gebruiker heeft toegang tot alle endpoints die beginnen met /api/v*/administrator/**
+
+### Developer / Admin
+De test gebruiker student bestaat uit de volgende inloggegevens:
+- Email: Admin
+- Wachtwoord: StrongP@ssword123 \
+  Met deze gebruiker kan ingelogd worden en deze gebruiker heeft toegang tot alle endpoints
+
+### School
+De standaard school in de database heeft de volgende waarden:
+- School naam: Novi
+- School email: novi@education.nl \
+Met een school kan niet ingelogd worden in de applicatie.
