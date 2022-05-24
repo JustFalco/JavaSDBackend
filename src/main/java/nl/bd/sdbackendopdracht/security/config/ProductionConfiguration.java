@@ -18,7 +18,7 @@ import java.time.Month;
 @Configuration
 @AllArgsConstructor
 @Profile("prod")
-public class  StandardUsersConfiguration {
+public class ProductionConfiguration {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Bean

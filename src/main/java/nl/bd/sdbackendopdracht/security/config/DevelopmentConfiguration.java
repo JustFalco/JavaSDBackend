@@ -16,7 +16,7 @@ import java.time.Month;
 @Configuration
 @AllArgsConstructor
 @Profile("dev")
-public class DeveloperAdminConfiguration {
+public class DevelopmentConfiguration {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
