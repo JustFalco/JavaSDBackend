@@ -73,11 +73,6 @@
             <artifactId>lombok</artifactId>
             <version>1.18.24</version>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.24</version>
-        </dependency>
 
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -108,11 +103,6 @@
             <version>1.9</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.6.8</version>
-        </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>

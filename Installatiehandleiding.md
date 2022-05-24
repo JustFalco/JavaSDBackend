@@ -169,7 +169,7 @@ MailDev SMTP Server running at 0.0.0.0:1025
 > maildev
 8. Voer als laatste het volgende commando uit:
 >  java -jar target/software-development-eindopdracht.jar
-9. Als de installatie goed is verlopen draait de spring boot applicatie nu op localhost:8080, en is de OpenAPI documentatie te vinden op http://localhost:8080/swagger-ui/index.html
+9. Als de installatie goed is verlopen draait de spring boot applicatie nu op localhost:8080, en is de OpenAPI documentatie te vinden op http://localhost:8080/swagger-ui/index.html en is de SMPT mail server te vinden http://localhost:1080/
 
 ## Applicatie opstarten via docker
 (Deze optie alleen gebruiken als alle voorgaande stappen niet werkten om de applicatie draaiende te krijgen, en werkt waarschijnlijk alleen op de x86-64 architectuur)
@@ -198,4 +198,7 @@ SPRING_DOCKER_PORT=8080
 5. Sla het bestand op
 6. Open de terminal van de tekst bewerker en voer het volgende commando uit
 > docker-compose up -d --build
-4. Na een tijdje zou de applicatie op localhost:8081 moeten draaien en en is de OpenAPI documentatie te vinden op http://localhost:8081/swagger-ui/index.html 
+4. Na een tijdje zou de applicatie op localhost:8081 moeten draaien en is de OpenAPI documentatie te vinden op http://localhost:8081/swagger-ui/index.html en is de SMPT mail server te vinden http://localhost:1080/
+
+# Testgebruikers
+De applicatie kan 
