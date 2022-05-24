@@ -12,10 +12,12 @@ services:
     volumes:
       - db:/var/lib/mysql
   smtpserver:
+#    TODO cannot connect to mail server
     image: maildev/maildev
     restart: unless-stopped
     ports:
       - "1080:1080"
+      - "1025:1025"
   app:
     depends_on:
       - mysqldb

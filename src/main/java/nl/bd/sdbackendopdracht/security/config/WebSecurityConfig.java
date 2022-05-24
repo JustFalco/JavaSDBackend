@@ -27,7 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //TODO weghalen?
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/registration/**", "/").permitAll()
+                .antMatchers("/api/v1/registration/**", "/").permitAll()
                 .antMatchers("/api/v*/student/**").hasAnyAuthority(STUDENT.name(), DEVELOPER.name())
                 .antMatchers("/api/v*/teacher/**").hasAnyAuthority(TEACHER.name(), DEVELOPER.name())
                 .antMatchers("/api/v*/administrator/**").hasAnyAuthority(ADMINISTRATOR.name(), DEVELOPER.name())
