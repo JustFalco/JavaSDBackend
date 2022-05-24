@@ -146,7 +146,7 @@ Voor een up-to-date handleiding, zie:
 
 ### Stap 5: Installeren van maildev
 1. Om maildev te kunnen gebruiken is het van belang dat NodeJS correct is geinstalleerd. Als dit het geval is kan maildev geinstalleerd worden door een terminal te openen en vervolgens het volgende commando te typen: 
-> npm install maildev
+> npm install maildev --global
 
 2. Na het installeren van maildev kan de mailserver opgestart worden met het commando:
 > maildev
