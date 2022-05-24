@@ -172,12 +172,14 @@ MailDev SMTP Server running at 0.0.0.0:1025
 9. Als de installatie goed is verlopen draait de spring boot applicatie nu op localhost:8080, en is de OpenAPI documentatie te vinden op http://localhost:8080/swagger-ui/index.html
 
 ## Applicatie opstarten via docker
-(Deze optie alleen gebruiken als alle voorgaande stappen niet werkten om de applicatie draaiende te krijgen, en waarschijnlijk werkt het alleen op de x86-64 architectuur)
+(Deze optie alleen gebruiken als alle voorgaande stappen niet werkten om de applicatie draaiende te krijgen, en werkt waarschijnlijk alleen op de x86-64 architectuur)
 
 Om de applicatie te draaien in een container, is het belangrijk dat docker is geinstalleerd. Volg hiervoor één van de volgende handleidingen:
 - [Windows](https://docs.docker.com/desktop/windows/install/)
 - [Linux](https://docs.docker.com/engine/install/ubuntu/)
 - [MacOS](https://docs.docker.com/desktop/mac/install/)
+
+Zorg er voor dat tijdens het installeren ook WSL geinstalleerd word, anders kunnen er rare bugs ontstaan, zie (stap 5)[https://docs.microsoft.com/nl-nl/windows/wsl/install-manual#step-4---download-the-linux-kernel-update-package]
 
 Na het installeren van docker:
 1. Pak het zip bestand van de applicatie uit
@@ -188,9 +190,9 @@ Na het installeren van docker:
 MYSQLDB_USER=root
 MYSQLDB_ROOT_PASSWORD=123456
 MYSQLDB_DATABASE=sddev
-MYSQLDB_LOCAL_PORT=127.0.0.1:3307
+MYSQLDB_LOCAL_PORT=3307
 MYSQLDB_DOCKER_PORT=3306
-SPRING_LOCAL_PORT=127.0.0.1:8081
+SPRING_LOCAL_PORT=8081
 SPRING_DOCKER_PORT=8080
 ```
 5. Sla het bestand op
