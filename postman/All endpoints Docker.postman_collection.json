@@ -1049,7 +1049,7 @@
 	"variable": [
 		{
 			"key": "url",
-			"value": "http://localhost:8081",
+			"value": "localhost:8081",
 			"type": "string"
 		}
 	]
