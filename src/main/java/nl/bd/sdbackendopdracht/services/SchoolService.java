@@ -14,6 +14,7 @@ public class SchoolService {
 
     private final UserRepository userRepository;
 
+    //Methode voor het verkrijgen van alle studenten binnen een school object
     public Set<User> getAllStudentsOnSchool(Long schoolId) {
         return userRepository.getStudentsOnSchool(schoolId, RoleEnums.STUDENT).orElseThrow(() -> new IllegalStateException("Iets ging fout"));
     }

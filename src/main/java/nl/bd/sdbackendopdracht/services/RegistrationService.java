@@ -44,6 +44,13 @@ public class RegistrationService implements UserDetailsService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final static Mail mail = new Mail();
 
+    /**
+     * De registerSchool methode begint met het valideren van gebruikers input. Vervolgens wordt er gekeken of de school al bestaat in de database.
+     * Als dit niet het geval is worden er een school object en tijdelijk gebruikers object aangemaakt. Deze worden via de mail service naar de gebruiker
+     * terug gestuurd, en daarna opgeslagen in de database
+     * @param request -> een DTO met school registratie gegevens
+     * @return Een User object met de gegevens van de tijdelijke gebruiker
+     */
     public User registerSchool(SchoolRegistrationRequest request) {
 
         emailValidation.validate(request.schoolMail());
@@ -84,9 +91,14 @@ public class RegistrationService implements UserDetailsService {
         return tempUser;
     }
 
+    /**
+     * De registerStudent method bouwt op basis van de UserRegistrationRequest DTO een student gebruiker,
+     * en slaat deze vervolgens op in de database
+     * @param request -> een DTO met gebruikers gegevens
+     * @return Een User object als het aanmaken succesvol is, anders een error
+     */
     public User registerStudent(UserRegistrationRequest request) {
-        emailValidation.validate(request.email());
-        passwordValidation.validate(request.password());
+        standardValidation(request);
 
         boolean isValidEmail = userRepository.findUserByEmail(request.email()).isPresent();
 
@@ -112,10 +124,14 @@ public class RegistrationService implements UserDetailsService {
         return userRepository.save(student);
     }
 
-
+    /**
+     * De registerAdministrator method bouwt op basis van de UserRegistrationRequest DTO een administrator gebruiker,
+     * en slaat deze vervolgens op in de database
+     * @param request -> een DTO met gebruikers gegevens
+     * @return Een User object als het aanmaken succesvol is, anders een error
+     */
     public User registerAdministrator(UserRegistrationRequest request) {
-        emailValidation.validate(request.email());
-        passwordValidation.validate(request.password());
+        standardValidation(request);
 
         boolean isValidEmail = userRepository.findUserByEmail(request.email()).isPresent();
 
@@ -140,9 +156,14 @@ public class RegistrationService implements UserDetailsService {
         return userRepository.save(administrator);
     }
 
+    /**
+     * De registerTeacher method bouwt op basis van de UserRegistrationRequest DTO een teacher gebruiker,
+     * en slaat deze vervolgens op in de database
+     * @param request -> een DTO met gebruikers gegevens
+     * @return Een User object als het aanmaken succesvol is, anders een error
+     */
     public User registerTeacher(UserRegistrationRequest request) {
-        emailValidation.validate(request.email());
-        passwordValidation.validate(request.password());
+        standardValidation(request);
 
         boolean isValidEmail = userRepository.findUserByEmail(request.email()).isPresent();
 
@@ -165,6 +186,15 @@ public class RegistrationService implements UserDetailsService {
                 .build();
 
         return userRepository.save(administrator);
+    }
+
+    /**
+     * Validatie van user input zoals email en wachtwoord, wordt standaard uitgevoerd vóór het aanmaken van een gebruiker
+     * @param request -> een DTO met gebruikers gegevens
+     */
+    private void standardValidation(UserRegistrationRequest request) {
+        emailValidation.validate(request.email());
+        passwordValidation.validate(request.password());
     }
 
     @Override

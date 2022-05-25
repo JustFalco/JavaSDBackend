@@ -24,14 +24,20 @@ import java.util.Set;
 
 @Service
 @AllArgsConstructor
-public class CourseService implements UserDetailsService {
+public class  CourseService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final CourseRepository courseRepository;
     private final UserService userService;
     private final NumValidation validation = new NumValidation();
 
-    //Create course
+    /**
+     * De createCourse methode probeert op basis van de DTO een nieuw Course object te bouwen,
+     * en deze vervolgens op te slaan in de database
+     * @param request -> request DTO met data om een Course object te maken
+     * @param authentication -> Standaard object om te kijken wie ingelogd is
+     * @return Course object dat is aangemaakt, anders een error
+     */
     public Course createCourse(CourseRegistrationRequest request, Authentication authentication) {
         if (!validation.validateId(request.teacherGivesCourseId())) {
             throw new CourseProcessExeption("Could not create course because of invalid id: " + request.teacherGivesCourseId());
@@ -60,7 +66,10 @@ public class CourseService implements UserDetailsService {
         }
     }
 
-    //Remove course
+    /**
+     * De removeCourse methode verwijderd een Course object uit de database als deze bestaat
+     * @param courseId -> id van de Course die verwijderd moet worden
+     */
     public void removeCourse(Long courseId) {
         if (courseRepository.findById(courseId).isEmpty()) {
             throw new CourseNotFoundExeption("Course with id: " + courseId + " not found");
@@ -69,7 +78,13 @@ public class CourseService implements UserDetailsService {
         }
     }
 
-    //Change course
+    /**
+     * De changeCourse methode haalt een Course object uit de database, en wijzigd de gegevens van dit object waar nodig.
+     * Daarna wordt het object weer opgeslagen in de database.
+     * @param request -> request DTO met data om een Course object aan te passen
+     * @param courseId -> id van de course die aangepast moet worden
+     * @return het aangepaste Course object, anders een error
+     */
     public Course changeCourse(CourseRegistrationRequest request, Long courseId) {
         Course courseToBeChanged;
         User teacherForCourse = null;
@@ -109,7 +124,12 @@ public class CourseService implements UserDetailsService {
         return course.getStudentsFollowingCourse();
     }
 
-    //Get course details
+    /**
+     * De getCourse methode zoekt naar een Course object in de database en geeft de gegevens
+     * van dit object terug als het gevonden wordt
+     * @param courseId -> id van de Course die opgevraagd wordt
+     * @return Course object, anders een error
+     */
     public Course getCourse(Long courseId) {
         Course course;
         if (courseRepository.findById(courseId).isEmpty()) {
@@ -121,7 +141,15 @@ public class CourseService implements UserDetailsService {
         return course;
     }
 
-    //Remove student from course
+    /**
+     * De removeStudentFromCourse methode haalt een Course object op uit de database, en loopt vervolgens
+     * door elke student die de course volgt.
+     * De studenten die niet verwijderd moeten worden worden in een lijst toegevoegd aan het
+     * Course object en dit object wordt opgeslagen in de database
+     * @param courseId -> id van de course waar een student uit gehaald moet worden
+     * @param studentId -> id van de student die uit een course gehaald moet worden
+     * @return Course object, anders een error
+     */
     public Course removeStudentFromCourse(Long courseId, Long studentId) {
         Course course = getCourse(courseId);
         Set<User> newStudentList = new HashSet<>();
@@ -139,7 +167,13 @@ public class CourseService implements UserDetailsService {
         return courseRepository.save(course);
     }
 
-    //Add student to course
+    /**
+     * De addStudentToCourse methode haalt een Course object uit de database,
+     * voegt hier een student aan toe en slaat het Course object vervolgens weer op in de database
+     * @param studentId -> id van de student die toegevoegd moet worden aan een course
+     * @param courseId -> id van de course waar een student aan toegevoegd moet worden
+     * @return Course object, anders een error
+     */
     public Course addStudentToCourse(Long studentId, Long courseId) {
         Course course = getCourse(courseId);
         User studentToBeAdded = userService.getUserByUserId(studentId);
@@ -153,7 +187,13 @@ public class CourseService implements UserDetailsService {
         return courseRepository.save(course);
     }
 
-    //Add multiple students to course
+    /**
+     * De addMultipleStudentsToCourse methode haalt een Course object uit de database, en voegt hier vervolgens meerdere studenten aan toe.
+     * Als dit lukt wordt het object weer opgeslagen in de database
+     * @param usersToBeAddedIds -> Lijst van studenten ID's die toegevoegd moeten worden aan een course
+     * @param courseId -> id van de course waar studenten aan toegevoegd moeten worden
+     * @return Course object, anders een error
+     */
     public Course addMultipleStudentsToCourse(List<Long> usersToBeAddedIds, Long courseId) {
         Course course = getCourse(courseId);
         for (Long id : usersToBeAddedIds) {

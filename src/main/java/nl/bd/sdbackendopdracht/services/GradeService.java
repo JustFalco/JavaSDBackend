@@ -33,7 +33,11 @@ public class GradeService implements UserDetailsService {
 
     private final NumValidation validation = new NumValidation();
 
-    //Get one grade
+    /**
+     * De getStudentGrade methode verkrijgt één Grade object uit de database en geeft deze terug
+     * @param gradeId -> id van cijfer dat opgevraagd wordt
+     * @return Cijfer object, anders een error
+     */
     public StudentGrades getStudentGrade(Long gradeId) {
         StudentGrades studentGrades;
         if (gradeRepository.findById(gradeId).isEmpty()) {
@@ -44,13 +48,23 @@ public class GradeService implements UserDetailsService {
         return studentGrades;
     }
 
-    //get all grades from student
+    /**
+     * De getGradesFromStudent verkrijgt alle behaalde cijfers van één student
+     * en geeft deze terug in de vorm van een lijst
+     * @param studentId -> id van de student waar de cijfers opgevraagd worden
+     * @return Lijst met cijfer objecten
+     */
     public List<StudentGrades> getGradesFromStudent(Long studentId) {
         User student = userService.getUserByUserId(studentId);
         return student.getGrades();
     }
 
-    //Get last 15 grades
+    /**
+     * De getLastFifteenGrades pakt de vijftien laatst behaalde cijfers van een student
+     * en geeft deze terug in de vorm van een lijst
+     * @param studentId -> id van de student waar de cijfers opgevraagd worden
+     * @return Lijst met 15 (of minder) cijfers
+     */
     public List<StudentGrades> getLastFifteenGrades(Long studentId) {
         List<StudentGrades> allGrades = getGradesFromStudent(studentId);
         List<StudentGrades> lastFifteen = allGrades;
@@ -61,7 +75,16 @@ public class GradeService implements UserDetailsService {
         return lastFifteen;
     }
 
-    //change one grade
+    /**
+     * De submitGrade methode valideerd eerst de gebruikers invoer. Als dit niet klopt, wordt er een error teruggegeven.
+     * Anders maakt de methode op basis van de gradeId een bestaand cijfer uit de database, en veranderd met behulp van de DTO
+     * de waarden in het cijfer object en slaat deze vervolgens op in de database
+     * @param request -> DTO met data van het cijfer
+     * @param gradeId -> id van het cijfer dat aangepast moet worden
+     * @param authentication -> standaard authentication object om de huidig ingelogde gebruiker te achterhalen
+     * @param studentId -> id van de student voor wie het cijfer bedoeld is
+     * @return StudentGrades object, anders een error
+     */
     public StudentGrades changeGrade(GradeRegistrationRequest request, Long gradeId, Authentication authentication, Long studentId) {
         Task task = null;
         StudentGrades grade = null;
@@ -110,7 +133,11 @@ public class GradeService implements UserDetailsService {
         return gradeRepository.save(grade);
     }
 
-    //delete grade
+    /**
+     * De deleteGrade methode kijkt of een cijfer op basis van id in de database staat,
+     * zo ja dan wordt deze verwijderd
+     * @param gradeId -> id van cijfer dat verwijderd moet worden
+     */
     public void deleteGrade(Long gradeId) {
         if (gradeRepository.findById(gradeId).isEmpty()) {
             throw new GradeNotFoundExeption("Grade with id: " + gradeId + " cannot be deleted because it cannot be found in the database");
@@ -118,7 +145,14 @@ public class GradeService implements UserDetailsService {
         gradeRepository.deleteById(gradeId);
     }
 
-    //Submit single grade
+    /**
+     * De submitGrade methode valideerd eerst de gebruikers invoer. Als dit niet klopt, wordt er een error teruggegeven.
+     * Anders maakt de methode op basis van de request DTO een nieuw StudentGrade object aan en slaat deze vervolgens op in de database
+     * @param studentId -> id van de student voor wie het cijfer bedoeld is
+     * @param request -> DTO met data van het cijfer
+     * @param authentication -> standaard authentication object om de huidig ingelogde gebruiker te achterhalen
+     * @return StudentGrades object, anders een error
+     */
     public StudentGrades submitGrade(Long studentId, GradeRegistrationRequest request, Authentication authentication) {
         if (!validation.validateId(studentId)) {
             throw new GradeProcessExeption("Id: " + studentId + " is an illegal number");

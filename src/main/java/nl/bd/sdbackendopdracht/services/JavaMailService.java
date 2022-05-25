@@ -19,6 +19,11 @@ public class JavaMailService implements MailSender {
     private final static Logger LOGGER = LoggerFactory.getLogger(JavaMailService.class);
     private final JavaMailSender mailSender;
 
+    /**
+     * De send methode maakt gebruik JavaMailSender en MimeMessage(Helper) om een mail op te bouwen en te versturen naar de eindgebruiker.
+     * @param to -> Het email adres waar de email naar toe gestuurd moet worden
+     * @param email -> Een HTML bestand met de lay-out van de email
+     */
     @Override
     @Async
     public void send(String to, String email) {

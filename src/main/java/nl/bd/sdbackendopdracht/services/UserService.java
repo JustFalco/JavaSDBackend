@@ -31,6 +31,13 @@ public class UserService implements UserDetailsService {
     }
 
     /* Global user methods */
+
+    /**
+     * De getUserByUserId zoekt in de database naar een gebruiker op basis van het meegegeven id.
+     * Als de gebruiker bestaat wordt deze teruggegeven, anders wordt er een error teruggegeven.
+     * @param userId -> id van de gebruiker waar gegevens van op worden gevraagd
+     * @return User object of een error als de gebruiker niet gevonden kan worden
+     */
     public User getUserByUserId(Long userId) {
         User user;
         if (userRepository.findById(userId).isEmpty()) {
@@ -41,6 +48,12 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+    /**
+     * getPersonalUserDetails is een method die een gebruiker opvraagt uit de database op basis
+     * van de op dat moment ingelogde gebruiker
+     * @param email -> email van de ingelogde gebruiker
+     * @return User object of error als de gebruiker niet gevonden kan worden
+     */
     public User getPersonalUserDetails(String email) {
         if(!email.equals("Admin")){
             emailValidation.validate(email);
@@ -48,23 +61,30 @@ public class UserService implements UserDetailsService {
         return userRepository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundExeption("User with email " + email + " does not exists!"));
     }
 
+    /**
+     * changeUserDetails is een method die op basis van een email en een DTO een gebruiker ophaalt uit de database, vervolgens
+     * de data van deze gebruiker veranderd waar nodig, en daarna weer terug opslaat in de database
+     * @param email -> email van de gebruiker die veranderd moet worden
+     * @param request -> DTO met informatie over de gebruiker die veranderd moet worden
+     * @return User object dat is aangemaakt of een error als het process niet voltooit kon worden
+     */
     public User changeUserDetails(String email, UserRegistrationRequest request) {
         emailValidation.validate(email);
         User user = getPersonalUserDetails(email);
 
-        if (request.firstName() != null) {
+        if (request.firstName() != "") {
             user.setFirstName(request.firstName());
         }
-        if (request.middleName() != null) {
+        if (request.middleName() != "") {
             user.setMiddleName(request.middleName());
         }
-        if (request.lastName() != null) {
+        if (request.lastName() != "") {
             user.setLastName(request.lastName());
         }
         if (request.dateOfBirth() != null) {
             user.setDateOfBirth(request.dateOfBirth());
         }
-        if (request.password() != null) {
+        if (request.password() != "") {
             user.setPassword(bCryptPasswordEncoder.encode(request.password()));
         }
         if (validation.validateNumber(request.studentYear(), 1, 100)) {
@@ -76,6 +96,11 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
+    /**
+     * De method removeUser kijkt of een gebruiker in de database bestaat en dat deze gebruiker geen admin is.
+     * Als daaraan is voldaan wordt deze gebruiker uit de database verwijderd.
+     * @param userId -> id van de gebruiker die verwijderd moet worden
+     */
     public void removeUser(Long userId){
         boolean empty = userRepository.findById(userId).isEmpty();
         if(empty){
