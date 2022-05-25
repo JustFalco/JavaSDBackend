@@ -1,13 +1,43 @@
 # Project Progen API documentation
-Project progen is an API that allows schools to manage their students, teachers, courses and much more.
+Voor de eindopdracht van software development heb ik een web API gemaakt genaamd project Progen. Deze API is qua functionaliteit geïnspireerd van mijn vorige java project: Magister2.0.  
+Project Progen is een API voor school beheer software. Zo geeft deze API de mogelijkheid voor docenten, studenten en administratief medewerkers om:
+- In te loggen
+- Opdrachten te geven en te maken
+- Cijfers te bekijken en in te voeren
+- Cursussen aan te bieden
+- Bestanden voor taken te up- en downloaden
+- En nog veel meer
 
 ## Documentatie
+Voor gedetailleerde documentatie, zie de folder /documentatie
 
-## Installatie
-
-## Docker
+## Github
+Voor versiebeheer van de applicatie is er gebruik gemaakt van Github. De repository van de applicatie is terug te vinden op: https://github.com/JustFalco/JavaSDBackend
 
 ## Postman
+Aangezien deze API nog niet over een grafiche web interfase beschikt, zijn er in de folder /postman twee collectie bestanden toegevoegd. Hiermee wordt het makkelijker om de appliatie te testen zonder de browser te gebruiken. Deze bestanden kunnen in postman geïmporteerd worden en bevatten alle endpoints en vooringevulde data. Om de docker applicatie te testen in postman, gebruik dan het bestand All endpoints Docker.postman_collection.json. Anders gebruik All endpoints.postman_collection.json.
+
+## Installatie
+De installatie kan op twee verschillende manieren worden uitgevoerd: handmatig of via docker.
+Voor de handmatige installatie, zie het bestand Installatiehandleiding.md in de folder /documentatie. Voor de snelle installatie via docker, volg 'Applicatie installeren via docker'.
+
+### Applicatie installeren via docker
+(Deze optie werkt **waarschijnlijk** alleen op de x86-64 architectuur, maar probeer het gerust uit op andere platformen)
+
+Om de applicatie te draaien in een container, is het belangrijk dat docker is geinstalleerd. Volg hiervoor één van de volgende handleidingen:
+- [Windows](https://docs.docker.com/desktop/windows/install/)
+- [Linux](https://docs.docker.com/engine/install/ubuntu/)
+- [MacOS](https://docs.docker.com/desktop/mac/install/)
+
+Zorg er voor dat tijdens het installeren van docker ook WSL geinstalleerd word, anders kunnen er rare bugs ontstaan, zie (stap 5: https://docs.microsoft.com/nl-nl/windows/wsl/install-manual#step-4---download-the-linux-kernel-update-package)
+
+Na het installeren van docker:
+1. Pak het zip bestand van de applicatie uit
+2. Open de applicatie in een tekst bewerker naar keuze (Notepad++, VSCode, IntelliJ IDEA, Atom)
+3. Open de terminal van de tekst bewerker en voer het volgende commando uit
+> docker-compose up --build
+4. Na een tijdje zou de applicatie op localhost:8081 moeten draaien en is de OpenAPI documentatie te vinden op http://localhost:8081/swagger-ui/index.html en is de SMPT mail server te vinden http://localhost:1080/
+
 
 ## Endpoints
 De applicatie kan op de volgende endpoints benaderd worden. Deze endpoints zijn ook terug te vinden in de OpenAPI documentatie op http://localhost:8080/swagger-ui.html of http://localhost:8081/swagger-ui.html (voor docker gebruikers). Deze documentatie werkt uiteraard alleen als de applicatie actief is.
