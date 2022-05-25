@@ -51,6 +51,7 @@ Door Falco Wolkorte
 Hier onder is de Use case diagram van de applicatie te zien.   
 Hierin is de functionaliteit van de verschillende gebruikers verwerkt op basis van de hierboven genoemde user stories.   
 ![Use case](/SDeindopdrachtUCD.jpg)
+![Use case](/documentatie/SDeindopdrachtUCD.jpg)
 
 ## Klassendiagram
 ![Klassen Diagram](/classDiagramSD.jpg)
