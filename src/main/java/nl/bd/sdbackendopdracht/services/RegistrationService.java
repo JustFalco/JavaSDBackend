@@ -56,16 +56,14 @@ public class RegistrationService implements UserDetailsService {
             throw new SchoolAlreadyExistsExeption("School already exists in database!");
         }
 
+        String password = RandomStringUtils.random(14, true, false);
+
+        String encodedPassword = bCryptPasswordEncoder.encode(password);
+
         School school = School.builder()
                 .schoolMail(request.schoolMail())
                 .schoolName(request.schoolName().toUpperCase())
                 .build();
-
-        schoolRepository.save(school);
-
-        String password = RandomStringUtils.random(14, true, false);
-
-        String encodedPassword = bCryptPasswordEncoder.encode(password);
 
         User tempUser = User.builder()
                 .email(request.schoolMail())
@@ -76,10 +74,12 @@ public class RegistrationService implements UserDetailsService {
                 .enabled(true)
                 .build();
 
-        userRepository.save(tempUser);
+
 
         mailSender.send(request.schoolMail(), mail.getMail(request.schoolName(), request.schoolMail(), password));
 
+        userRepository.save(tempUser);
+        schoolRepository.save(school);
 
         return tempUser;
     }

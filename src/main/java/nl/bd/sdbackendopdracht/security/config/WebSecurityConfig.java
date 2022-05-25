@@ -24,7 +24,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                //TODO weghalen?
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/v1/registration/**", "/").permitAll()

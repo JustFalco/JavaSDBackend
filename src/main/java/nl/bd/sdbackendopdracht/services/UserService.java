@@ -6,6 +6,7 @@ import nl.bd.sdbackendopdracht.models.requestmodels.UserRegistrationRequest;
 import nl.bd.sdbackendopdracht.repositories.UserRepository;
 import nl.bd.sdbackendopdracht.security.enums.RoleEnums;
 import nl.bd.sdbackendopdracht.security.exeptions.UserNotFoundExeption;
+import nl.bd.sdbackendopdracht.security.exeptions.UserProcessExeption;
 import nl.bd.sdbackendopdracht.security.validation.EmailValidation;
 import nl.bd.sdbackendopdracht.security.validation.NumValidation;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -76,6 +77,13 @@ public class UserService implements UserDetailsService {
     }
 
     public void removeUser(Long userId){
+        boolean empty = userRepository.findById(userId).isEmpty();
+        if(empty){
+            throw new UserNotFoundExeption("User could not be deleted from database because user with id: " + userId + " does not exists");
+        }
+        if(userRepository.findById(userId).get().getRoleEnums() == RoleEnums.DEVELOPER || userId == 1){
+            throw new UserProcessExeption("Cannot delete admin!");
+        }
         userRepository.deleteById(userId);
     }
 

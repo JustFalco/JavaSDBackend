@@ -33,7 +33,6 @@ public class Task {
     private LocalDateTime taksDeadline;
     private LocalDateTime timeOfTaskPublication;
     private Boolean taskFinished;
-    //TODO nieuwe feature waarmee je bijlagen toe kan voegen
 
     @ManyToMany
     @JoinTable(

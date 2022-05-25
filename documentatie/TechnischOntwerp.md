@@ -2,6 +2,8 @@
 Door Falco Wolkorte
 
 ## Inleiding
+In dit technisch ontwerp wordt stapsgewijs vastgelegd hoe de applicatie ontwikkeld moet worden. Van user stories met eisen van gebruikers, tot het databasemodel.
+
 
 ## User stories
 ### Algemene gebruikers stories
@@ -47,6 +49,7 @@ Door Falco Wolkorte
 
 **Story:** Ik wil als docent cijfers in kunnen voeren van studenten   
 **Acceptatiecriteria:** ik wil dat een docent de cijfers van een toets of opdracht voor één of meerdere studenten tegelijk kan invoeren, met een cijfer, een weging en een omschrijving
+
 ## Use case diagram
 Hier onder is de Use case diagram van de applicatie te zien.   
 Hierin is de functionaliteit van de verschillende gebruikers verwerkt op basis van de hierboven genoemde user stories.   
@@ -67,11 +70,60 @@ Hierin is de functionaliteit van de verschillende gebruikers verwerkt op basis v
 ### Sequentie diagram voor het registreren van een student gebruiker
 ![Seqentie diagram aanmaken student](/images/SequenceDiagramRegisterStudent.png)  
 ![Seqentie diagram aanmaken student](/documentatie/images/SequenceDiagramRegisterStudent.png)
+
 ### Sequentie diagram voor het toevoegen van een student aan een course
 ![Sequentie diagram toevoegen student aan course](/images/SequenceDiagramAddStudentToCourse.png)  
 ![Sequentie diagram toevoegen student aan course](/documentatie/images/SequenceDiagramAddStudentToCourse.png)
 
-## Systeem specificaties
+# Systeem specificaties
+## Externe libraries/ dependencies
+`org.apache.commons:commons-text
+Installed versions: 1.9`
+
+`com.google.guava:guava  
+Installed versions: 31.1-jre`
+
+`com.h2database:h2  
+Installed versions: 2.1.212`
+
+`mysql:mysql-connector-java  
+Installed versions: 8.0.29`
+
+`org.projectlombok:lombok  
+Installed versions: 1.18.24`
+
+`org.springdoc:springdoc-openapi-ui
+Installed versions: 1.6.8`
+
+`org.springframework.boot:spring-boot-devtools
+Installed versions: 2.6.7`
+
+`org.springframework.boot:spring-boot-starter-data-jpa
+Installed versions: 2.6.7`
+
+`org.springframework.boot:spring-boot-starter-jdbc
+Installed versions: 2.6.7`
+
+`org.springframework.boot:spring-boot-starter-mail
+Installed versions: 2.6.7`
+
+`org.springframework.boot:spring-boot-starter-security
+Installed versions: 2.6.7`
+
+`org.springframework.boot:spring-boot-starter-test
+Installed versions: 2.6.7`
+
+`org.springframework.boot:spring-boot-starter-thymeleaf
+Installed versions: 2.6.7`
+
+`org.springframework.boot:spring-boot-starter-web
+Installed versions: 2.6.7`
+
+`org.springframework.security:spring-security-test
+Installed versions: 5.6.3`
+
+
+## Software versies
 ### MySQL
 ```
 | tls_version              | TLSv1.2,TLSv1.3              |

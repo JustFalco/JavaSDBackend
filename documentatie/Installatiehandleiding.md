@@ -49,7 +49,25 @@ Java HotSpot(TM) 64-Bit Server VM (build 17.0.3+8-LTS-111, mixed mode, sharing)
 De installatie kan op twee verschillende manieren worden uitgevoerd: handmatig of via docker.
 Voor de handmatige installatie, volg stappen 1 tot en met 6. Voor de installatie via docker, volg 'Applicatie installeren via docker'.
 
---- 
+## Applicatie installeren via docker
+(Deze optie werkt **waarschijnlijk** alleen op de x86-64 architectuur, maar probeer het gerust uit op andere platformen)
+
+Om de applicatie te draaien in een container, is het belangrijk dat docker is geinstalleerd. Volg hiervoor één van de volgende handleidingen:
+- [Windows](https://docs.docker.com/desktop/windows/install/)
+- [Linux](https://docs.docker.com/engine/install/ubuntu/)
+- [MacOS](https://docs.docker.com/desktop/mac/install/)
+
+Zorg er voor dat tijdens het installeren van docker ook WSL geinstalleerd word, anders kunnen er rare bugs ontstaan, zie (stap 5: https://docs.microsoft.com/nl-nl/windows/wsl/install-manual#step-4---download-the-linux-kernel-update-package)
+
+Na het installeren van docker:
+1. Pak het zip bestand van de applicatie uit
+2. Open de applicatie in een tekst bewerker naar keuze (Notepad++, VSCode, IntelliJ IDEA, Atom)
+3. Open de terminal van de tekst bewerker en voer het volgende commando uit
+> docker-compose up --build
+4. Na een tijdje zou de applicatie op localhost:8081 moeten draaien en is de OpenAPI documentatie te vinden op http://localhost:8081/swagger-ui/index.html en is de SMPT mail server te vinden http://localhost:1080/
+
+
+## Applicatie handmatig installeren 
 ### Stap 1: Installeren van Java
 Voor een up-to-date handleiding, zie: 
 - [Windows](https://docs.oracle.com/en/java/javase/17/install/installation-jdk-microsoft-windows-platforms.html)
@@ -175,22 +193,6 @@ MailDev SMTP Server running at 0.0.0.0:1025
 >  java -jar target/software-development-eindopdracht.jar
 9. Als de installatie goed is verlopen draait de spring boot applicatie nu op localhost:8080, en is de OpenAPI documentatie te vinden op http://localhost:8080/swagger-ui/index.html en is de SMPT mail server te vinden http://localhost:1080/
 
-## Applicatie installeren via docker
-(Deze optie werkt **waarschijnlijk** alleen op de x86-64 architectuur)
-
-Om de applicatie te draaien in een container, is het belangrijk dat docker is geinstalleerd. Volg hiervoor één van de volgende handleidingen:
-- [Windows](https://docs.docker.com/desktop/windows/install/)
-- [Linux](https://docs.docker.com/engine/install/ubuntu/)
-- [MacOS](https://docs.docker.com/desktop/mac/install/)
-
-Zorg er voor dat tijdens het installeren van docker ook WSL geinstalleerd word, anders kunnen er rare bugs ontstaan, zie (stap 5: https://docs.microsoft.com/nl-nl/windows/wsl/install-manual#step-4---download-the-linux-kernel-update-package)
-
-Na het installeren van docker:
-1. Pak het zip bestand van de applicatie uit
-2. Open de applicatie in een tekst bewerker naar keuze (Notepad++, VScode, IntelliJ IDEA, Atom)
-3. Open de terminal van de tekst bewerker en voer het volgende commando uit
-> docker-compose up --build
-4. Na een tijdje zou de applicatie op localhost:8081 moeten draaien en is de OpenAPI documentatie te vinden op http://localhost:8081/swagger-ui/index.html en is de SMPT mail server te vinden http://localhost:1080/
 
 # Testgebruikers / User rollen
 De applicatie word standaard gestart met testdata. Deze data bestaat uit 4 verschillende gebruikers en een school:

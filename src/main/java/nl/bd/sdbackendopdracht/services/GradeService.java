@@ -63,10 +63,12 @@ public class GradeService implements UserDetailsService {
 
     //change one grade
     public StudentGrades changeGrade(GradeRegistrationRequest request, Long gradeId, Authentication authentication, Long studentId) {
-        Task task;
+        Task task = null;
         StudentGrades grade = null;
         try {
-            task = tasksService.getTask(request.markBelongsToTaskId());
+            if(request.markBelongsToTaskId() != 0){
+                task = tasksService.getTask(request.markBelongsToTaskId());
+            }
         } catch (Exception e) {
             throw new GradeProcessExeption("Could not change grade: " + e.getMessage());
         }
@@ -129,7 +131,7 @@ public class GradeService implements UserDetailsService {
         User gradeBelongsToStudent = userService.getUserByUserId(studentId);
 
         Task task = null;
-        if(request.markBelongsToTaskId() != null){
+        if(request.markBelongsToTaskId() != 0){
             task = tasksService.getTask(request.markBelongsToTaskId());
         }
 
@@ -137,6 +139,7 @@ public class GradeService implements UserDetailsService {
         StudentGrades grade = StudentGrades.builder()
                 .description(request.description())
                 .grade(request.grade())
+                .weight(request.weight())
                 .insertionDate(LocalDateTime.now())
                 .markBelongsToStudent(gradeBelongsToStudent)
                 .markBelongsToTask(task)

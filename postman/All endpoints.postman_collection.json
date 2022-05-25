@@ -1,0 +1,1056 @@
+{
+	"info": {
+		"_postman_id": "cecd07cf-67d6-4972-aea3-9191e7ca59b3",
+		"name": "All endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12550744"
+	},
+	"item": [
+		{
+			"name": "Registration endpoints",
+			"item": [
+				{
+					"name": "Register student",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\" : \"Goos\",\r\n    \"middleName\" : \"den\",\r\n    \"lastName\" : \"Boer\",\r\n    \"email\" : \"goosdenboer@gmail.com\",\r\n    \"dateOfBirth\" : \"2002-05-14\",\r\n    \"password\" : \"Goos@Boer123\",\r\n    \"studentYear\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/administrator/registration/register_student",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"administrator",
+								"registration",
+								"register_student"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register teacher",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\" : \"Nick\",\r\n    \"middleName\" : \"\",\r\n    \"lastName\" : \"Schuit\",\r\n    \"email\" : \"nickschuit@gmail.com\",\r\n    \"dateOfBirth\" : \"2003-06-24\",\r\n    \"password\" : \"Nick@Schuit123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/administrator/registration/register_teacher",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"administrator",
+								"registration",
+								"register_teacher"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register administrator",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\" : \"Quinten\",\r\n    \"middleName\" : \"van\",\r\n    \"lastName\" : \"Dongen\",\r\n    \"email\" : \"qvd@gmail.com\",\r\n    \"dateOfBirth\" : \"2002-10-09\",\r\n    \"password\" : \"Qvd@1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/administrator/registration/register_administrator",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"administrator",
+								"registration",
+								"register_administrator"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register school",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"schoolName\" : \"JenaXL\",\r\n    \"schoolMail\" : \"jenaxl@landstede.nl\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/registration/register_school",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"registration",
+								"register_school"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User endpoints",
+			"item": [
+				{
+					"name": "Get user details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/user/get_details",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"get_details"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change user",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "Admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "Falco567",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"Falco5678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/user/change/user=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user",
+								"change",
+								"user=1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/user/get_details/user=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"get_details",
+								"user=1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by email",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/user/get_details/email=Admin",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"get_details",
+								"email=Admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/admin/delete/user=2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"delete",
+								"user=2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Absence endpoints",
+			"item": [
+				{
+					"name": "Get all absence from student",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/absence/get_absence/student=2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"absence",
+								"get_absence",
+								"student=2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get absence info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/absence/absenceId=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"absence",
+								"absenceId=1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Submit Absence",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"absentStudent\" : 2,\r\n    \"absenceType\" : \"TO_LATE\",\r\n    \"absenceDescription\" : \"Student was flink te laat\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/administrator/absence/submit",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"administrator",
+								"absence",
+								"submit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change absence",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"absentStudent\" : 2,\r\n    \"absenceType\" : \"ABSENT\",\r\n    \"absenceDescription\" : \"Student was niet aanwezig\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/administrator/absence/change/absence=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"administrator",
+								"absence",
+								"change",
+								"absence=1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove absence",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/administrator/absence/delete/absenceId=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"administrator",
+								"absence",
+								"delete",
+								"absenceId=1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Course endpoints",
+			"item": [
+				{
+					"name": "Get course details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/user/course/get_details/course=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"course",
+								"get_details",
+								"course=1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create course",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"courseName\" : \"Nederlands\",\r\n    \"courseDescription\" : \"Nederlands 3 VWO\",\r\n    \"teacherGivesCourseId\" : 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/administrator/course/create",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"administrator",
+								"course",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add student to course",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/administrator/course/add_student/student=2&course=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"administrator",
+								"course",
+								"add_student",
+								"student=2&course=1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add multiple students to course",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[2]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/administrator/course/add_students/course=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"administrator",
+								"course",
+								"add_students",
+								"course=1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change course",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"courseName\" : \"Nederlands\",\r\n    \"courseDescription\" : \"Nederlands 4 VWO\",\r\n    \"teacherGivesCourseId\" : 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/administrator/course/change/course=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"administrator",
+								"course",
+								"change",
+								"course=1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove student from course",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/administrator/course/delete_student/student=2&course=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"administrator",
+								"course",
+								"delete_student",
+								"student=2&course=1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete course",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/administrator/course/remove/course=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"administrator",
+								"course",
+								"remove",
+								"course=1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Grade endpoints",
+			"item": [
+				{
+					"name": "Get last 15 grades from student",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/student/grades/get_grade/last/student=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"student",
+								"grades",
+								"get_grade",
+								"last",
+								"student=1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all grades from student",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/grades/get_grade/overview/student=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"grades",
+								"get_grade",
+								"overview",
+								"student=1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get grade details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/grades/get_grade/grade=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"grades",
+								"get_grade",
+								"grade=1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cijfer uploaden",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "Admin",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "Falco567",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\":\"cijfer hoofdstuk 2\",\r\n    \"grade\" : 19.0,\r\n    \"weight\": 3,\r\n    \"testDate\": \"2022-10-29\",\r\n    \"markBelongsToStudentId\":1,\r\n    \"markSubmittedByTeacherId\":1,\r\n    \"markBelongsToTaskId\":0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/teacher/grades/submit_grade/student=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"teacher",
+								"grades",
+								"submit_grade",
+								"student=1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change grade",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\" : \"Toets hoofdstuk 1\",\r\n    \"grade\" : 7.7,\r\n    \"weight\" : 3,\r\n    \"testDate\" : \"2022-10-29\",\r\n    \"markBelongsToTaskId\" : 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/teacher/grades/change_grade/student=1&grade=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"teacher",
+								"grades",
+								"change_grade",
+								"student=1&grade=1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Grade",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/teacher/grades/delete/grade=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"teacher",
+								"grades",
+								"delete",
+								"grade=1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Task endpoints",
+			"item": [
+				{
+					"name": "Get task details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/task/get_taskdetails/task=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"task",
+								"get_taskdetails",
+								"task=1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all tasks from student",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/task/get_tasks_from_student/student=2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"task",
+								"get_tasks_from_student",
+								"student=2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get files from task",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/task/get_taskfiles/task=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"task",
+								"get_taskfiles",
+								"task=1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create task for course",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"taskName\" : \"Opdrachten maken h1\",\r\n    \"taskDescription\" : \"Opdracht 1.1 - 1.2 en 1.3 maken\",\r\n    \"taskDeadline\" : \"2022-05-25T11:11:08.7471792\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/teacher/task/create_task/course=52",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"teacher",
+								"task",
+								"create_task",
+								"course=52"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create task Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"taskName\" : \"Opdrachten maken h1\",\r\n    \"taskDescription\" : \"Opdracht 1.1 - 1.2 en 1.3 maken\",\r\n    \"taskDeadline\" : \"2022-05-25T11:11:08.7471792\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/teacher/task/create_task",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"teacher",
+								"task",
+								"create_task"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add files to task",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files",
+									"type": "file",
+									"src": [
+										"/C:/Users/JustFalco/IdeaProjects/JavaSDBackend/documentatie/images/classDiagramSD.jpg",
+										"/C:/Users/JustFalco/IdeaProjects/JavaSDBackend/documentatie/images/DatabaseDiagram.png",
+										"/C:/Users/JustFalco/IdeaProjects/JavaSDBackend/documentatie/images/SDeindopdrachtUCD.jpg",
+										"/C:/Users/JustFalco/IdeaProjects/JavaSDBackend/documentatie/images/SequenceDiagramAddStudentToCourse.png",
+										"/C:/Users/JustFalco/IdeaProjects/JavaSDBackend/documentatie/images/SequenceDiagramCreateCourse.png",
+										"/C:/Users/JustFalco/IdeaProjects/JavaSDBackend/documentatie/images/SequenceDiagramRegisterStudent.png"
+									]
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/teacher/task/add_file/task=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"teacher",
+								"task",
+								"add_file",
+								"task=1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change task",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"taskName\" : \"Opdrachten maken h2\",\r\n    \"taskDescription\" : \"Opdracht 2.1 - 2.2 en 2.3 maken\",\r\n    \"taskDeadline\" : \"2022-05-25T11:11:08.7471792\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/teacher/task/change/task=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"teacher",
+								"task",
+								"change",
+								"task=1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add student to task",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/teacher/task/add_student/student=2&task=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"teacher",
+								"task",
+								"add_student",
+								"student=2&task=1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove student from task",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/teacher/task/delete/student=6&task=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"teacher",
+								"task",
+								"delete",
+								"student=6&task=1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove task",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/teacher/task/delete/task=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"teacher",
+								"task",
+								"delete",
+								"task=1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "StrongP@ssword123",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "Admin",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}

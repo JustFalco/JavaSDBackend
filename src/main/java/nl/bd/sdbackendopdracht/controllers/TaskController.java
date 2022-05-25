@@ -139,16 +139,16 @@ public class TaskController {
 
     //Remove user from task (Teacher)
     @DeleteMapping("/teacher/task/delete/student={userId}&task={taskId}")
-    public void deleteTask(
+    public void removeStudentFromTask(
             @PathVariable("userId") Long userId,
             @PathVariable("taskId") Long taskId
     ) {
-        tasksService.removeStudentFromTask(taskId, userId);
+        tasksService.removeStudentFromTask(userId, taskId);
     }
 
     //Remove task (Teacher)
     @DeleteMapping("/teacher/task/delete/task={taskId}")
-    public void deleteTask(
+    public void removeTask(
             @PathVariable("taskId") Long taskId
     ) {
         tasksService.deleteTask(taskId);

@@ -31,7 +31,7 @@ public class DevelopmentConfiguration {
                         .email("Admin")
                         .locked(false)
                         .enabled(true)
-                        .password(bCryptPasswordEncoder.encode("SuperStrongP@ssword123"))
+                        .password(bCryptPasswordEncoder.encode("StrongP@ssword123"))
                         .roleEnums(RoleEnums.DEVELOPER)
                         .dateOfCreation(LocalDate.now())
                         .dateOfBirth(LocalDate.of(2001, Month.OCTOBER, 29))
