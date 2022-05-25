@@ -138,7 +138,7 @@ Voor een up-to-date handleiding, zie:
 8. Vervolgens wordt gevraagd om componenten te behouden/ verwijderen, verander hier niks aan en klik next
 9. Klik installeer en wacht tot de installatie klaar is
 10. Kijk of de installatie is gelukt door een terminal te openen en de volgende commando's uit te voeren: 
-> node -v
+> node -v  
 > npm -v
 11. Als de versies overeen komen met de versie nummers in het kopje Versie nummers -> NPM en Versie nummers -> NodeJS is de installatie geslaagd
 
@@ -176,14 +176,14 @@ MailDev SMTP Server running at 0.0.0.0:1025
 9. Als de installatie goed is verlopen draait de spring boot applicatie nu op localhost:8080, en is de OpenAPI documentatie te vinden op http://localhost:8080/swagger-ui/index.html en is de SMPT mail server te vinden http://localhost:1080/
 
 ## Applicatie installeren via docker
-(Deze optie alleen gebruiken als alle voorgaande stappen niet werkten om de applicatie draaiende te krijgen, en werkt waarschijnlijk alleen op de x86-64 architectuur)
+(Deze optie werkt **waarschijnlijk** alleen op de x86-64 architectuur)
 
 Om de applicatie te draaien in een container, is het belangrijk dat docker is geinstalleerd. Volg hiervoor één van de volgende handleidingen:
 - [Windows](https://docs.docker.com/desktop/windows/install/)
 - [Linux](https://docs.docker.com/engine/install/ubuntu/)
 - [MacOS](https://docs.docker.com/desktop/mac/install/)
 
-Zorg er voor dat tijdens het installeren van docker ook WSL geinstalleerd word, anders kunnen er rare bugs ontstaan, zie (stap 5)[https://docs.microsoft.com/nl-nl/windows/wsl/install-manual#step-4---download-the-linux-kernel-update-package]
+Zorg er voor dat tijdens het installeren van docker ook WSL geinstalleerd word, anders kunnen er rare bugs ontstaan, zie (stap 5: https://docs.microsoft.com/nl-nl/windows/wsl/install-manual#step-4---download-the-linux-kernel-update-package)
 
 Na het installeren van docker:
 1. Pak het zip bestand van de applicatie uit

@@ -50,24 +50,26 @@ Door Falco Wolkorte
 ## Use case diagram
 Hier onder is de Use case diagram van de applicatie te zien.   
 Hierin is de functionaliteit van de verschillende gebruikers verwerkt op basis van de hierboven genoemde user stories.   
-![Use case](/SDeindopdrachtUCD.jpg)  
-![Use case](/documentatie/SDeindopdrachtUCD.jpg)  
+![Use case](/images/SDeindopdrachtUCD.jpg)  
+![Use case](/documentatie/images/SDeindopdrachtUCD.jpg)  
+
+[//]: # (De reden dat de foto's er twee keer staan is omdat de bovenste van de twee alleen werkt in IntelliJ, en de onderste alleen in github)
 
 ## Klassendiagram
-![Klassen Diagram](/classDiagramSD.jpg)  
-![Klassen Diagram](/documentatie/classDiagramSD.jpg)
+![Klassen Diagram](/images/classDiagramSD.jpg)  
+![Klassen Diagram](/documentatie/images/classDiagramSD.jpg)
 
 ## Database diagram
-![Database diagram](/DatabaseDiagram.png)  
-![Database diagram](/documentatie/DatabaseDiagram.png)
+![Database diagram](/images/DatabaseDiagram.png)  
+![Database diagram](/documentatie/images/DatabaseDiagram.png)
 
 ## Sequentie diagrammen
 ### Sequentie diagram voor het registreren van een student gebruiker
-![Seqentie diagram aanmaken student](/SequenceDiagramRegisterStudent.png)  
-![Seqentie diagram aanmaken student](/documentatie/SequenceDiagramRegisterStudent.png)
+![Seqentie diagram aanmaken student](/images/SequenceDiagramRegisterStudent.png)  
+![Seqentie diagram aanmaken student](/documentatie/images/SequenceDiagramRegisterStudent.png)
 ### Sequentie diagram voor het toevoegen van een student aan een course
-![Sequentie diagram toevoegen student aan course](/SequenceDiagramAddStudentToCourse.png)  
-![Sequentie diagram toevoegen student aan course](/documentatie/SequenceDiagramAddStudentToCourse.png)
+![Sequentie diagram toevoegen student aan course](/images/SequenceDiagramAddStudentToCourse.png)  
+![Sequentie diagram toevoegen student aan course](/documentatie/images/SequenceDiagramAddStudentToCourse.png)
 
 ## Systeem specificaties
 ### MySQL
