@@ -2,8 +2,20 @@
 Door Falco Wolkorte
 
 ## Inleiding
-In dit technisch ontwerp wordt stapsgewijs vastgelegd hoe de applicatie ontwikkeld moet worden. Van user stories met eisen van gebruikers, tot het databasemodel.
+Voor de eindopdracht van software development heb ik een web API gemaakt genaamd project Progen. Deze API is qua functionaliteit geïnspireerd van mijn vorige java project: Magister2.0.  
+Project Progen is een API voor school beheer software. Zo geeft deze API de mogelijkheid voor docenten, studenten en administratief medewerkers om:
+- In te loggen
+- Opdrachten te geven en te maken
+- Cijfers te bekijken en in te voeren
+- Cursussen aan te bieden
+- Bestanden voor taken te up- en downloaden
+- En nog veel meer   
 
+Voordat de applicatie ontwikkeld kan worden is het eerst belangrijk om een technisch ontwerp te hebben. Daar dient dit bestand voor. 
+In het eerste gedeelte wordt er gekeken naar de eisen van de applicaties, verwoord in 'user stories'.
+Vervolgens wordt er op basis van de user stories een Use case en klassen diagram gemaakt. 
+Als laatste wordt er gekeken naar de database diagram van de applicatie, 
+en de sequentie diagrammen voor het registreren van een student en de sequentie diagram voor het toevoegen van een student aan een cursus.
 
 ## User stories
 ### Algemene gebruikers stories
@@ -59,10 +71,12 @@ Hierin is de functionaliteit van de verschillende gebruikers verwerkt op basis v
 [//]: # (De reden dat de foto's er twee keer staan is omdat de bovenste van de twee alleen werkt in IntelliJ, en de onderste alleen in github)
 
 ## Klassendiagram
+Het onderstaande klassen diagram is een schematische weergave van de objecten binnen de applicatie, en de relatie tussen deze objecten.
 ![Klassen Diagram](/images/classDiagramSD.jpg)  
 ![Klassen Diagram](/documentatie/images/classDiagramSD.jpg)
 
 ## Database diagram
+Het onderstaande database diagram is de diagram die automatisch gegenereerd is door Spring Boot bij het opstarten van de applicatie, en geeft de werkelijke weergave van objecten en hun relatie weer.
 ![Database diagram](/images/DatabaseDiagram.png)  
 ![Database diagram](/documentatie/images/DatabaseDiagram.png)
 
