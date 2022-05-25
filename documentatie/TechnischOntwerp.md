@@ -50,20 +50,24 @@ Door Falco Wolkorte
 ## Use case diagram
 Hier onder is de Use case diagram van de applicatie te zien.   
 Hierin is de functionaliteit van de verschillende gebruikers verwerkt op basis van de hierboven genoemde user stories.   
-![Use case](/SDeindopdrachtUCD.jpg)
-![Use case](/documentatie/SDeindopdrachtUCD.jpg)
+![Use case](/SDeindopdrachtUCD.jpg)  
+![Use case](/documentatie/SDeindopdrachtUCD.jpg)  
 
 ## Klassendiagram
-![Klassen Diagram](/classDiagramSD.jpg)
+![Klassen Diagram](/classDiagramSD.jpg)  
+![Klassen Diagram](/documentatie/classDiagramSD.jpg)
 
 ## Database diagram
-![Database diagram](/DatabaseDiagram.png)
+![Database diagram](/DatabaseDiagram.png)  
+![Database diagram](/documentatie/DatabaseDiagram.png)
 
 ## Sequentie diagrammen
 ### Sequentie diagram voor het registreren van een student gebruiker
-![Seqentie diagram aanmaken student](/SequenceDiagramRegisterStudent.png)
+![Seqentie diagram aanmaken student](/SequenceDiagramRegisterStudent.png)  
+![Seqentie diagram aanmaken student](/documentatie/SequenceDiagramRegisterStudent.png)
 ### Sequentie diagram voor het toevoegen van een student aan een course
-![Sequentie diagram toevoegen student aan course](/SequenceDiagramAddStudentToCourse.png)
+![Sequentie diagram toevoegen student aan course](/SequenceDiagramAddStudentToCourse.png)  
+![Sequentie diagram toevoegen student aan course](/documentatie/SequenceDiagramAddStudentToCourse.png)
 
 ## Systeem specificaties
 ### MySQL
