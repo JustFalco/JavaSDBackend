@@ -183,24 +183,12 @@ Om de applicatie te draaien in een container, is het belangrijk dat docker is ge
 - [Linux](https://docs.docker.com/engine/install/ubuntu/)
 - [MacOS](https://docs.docker.com/desktop/mac/install/)
 
-Zorg er voor dat tijdens het installeren ook WSL geinstalleerd word, anders kunnen er rare bugs ontstaan, zie (stap 5)[https://docs.microsoft.com/nl-nl/windows/wsl/install-manual#step-4---download-the-linux-kernel-update-package]
+Zorg er voor dat tijdens het installeren van docker ook WSL geinstalleerd word, anders kunnen er rare bugs ontstaan, zie (stap 5)[https://docs.microsoft.com/nl-nl/windows/wsl/install-manual#step-4---download-the-linux-kernel-update-package]
 
 Na het installeren van docker:
 1. Pak het zip bestand van de applicatie uit
 2. Open de applicatie in een tekst bewerker naar keuze (Notepad++, VScode, IntelliJ IDEA, Atom)
-3. Creeër in de root folder van het project een bestand met de naam .env
-4. Voeg de volgende waarden in het bestand:
-```
-MYSQLDB_USER=root
-MYSQLDB_ROOT_PASSWORD=123456
-MYSQLDB_DATABASE=sddev
-MYSQLDB_LOCAL_PORT=3307
-MYSQLDB_DOCKER_PORT=3306
-SPRING_LOCAL_PORT=8081
-SPRING_DOCKER_PORT=8080
-```
-5. Sla het bestand op
-6. Open de terminal van de tekst bewerker en voer het volgende commando uit
+3. Open de terminal van de tekst bewerker en voer het volgende commando uit
 > docker-compose up --build
 4. Na een tijdje zou de applicatie op localhost:8081 moeten draaien en is de OpenAPI documentatie te vinden op http://localhost:8081/swagger-ui/index.html en is de SMPT mail server te vinden http://localhost:1080/
 

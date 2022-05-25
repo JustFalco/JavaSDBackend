@@ -43,3 +43,4 @@ build/
 .env
 package-lock.json
 package.json
+/logs
