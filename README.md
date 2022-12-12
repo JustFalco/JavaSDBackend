@@ -237,3 +237,5 @@ De applicatie kan op de volgende endpoints benaderd worden. Deze endpoints zijn 
   "isActive": true
 }
 ```
+
+:)
